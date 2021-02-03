@@ -1,9 +1,9 @@
 <template>
-  <div class="team">
-    <h1 class="subheading grey--text">Team</h1>
+  <div class="SearchAUser">
+    <h1 class="subheading grey--text">Search a user</h1>
 
     <v-container class="my-5">
-      <p>team</p>
+      <p>Search a user</p>
     </v-container>
     
   </div>
@@ -13,8 +13,8 @@
 export default {
   data() {
     return {
-      team: []
+      projects: []
     }
-  }
+  },
 }
 </script>

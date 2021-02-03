@@ -3,7 +3,7 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import {firestorePlugin} from 'vuefire'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+// import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(firestorePlugin)
 

@@ -1,4 +1,4 @@
-# todo-ninja
+# Musicos
 
 ## Project setup
 ```

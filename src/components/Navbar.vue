@@ -4,13 +4,12 @@
     <v-toolbar flat app>
       <v-toolbar-side-icon @click="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase grey--text">
-        <span class="font-weight-light">Todo</span>
-        <span>Ninja</span>
+        <span>Musicos</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <!-- dropdown menu -->
-      <v-menu offset-y>
+      <!-- <v-menu offset-y>
         <v-btn flat slot="activator" color="grey">
           <v-icon left>expand_more</v-icon>
           <span>Menu</span>
@@ -20,7 +19,7 @@
             <v-list-tile-title>{{ link.text }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
-      </v-menu>
+      </v-menu> -->
 
       <v-btn flat color="grey">
         <span>Sign Out</span>
@@ -31,15 +30,15 @@
     <v-navigation-drawer app v-model="drawer" class="primary">
       <v-layout column align-center>
         <v-flex class="mt-5">
-          <v-avatar size="100">
+          <!-- <v-avatar size="100">
             <img class="text-lg-center" src="/avatar-1.png">
-          </v-avatar>
-          <p class="white--text subheading mt-1">The Net Ninja</p>
+          </v-avatar> -->
+          <p class="white--text subheading mt-1">Musicos</p>
         </v-flex>
       </v-layout>
       <v-list>
         <v-list-group sub-group no-action
-          v-for="folder in folders" :key="folder.text" router :to="folder.route">
+          v-for="folder in folders" :key="folder.text">
           <v-list-tile slot="activator">
               <v-list-tile-title>{{ folder.text }}</v-list-tile-title>
           </v-list-tile>
@@ -60,27 +59,30 @@
 
 <script>
 // https://materialdesignicons.com/
+// https://vuetifyjs.com/en/components/icons/
+// https://vuetifyjs.com/en/features/icon-fonts/#install-material-icons
+// https://pictogrammers.github.io/@mdi/font/5.4.55/
 export default {
   data() {
     return {
       drawer: false,
       folders: [
-        { icon: "dashboard", text: "Songs", route: '/',
+        { icon: "music", text: "Songs",
           submenus: [
-          { icon: 'dashboard', text: 'New song', route: '/' },
-          { icon: 'folder', text: 'My songs', route: '/projects' },
-          { icon: 'person', text: 'Favourite songs', route: '/team' },
-          { icon: 'dashboard', text: 'Search a song', route: '/' },]
+          { icon: 'home', text: 'My songs', route: '/mySongs' },
+          { icon: 'add', text: 'New song', route: '/createSong' },
+          { icon: 'mdi-cards-heart', text: 'Favourite songs', route: '/favouriteSongs' },
+          { icon: 'search', text: 'Search a song', route: '/searchASong' },]
         },
-        { icon: "dashboard", text: "Users", route: '/projects',
+        { icon: "users", text: "Users",
           submenus: [
-          { icon: 'dashboard', text: 'Followed users', route: '/' },
-          { icon: 'folder', text: 'Search a user', route: '/projects' }]
+          { icon: 'mdi-account-multiple', text: 'Followed users', route: '/followedUsers' },
+          { icon: 'search', text: 'Search a user', route: '/searchAUser' }]
         },
-        { icon: "dashboard", text: "Settings", route: '/team',
+        { icon: "settings", text: "Settings",
           submenus: [
-          { icon: 'dashboard', text: 'Gems', route: '/' },
-          { icon: 'folder', text: 'Log out', route: '/projects' }]
+          { icon: 'dashboard', text: 'Gems', route: '/gems' },
+          { icon: 'exit_to_app', text: 'Log out', route: '/logOut' }]
         },
       ]
     }
