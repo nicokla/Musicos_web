@@ -38,14 +38,20 @@
         </v-flex>
       </v-layout>
       <v-list>
-        <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">
-          <v-list-tile-action>
-            <v-icon class="white--text">{{ link.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+        <v-list-group sub-group no-action
+          v-for="folder in folders" :key="folder.text" router :to="folder.route">
+          <v-list-tile slot="activator">
+              <v-list-tile-title>{{ folder.text }}</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile v-for="link in folder.submenus" :key="link.text" router :to="link.route">
+            <v-list-tile-action>
+              <v-icon class="white--text">{{ link.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile> 
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -53,14 +59,29 @@
 </template>
 
 <script>
+// https://materialdesignicons.com/
 export default {
   data() {
     return {
       drawer: false,
-      links: [
-        { icon: 'dashboard', text: 'Dashboard', route: '/' },
-        { icon: 'folder', text: 'My Projects', route: '/projects' },
-        { icon: 'person', text: 'Team', route: '/team' },
+      folders: [
+        { icon: "dashboard", text: "Songs", route: '/',
+          submenus: [
+          { icon: 'dashboard', text: 'New song', route: '/' },
+          { icon: 'folder', text: 'My songs', route: '/projects' },
+          { icon: 'person', text: 'Favourite songs', route: '/team' },
+          { icon: 'dashboard', text: 'Search a song', route: '/' },]
+        },
+        { icon: "dashboard", text: "Users", route: '/projects',
+          submenus: [
+          { icon: 'dashboard', text: 'Followed users', route: '/' },
+          { icon: 'folder', text: 'Search a user', route: '/projects' }]
+        },
+        { icon: "dashboard", text: "Settings", route: '/team',
+          submenus: [
+          { icon: 'dashboard', text: 'Gems', route: '/' },
+          { icon: 'folder', text: 'Log out', route: '/projects' }]
+        },
       ]
     }
   }
