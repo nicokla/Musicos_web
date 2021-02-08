@@ -7,7 +7,10 @@
         <v-card class="mx-auto pa-3 ma-2 text-center" max-width="400" v-for="song in songs" :key="song.id">
           <v-row class="d-flex justify-space-around">
             <v-cols cols=8>
-              <v-list-item-title class="headline mb-1">{{song.title}}</v-list-item-title>
+              <v-list-item-title class="headline mb-1">
+                <router-link :to="{name: 'song', params: {id: song.id} }">{{song.title}}</router-link>
+                
+              </v-list-item-title>
             </v-cols>
             <v-cols cols=4>
               <v-btn icon color=red @click="deleteSong(song.id)">

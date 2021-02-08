@@ -11,6 +11,10 @@ import LogOut from './views/LogOut.vue'
 import MySongs from './views/MySongs.vue'
 import SearchASong from './views/SearchASong.vue'
 import SearchAUser from './views/SearchAUser.vue'
+import Song from './views/Song.vue'
+import User from './views/User.vue'
+import SignUp from './views/SignUp.vue'
+import SignIn from './views/SignIn.vue'
 
 Vue.use(Router)
 
@@ -57,6 +61,11 @@ export default new Router({
       path: '/logout',
       name: 'logout',
       component: LogOut
+    },
+    {
+      path: '/song/:id',
+      name: 'song',
+      component: Song
     }
   ]
 })
