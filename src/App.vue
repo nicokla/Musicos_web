@@ -13,6 +13,7 @@
 
 <script>
 import Navbar from './components/Navbar'
+import {firebase, logOut, setupShouldStayLoggedIn} from './firebase/db'
 
 export default {
   components: { Navbar },
@@ -25,8 +26,23 @@ export default {
   methods:{
     shouldShowNavbar(){
       // console.log(this.$route.name)
-      return (! ['signIn', 'signUp'].includes(this.$route.name))
-    }
-  }
+      return (! ['signIn', 'signUp', 'home'].includes(this.$route.name))
+    },
+    async handler(event) {
+      let shouldStayLoggedIn = JSON.parse(localStorage.getItem("shouldStayLoggedIn"))
+      if(!shouldStayLoggedIn){
+        await logOut()
+      }
+    },
+    
+  },
+  created(){
+    window.addEventListener('beforeunload', this.handler)
+  },
+  beforeDestroy() {
+    window.removeEventListener('beforeunload', this.handler)
+  },
+  destroyed: async function(){  
+	}
 }
 </script>

@@ -7,7 +7,7 @@ import CreateSong from './views/CreateSong.vue'
 import FavouriteSongs from './views/FavouriteSongs.vue'
 import FollowedUsers from './views/FollowedUsers.vue'
 import Gems from './views/Gems.vue'
-// import LogOut from './views/LogOut.vue'
+import LogOut from './views/LogOut.vue'
 import MySongs from './views/MySongs.vue'
 import SearchASong from './views/SearchASong.vue'
 import SearchAUser from './views/SearchAUser.vue'
@@ -15,6 +15,7 @@ import Song from './views/Song.vue'
 import User from './views/User.vue'
 import SignUp from './views/SignUp.vue'
 import SignIn from './views/SignIn.vue'
+import Home from './views/Home.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     { path: '/', redirect: { name: 'signIn' }},
+    {
+      path: '/home',
+      name: 'home',
+      component: Home
+    },
     {
       path: '/createSong',
       name: 'createSong',
@@ -67,6 +73,11 @@ export default new Router({
       path: '/signUp',
       name: 'signUp',
       component: SignUp
+    },
+    {
+      path: '/logOut',
+      name: 'logOut',
+      component: LogOut
     },
     {
       path: '/song/:id',

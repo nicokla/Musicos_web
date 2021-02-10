@@ -83,7 +83,7 @@ export default {
         { icon: "settings", text: "Settings",
           submenus: [
           { icon: 'dashboard', text: 'Gems', route: '/gems' },
-          { icon: 'exit_to_app', text: 'Log out', route: '/signIn' }]
+          { icon: 'exit_to_app', text: 'Log out', route: '/logOut' }]
         },
       ]
     }

@@ -1,6 +1,7 @@
 <template>
   <div class="SignIn">
     <!-- <h1 class="subheading grey--text">Sign In</h1> -->
+<!-- https://codepen.io/madyanalj/pen/KRXxpN -->
 
     <v-container fill-height="fill-height">
       <v-layout align-center="align-center" justify-center="justify-center">
@@ -16,6 +17,7 @@
               <div>
                 <v-text-field v-model="user.email" light="light" prepend-icon="email" label="Email" type="email"></v-text-field>
                 <v-text-field v-model="user.password" light="light" prepend-icon="lock" label="Password" type="password"></v-text-field>
+                <v-checkbox v-model="options.shouldStayLoggedIn" light="light" label="Stay logged in?" hide-details="hide-details"></v-checkbox>
                 <v-btn block="block" @click="login()">Sign in</v-btn>
               </div>
             </v-card-text>
@@ -31,7 +33,7 @@
 </template>
 
 <script>
-import {firebase} from '../firebase/db'
+import {firebase, logOut, isLoggedIn, setupShouldStayLoggedIn} from '../firebase/db'
 
 // Will be a modal later
 export default {
@@ -44,11 +46,27 @@ export default {
       },
       options: {
         // isLoggingIn: true,
-        // shouldStayLoggedIn: true,
+        shouldStayLoggedIn: JSON.parse(localStorage.getItem("shouldStayLoggedIn")),
       },
     }
   },
+  async mounted(){
+    this.detectIfConnected()
+    setupShouldStayLoggedIn()
+	},
   methods:{
+    detectIfConnected(){
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log('user!!', user)
+          localStorage.setItem("shouldLogIn", "true")
+          this.$router.push('mySongs')
+        } else {
+          localStorage.removeItem("shouldLogIn")
+          // this.$router.push('signIn')
+        }
+      });
+    },
     goToSignUp(){
       console.log('signup')
       this.$router.push('signUp')
@@ -57,13 +75,14 @@ export default {
       this.$router.push('mySongs')
     },
     async login(){
-      // console.log('coucou')
-      let result = await firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password)
-      console.log(result)
-      if (result.user){
-        localStorage.setItem("user",JSON.stringify(result.user))
+      localStorage.setItem("shouldStayLoggedIn", JSON.stringify(this.options.shouldStayLoggedIn))
+
+      firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password).then(() => {
         this.enterWebSite()
-      }
+      }).catch((error) => {
+        alert(error.message);
+      });
+
     }
   }
 }

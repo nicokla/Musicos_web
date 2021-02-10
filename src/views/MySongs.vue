@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {db} from '../firebase/db'
+import {db, firebase, isLoggedIn} from '../firebase/db'
 
 export default {
   data() {
@@ -42,9 +42,23 @@ export default {
 			db.collection('songs').doc(id).delete()
 		}
   },
-	firestore:{
-		songs: db.collection('songs').where("ownerID", "==", "FSlyGRJXj4RYgElBAib7oRran642")
-	}
+  async mounted() {
+    // console.log('userID', isLoggedIn().uid)
+    // TypeError: Cannot read property 'uid' of null
+    const answer = await db.collection("songs").where("ownerID", "==", isLoggedIn().uid).get();
+    // console.log(answer)
+    this.songs=[]
+    answer.forEach((doc)=>{
+      this.songs.push({id: doc.id, title: doc.data().title})//.data().name})
+    })
+    // this.songs = response.data
+  },
+	// firestore:{
+	// 	songs: db.collection('songs').where("ownerID", "==", isLoggedIn().uid)
+  //   // localStorage.getItem("userID"))
+  //   // firebase.auth().currentUser.uid
+  //    //"FSlyGRJXj4RYgElBAib7oRran642")
+	// }
 }
 
 

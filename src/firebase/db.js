@@ -11,8 +11,50 @@ var firebaseConfig = {
   appId: "1:845227245926:web:2909b5b7ee98d982a3c8a7"
 };
 
+async function logOut(){
+  // localStorage.removeItem("userID")
+  await firebase.auth().signOut()
+}
+
+function isLoggedIn(){
+  return firebase.auth().currentUser
+}
+
+
+async function setupShouldStayLoggedIn(){
+  let shouldStayLoggedIn = JSON.parse(localStorage.getItem("shouldStayLoggedIn"))
+  if(shouldStayLoggedIn){
+    console.log('coucou')
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .catch((error) => {
+      console.error(error)
+    });
+  } 
+  else {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .catch((error) => {
+      console.error(error)
+    });
+  }
+}
+
+function detectIfConnected(){
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log('user!!', user)
+      localStorage.setItem("shouldLogIn", "true")
+      // functionLoggedIn()
+    } else {
+      localStorage.removeItem("shouldLogIn")
+      // functionLoggedOut()
+    }
+  });
+}
+
 const db = firebase.initializeApp(firebaseConfig).firestore();
-export {db, firebase}
+// detectIfConnected()
+// setupShouldStayLoggedIn()
+export {db, firebase, logOut, isLoggedIn, setupShouldStayLoggedIn, detectIfConnected} // 
 
 // (async () => {
 //   await firebase.auth().signInWithEmailAndPassword("nicolas.klarsfeld@gmail.com","coucou123")
