@@ -27,7 +27,8 @@
       </v-btn>
     </v-toolbar>
 
-    <v-navigation-drawer app v-model="drawer" class="primary">
+    <v-navigation-drawer app v-model="drawer" class="primary"
+      >
       <v-layout column align-center>
         <v-flex class="mt-5">
           <!-- <v-avatar size="100">
@@ -82,7 +83,7 @@ export default {
         { icon: "settings", text: "Settings",
           submenus: [
           { icon: 'dashboard', text: 'Gems', route: '/gems' },
-          { icon: 'exit_to_app', text: 'Log out', route: '/logOut' }]
+          { icon: 'exit_to_app', text: 'Log out', route: '/signIn' }]
         },
       ]
     }

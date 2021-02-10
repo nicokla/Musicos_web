@@ -1,6 +1,8 @@
 <template>
   <v-app class="grey lighten-4">
-    <Navbar />
+
+    <Navbar v-if="shouldShowNavbar()">
+    </Navbar>
 
     <v-content class="mx-4 mb-4">
       <router-view></router-view>
@@ -18,6 +20,12 @@ export default {
   data () {
     return {
       
+    }
+  },
+  methods:{
+    shouldShowNavbar(){
+      // console.log(this.$route.name)
+      return (! ['signIn', 'signUp'].includes(this.$route.name))
     }
   }
 }

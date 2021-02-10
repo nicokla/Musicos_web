@@ -7,7 +7,7 @@ import CreateSong from './views/CreateSong.vue'
 import FavouriteSongs from './views/FavouriteSongs.vue'
 import FollowedUsers from './views/FollowedUsers.vue'
 import Gems from './views/Gems.vue'
-import LogOut from './views/LogOut.vue'
+// import LogOut from './views/LogOut.vue'
 import MySongs from './views/MySongs.vue'
 import SearchASong from './views/SearchASong.vue'
 import SearchAUser from './views/SearchAUser.vue'
@@ -58,9 +58,14 @@ export default new Router({
       component: Gems
     },
     {
-      path: '/logout',
-      name: 'logout',
-      component: LogOut
+      path: '/signIn',
+      name: 'signIn',
+      component: SignIn
+    },
+    {
+      path: '/signUp',
+      name: 'signUp',
+      component: SignUp
     },
     {
       path: '/song/:id',
