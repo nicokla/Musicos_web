@@ -13,11 +13,11 @@
               <div class="subheading">
                 <template>Sign in</template>
               </div>
-              <v-form>
+              <div>
                 <v-text-field v-model="user.email" light="light" prepend-icon="email" label="Email" type="email"></v-text-field>
                 <v-text-field v-model="user.password" light="light" prepend-icon="lock" label="Password" type="password"></v-text-field>
-                <v-btn block="block" type="submit" @click="enterWebSite()">Sign in</v-btn>
-              </v-form>
+                <v-btn block="block" @click="login()">Sign in</v-btn>
+              </div>
             </v-card-text>
           </v-card>
           <div>Don't have an account?
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import {firebase} from '../firebase/db'
+
 // Will be a modal later
 export default {
   data() {
@@ -53,6 +55,15 @@ export default {
     },
     enterWebSite(){
       this.$router.push('mySongs')
+    },
+    async login(){
+      // console.log('coucou')
+      let result = await firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password)
+      console.log(result)
+      if (result.user){
+        localStorage.setItem("user",JSON.stringify(result.user))
+        this.enterWebSite()
+      }
     }
   }
 }

@@ -22,6 +22,7 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    { path: '/', redirect: { name: 'signIn' }},
     {
       path: '/createSong',
       name: 'createSong',
