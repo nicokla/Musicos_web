@@ -6,6 +6,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Users from "../views/Users.vue";
 
 const routes = [
+  { path: '/', redirect: { name: 'Login' }},
   {
     path: '/',
     component: Page,
