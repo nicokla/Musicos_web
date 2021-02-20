@@ -1,6 +1,6 @@
 <template>
-  <div class="Home">
-    <h1 class="subheading grey--text">Home</h1>
+  <div class="Users">
+    <h1 class="subheading grey--text">Users</h1>
 
     <el-row>
       <el-button>Default</el-button>

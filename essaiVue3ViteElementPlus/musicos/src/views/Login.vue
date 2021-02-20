@@ -41,8 +41,8 @@ export default {
   data() {
     return {
       validCredentials: {
-        username: "lightscope",
-        password: "lightscope"
+        username: "admin",
+        password: "admin"
       },
       model: {
         username: "",
@@ -92,6 +92,7 @@ export default {
         this.model.password === this.validCredentials.password
       ) {
         this.$message.success("Login successfull");
+        this.$router.push('Dashboard')
       } else {
         this.$message.error("Username or password is invalid");
       }
