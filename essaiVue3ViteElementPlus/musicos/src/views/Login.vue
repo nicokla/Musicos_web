@@ -1,41 +1,43 @@
 <template>
-  <div class="login">
-    <el-card>
-      <h2>Login</h2>
-      <el-form
-        class="login-form"
-        :model="model"
-        :rules="rules"
-        ref="form"
-        @submit.native.prevent="login"
-      >
-        <el-form-item prop="username">
-          <el-input v-model="model.username" placeholder="Username" prefix-icon="fas fa-user"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model="model.password"
-            placeholder="Password"
-            type="password"
-            prefix-icon="fas fa-lock"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            :loading="loading"
-            class="login-button"
-            type="primary"
-            native-type="submit"
-            block
-          >Login</el-button>
-        </el-form-item>
-        <a class="forgot-password" href="https://oxfordinformatics.com/">Forgot password ?</a>
-      </el-form>
-    </el-card>
+  <div class="login">    
+    <div class="container has-text-centered">
+      <div class="column is-4 is-offset-4">
+          <h3 class="title mt-4 mb-5">Musicos</h3>
+          <div class="box">
+              <form>
+                <h3 class="title has-text-black">Login</h3>
+
+                  <div class="field">
+                      <div class="control">
+                          <input class="input is-large" type="email" placeholder="Your Email" autofocus="">
+                      </div>
+                  </div>
+
+                  <div class="field">
+                      <div class="control">
+                          <input class="input is-large" type="password" placeholder="Your Password">
+                      </div>
+                  </div>
+                  <div class="field">
+                      <label class="checkbox">
+        <input type="checkbox">
+        Remember me
+      </label>
+                  </div>
+                  <button class="button is-block is-info is-large is-fullwidth">Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+              </form>
+          </div>
+          <p class="has-text-grey">
+              <a href="../">Sign Up</a> &nbsp;·&nbsp;
+              <a href="../">Forgot Password</a>
+          </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "login",
   data() {
@@ -103,76 +105,40 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.login {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.avatar img {
+    padding: 5px;
+    background: #fff;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+    box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
 }
 
-.login-button {
-  width: 100%;
-  margin-top: 40px;
+input {
+    font-weight: 300;
 }
-.login-form {
-  width: 290px;
-}
-.forgot-password {
-  margin-top: 10px;
-}
-</style>
-<style lang="scss">
-$teal: rgb(0, 124, 137);
-.el-button--primary {
-  background: $teal;
-  border-color: $teal;
 
-  &:hover,
-  &.active,
-  &:focus {
-    background: lighten($teal, 7);
-    border-color: lighten($teal, 7);
-  }
+p {
+    font-weight: 700;
 }
-.login .el-input__inner:hover {
-  border-color: $teal;
+
+p.subtitle {
+    padding-top: 1rem;
 }
-.login .el-input__prefix {
-  background: rgb(238, 237, 234);
-  left: 0;
-  height: calc(100% - 2px);
-  left: 1px;
-  top: 1px;
-  border-radius: 3px;
-  .el-input__icon {
-    width: 30px;
-  }
+
+.login-hr {
+    border-bottom: 1px solid black;
 }
-.login .el-input input {
-  padding-left: 35px;
+
+.has-text-black {
+    color: black;
 }
-.login .el-card {
-  padding-top: 0;
-  padding-bottom: 30px;
+
+.field {
+    padding-bottom: 10px;
 }
-h2 {
-  font-family: "Open Sans";
-  letter-spacing: 1px;
-  font-family: Roboto, sans-serif;
-  padding-bottom: 20px;
-}
-a {
-  color: $teal;
-  text-decoration: none;
-  &:hover,
-  &:active,
-  &:focus {
-    color: lighten($teal, 7);
-  }
-}
-.login .el-card {
-  width: 340px;
-  display: flex;
-  justify-content: center;
+
+.fa {
+    margin-left: 5px;
 }
 </style>

@@ -1,0 +1,2 @@
+npm init @vitejs/app my-vue-app -- --template vue
+https://vitejs.dev/guide/#scaffolding-your-first-vite-project
