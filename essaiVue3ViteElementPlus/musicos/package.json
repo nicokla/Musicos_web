@@ -7,7 +7,6 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "element-plus": "^1.0.2-beta.32",
     "firebase": "^8.2.9",
     "vue": "^3.0.5",
     "vue-router": "^4.0.4"
@@ -16,7 +15,10 @@
     "@iconify/json": "^1.1.306",
     "@vitejs/plugin-vue": "^1.1.4",
     "@vue/compiler-sfc": "^3.0.5",
+    "autoprefixer": "^10.2.4",
+    "postcss": "^8.2.6",
     "sass": "^1.32.8",
+    "tailwindcss": "^2.0.3",
     "vite": "^2.0.0-beta.65",
     "vite-plugin-components": "^0.6.12",
     "vite-plugin-icons": "^0.2.2"

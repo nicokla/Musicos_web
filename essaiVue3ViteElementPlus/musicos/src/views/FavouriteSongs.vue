@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .content h1:not(:first-child) {
   margin-top: 3px;
 }

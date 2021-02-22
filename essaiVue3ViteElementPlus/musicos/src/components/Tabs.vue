@@ -1,7 +1,7 @@
 <template>
 <div class="tabs is-toggle is-fullwidth">
   <ul>
-    <li v-for="tab in myTabs" :key="tab.id" v-bind:class="{ 'is-active': indexActive === tab.id }" @click="openTab(tab)">
+    <li v-for="tab in theTabs" :key="tab.id" v-bind:class="{ 'is-active': indexActive === tab.id }" @click="openTab(tab)">
       <a>
         <span v-if="tab.iconName !== ''" class="icon">
           <i class="fas" :class="tab.iconName" aria-hidden="true"></i>
@@ -23,23 +23,13 @@ export default {
       this.$router.push({name:tab.routerName})
     }
   },
+  mounted(){
+    this.$router.push({name:this.theTabs[this.indexActive].routerName})
+  },
+  props: ["theTabs", "theIndexActive"],
   data() {
     return {
-      myTabs: [
-        {
-          iconName: '', // fa-music
-          name: 'My songs',
-          id: 0,
-          routerName: 'MySongs'
-        },
-        {
-          iconName: '',
-          name: 'Favourite songs',
-          id: 1,
-          routerName: 'FavouriteSongs'
-        },
-      ],
-      indexActive: 1
+      indexActive: this.theIndexActive
     }
   },
 };

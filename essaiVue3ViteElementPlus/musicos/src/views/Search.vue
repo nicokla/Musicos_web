@@ -1,5 +1,5 @@
 <template>
-  <div class="Home">
+  <div class="Search">
     <Tabs :theTabs="myTabs" :theIndexActive="0"/>
     <div class="homeContent">
       <router-view></router-view>
@@ -19,15 +19,15 @@ export default {
       myTabs: [
         {
           iconName: '', // fa-music
-          name: 'My songs',
+          name: 'Search a song',
           id: 0,
-          routerName: 'MySongs'
+          routerName: 'SearchSong'
         },
         {
           iconName: '',
-          name: 'Favourite songs',
+          name: 'Search a user',
           id: 1,
-          routerName: 'FavouriteSongs'
+          routerName: 'SearchUser'
         },
       ]
     }

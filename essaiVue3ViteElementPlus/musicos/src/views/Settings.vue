@@ -1,15 +1,12 @@
 <template>
-  <div class="Users">
-    <h1 class="subheading grey--text">Users</h1>
-
-    <i-carbon-accessibility/>
-    <i-mdi-account-box style="font-size: 2em; color: red"/>
-    
+  <div class="AddSong">
+    <h1 class="subheading grey--text">Settings</h1>
   </div>
 </template>
 
 
 <script>
+
 export default {
   data() {
     return {
@@ -24,5 +21,7 @@ export default {
 </script>
 
 <style scoped>
-
+.content h1:not(:first-child) {
+  margin-top: 3px;
+}
 </style>

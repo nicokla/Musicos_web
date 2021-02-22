@@ -30,7 +30,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" @click="openTab('Home')">
         <a href="#" class="nav-link">
           <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
             <path
@@ -42,7 +42,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" @click="openTab('Search')">
         <a href="#" class="nav-link">
           <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
             <path
@@ -54,7 +54,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" @click="openTab('AddSong')">
         <a href="#" class="nav-link">
           <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
             <path
@@ -66,7 +66,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" @click="openTab('Settings')">
         <a href="#" class="nav-link">
           <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
             <path
@@ -95,6 +95,9 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+    openTab(routeName){
+      this.$router.push({name:routeName})
+    }
   },
 };
 </script>
@@ -142,7 +145,7 @@ export default {
   height: 5rem;
   color: var(--text-primary);
   text-decoration: none;
-  filter: grayscale(100%) opacity(0.7);
+  /* filter: grayscale(100%) opacity(0.7); */
   transition: var(--transition-speed);
 }
 
@@ -186,6 +189,7 @@ export default {
   font-size: 1.5rem;
   letter-spacing: 0.3ch;
   width: 100%;
+  filter: grayscale(0%) opacity(1);
 }
 
 .logo svg {
