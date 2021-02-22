@@ -36,7 +36,37 @@ export default {
 </script>
 
 <style>
-.content{
+/* .content{
   width: 100%;
+} */
+
+body {
+  color: black;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
+body::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+body::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #6649b8;
+}
+
+.content {
+  margin-left: 5rem;
+  padding: 1rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .content {
+    margin: 0;
+  }
 }
 </style>
