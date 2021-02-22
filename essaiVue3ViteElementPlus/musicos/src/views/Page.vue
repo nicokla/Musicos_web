@@ -61,7 +61,7 @@ body::-webkit-scrollbar-thumb {
 
 .content {
   margin-left: 5rem;
-  padding: 1rem;
+  /* padding: 1rem; */
   /* margin: 0; */
 }
 
