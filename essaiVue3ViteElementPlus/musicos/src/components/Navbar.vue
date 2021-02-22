@@ -29,9 +29,9 @@
       </li>
 
       <li v-for="tab in myTabs" :key="tab.id" class="nav-item"
-          v-bind:class="{ 'isSelected': indexActive === tab.id }" 
           @click="openTab(tab)">
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link"
+            v-bind:class="{ 'isSelected': indexActive === tab.id }" >
           <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
             <path
               fill='#9e9e9e'
@@ -153,11 +153,11 @@ export default {
   /* filter: grayscale(0%) opacity(1); */
 }
 
-/* .nav-link:hover {
+.nav-link:not(.isSelected):hover {
   filter: grayscale(0%) opacity(1);
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-} */
+  background: #20282b;
+  color: #b6b6b6;
+}
 
 .link-text {
   display: none;
