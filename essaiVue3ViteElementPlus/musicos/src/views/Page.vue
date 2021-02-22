@@ -62,11 +62,28 @@ body::-webkit-scrollbar-thumb {
 .content {
   margin-left: 5rem;
   padding: 1rem;
+  /* margin: 0; */
 }
 
 @media only screen and (max-width: 600px) {
   .content {
     margin: 0;
   }
+}
+
+.theme-icon {
+  display: none;
+}
+
+.dark #darkIcon {
+  display: block;
+}
+
+.light #lightIcon {
+  display: block;
+}
+
+.solar #solarIcon {
+  display: block;
 }
 </style>

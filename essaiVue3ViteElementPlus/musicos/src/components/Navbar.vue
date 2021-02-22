@@ -125,6 +125,7 @@ export default {
   flex-direction: column;
   align-items: center;
   height: 100%;
+  width: 100%;
 }
 
 .nav-item {
@@ -221,6 +222,7 @@ export default {
 
   .nav-link {
     justify-content: center;
+    margin-right: 0px;
   }
 }
 
@@ -236,15 +238,15 @@ export default {
     width: 16rem;
   }
 
-  .navbar:hover .link-text {
+  .navbar:hover .link-text { /*  */
     display: inline;
   }
 
-  .navbar:hover .logo svg {
+  .navbar:hover .logo svg { /*  */
     margin-left: 11rem;
   }
 
-  .navbar:hover .logo-text {
+  .navbar:hover .logo-text { /*  */
     left: 0px;
   }
 }
