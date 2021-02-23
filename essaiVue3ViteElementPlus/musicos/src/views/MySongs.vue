@@ -1,5 +1,3 @@
-
-
 <template>
   <div id="MySongs">
     <h1 class="subheading grey--text">My Songs</h1>
