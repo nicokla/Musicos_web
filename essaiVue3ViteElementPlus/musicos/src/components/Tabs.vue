@@ -42,7 +42,7 @@ ul {
 
 .tabs {
   height: 4rem;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 li {

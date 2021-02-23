@@ -35,7 +35,10 @@ export default {
     // console.log(answer)
     this.songs=[]
     answer.forEach((doc)=>{
-      this.songs.push({id: doc.id, title: doc.data().title})//.data().name})
+      this.songs.push({
+        id: doc.id,
+        ...doc.data()
+      })//.data().name})
     })
     // this.songs = response.data
   },
@@ -54,7 +57,9 @@ export default {
 }
 
 #MySongs{
-  padding: 3mm;
+  padding: 4mm;
+  --tw-bg-opacity: 1;
+  background-color: rgba(254, 243, 199, var(--tw-bg-opacity));	
 }
 
 .listOfSongs {
