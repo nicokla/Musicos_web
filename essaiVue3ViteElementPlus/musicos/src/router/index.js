@@ -14,6 +14,11 @@ import AddSong from "../views/AddSong.vue";
 import Settings from "../views/Settings.vue";
 import Song from '../views/Song.vue'
 import User from '../views/User.vue'
+import CreateWithVid from '../views/CreateWithVid.vue'
+import CreateWithoutVid from '../views/CreateWithoutVid.vue'
+import FollowedUsers from '../views/FollowedUsers.vue'
+import Gems from '../views/Gems.vue'
+import SongSettings from '../views/SongSettings.vue'
 
 const routes = [
   { path: '/', redirect: { name: 'Home' }},
@@ -75,6 +80,31 @@ const routes = [
         path: 'user/:id',
         name: 'User',
         component: User
+      },
+      {
+        path: 'create_with',
+        component: CreateWithVid,
+        name: 'CreateWithVid',
+      },
+      {
+        path: 'create_without',
+        component: CreateWithoutVid,
+        name: 'CreateWithoutVid',
+      },
+      {
+        path: 'followed_users',
+        component: FollowedUsers,
+        name: 'FollowedUsers',
+      },
+      {
+        path: 'gems',
+        component: Gems,
+        name: 'Gems',
+      },
+      {
+        path: 'song_settings',
+        component: SongSettings,
+        name: 'SongSettings',
       },
     ]
   },
