@@ -1,5 +1,5 @@
 <template>
-  <div class="FollowedUsers">
+  <div class="FollowedUsers paddedContainer">
     <h1 class="subheading grey--text">Followed users</h1>
   </div>
 </template>

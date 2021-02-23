@@ -1,5 +1,5 @@
 <template>
-  <div class="SearchSong">
+  <div class="SearchSong paddedContainer">
     <h1 class="subheading grey--text">Search a song</h1>
   </div>
 </template>

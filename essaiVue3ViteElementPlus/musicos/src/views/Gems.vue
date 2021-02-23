@@ -1,5 +1,5 @@
 <template>
-  <div class="Gems">
+  <div class="Gems paddedContainer">
     <h1 class="subheading grey--text">Gems</h1>
   </div>
 </template>

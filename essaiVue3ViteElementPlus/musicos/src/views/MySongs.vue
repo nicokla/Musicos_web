@@ -1,5 +1,5 @@
 <template>
-  <div id="MySongs">
+  <div id="MySongs" class="paddedContainer">
     <h1 class="subheading grey--text">My Songs</h1>
     <div class="listOfSongs">
       <SongCell v-for="song in songs" :theSong="song"
@@ -65,7 +65,6 @@ export default {
 }
 
 #MySongs{
-  padding: 4mm;
   --tw-bg-opacity: 1;
   background-color: rgba(254, 243, 199, var(--tw-bg-opacity));	
 }

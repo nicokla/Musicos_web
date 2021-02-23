@@ -1,5 +1,5 @@
 <template>
-  <div class="SongSettings">
+  <div class="SongSettings paddedContainer">
     <h1 class="subheading grey--text">Song settings</h1>
   </div>
 </template>

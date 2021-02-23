@@ -1,5 +1,5 @@
 <template>
-  <div class="Song">
+  <div class="Song paddedContainer">
     <h1 class="subheading grey--text">Song</h1>
     <p>{{ $route.params.id }}</p>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="User">
+  <div class="User paddedContainer">
     <h1 class="subheading grey--text">User</h1>
     <p>{{ $route.params.id }}</p>
   </div>

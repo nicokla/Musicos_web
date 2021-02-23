@@ -1,5 +1,5 @@
 <template>
-  <div class="SearchUser">
+  <div class="SearchUser paddedContainer">
     <h1 class="subheading grey--text">Search a user</h1>
   </div>
 </template>

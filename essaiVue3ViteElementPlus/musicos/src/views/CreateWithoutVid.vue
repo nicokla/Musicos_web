@@ -1,5 +1,5 @@
 <template>
-  <div class="CreateWithoutVid">
+  <div class="CreateWithoutVid paddedContainer">
     <h1 class="subheading grey--text">Create song without video</h1>
   </div>
 </template>
