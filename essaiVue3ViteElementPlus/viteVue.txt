@@ -1,2 +1,52 @@
 npm init @vitejs/app my-vue-app -- --template vue
 https://vitejs.dev/guide/#scaffolding-your-first-vite-project
+
+
+* icons :
+-  https://www.npmjs.com/package/vite-plugin-icons
+{prefix}-{collection}-{icon}
+prefix == i ???
+collection ----> cf  
+!!!!!!!!!!!!!!!
+https://iconify.design/icon-sets/
+!!!!!!!!!!!!!!!!!!
+-   examples_icons :
+<!-- <i-carbon-accessibility />
+<i-mdi-account-box style="font-size: 2em; color: red" /> -->
+
+
+--------------------------------------------
+
+
+firebase
+https://console.firebase.google.com/u/0/project/essaifirebase-ea4fa/firestore/data~2Fsongs~2F5AACDD5A-8E5D-4E5F-A024-AA8F8B700E09
+
+
+
+remove at index x :
+someArray.splice(x, 1);
+
+
+
+remove children, use $emit in vue:
+https://stackoverflow.com/questions/40181133/delete-a-vue-child-component
+https://jsfiddle.net/mani04/4kyzkgLu/
+https://www.youtube.com/watch?v=5pvG6fzkdFM    (tuto net ninja)
+-   child component side :
+functionChild(){
+  this.$emit('eventName', dataChild) // data is optionnal
+}
+-   father component side :
+<componentChild v-on:eventName="functionFather($event, dataFather)" // $event is optionnal
+function functionFather(dataChild, dataFather){...} // data is optionnal
+
+
+
+syntax vue 3 components : props, onMounted
+https://github.com/zimeigui/zimeigui-vite2-vue3/blob/6839a8ef88c14c705b4fdc220b7b1b3e446f7474/src/components/chat.vue
+
+
+
+
+tuto tailwind item cell :
+https://www.youtube.com/watch?v=JZQ8m08cbF0&list=LL&index=2&t=3537s

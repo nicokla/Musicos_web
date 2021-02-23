@@ -1,37 +1,72 @@
 <template>
-  <div class="MySongs">
+  <div id="MySongs">
     <h1 class="subheading grey--text">My Songs</h1>
-    <i-carbon-accessibility />
-    <i-mdi-account-box style="font-size: 2em; color: red" />
-    <div
-      class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4"
-    >
-      <div class="flex-shrink-0">
-        <img class="h-12 w-12" src="../img/image.png" alt="ChitChat Logo" />
-      </div>
-      <div>
-        <div class="text-xl font-medium text-black">ChitChat</div>
-        <p class="text-gray-500">You have a new message!</p>
-      </div>
+    <div class="listOfSongs">
+      <SongCell v-for="song in songs" :theSong="song"/>
     </div>
   </div>
 </template>
 
 
 <script>
+import {db, getCurrentUser} from '../firebase/db'
+import SongCell from '../components/SongCell.vue'
+
 export default {
+  components: { SongCell },
   data() {
     return {
-      projects: [],
-    };
+      songs: []
+    }
   },
-  async mounted() {},
-  methods: {},
-};
+  methods:{
+    async addItem(){
+      await db.collection("songs").add({title: "truc"})
+		},
+		deleteSong(id){
+			db.collection('songs').doc(id).delete()
+      songs.splice(id, 1) // TODO : do it locally conditionnaly on delete() being successfull
+		}
+  },
+  async mounted() {
+    // console.log('userID', isLoggedIn().uid)
+    // TypeError: Cannot read property 'uid' of null
+    const answer = await db.collection("songs").where("ownerID", "==", getCurrentUser().uid).get();
+    // console.log(answer)
+    this.songs=[]
+    answer.forEach((doc)=>{
+      this.songs.push({id: doc.id, title: doc.data().title})//.data().name})
+    })
+    // this.songs = response.data
+  },
+  // firestore:{
+	// 	songs: db.collection('songs').where("ownerID", "==", isLoggedIn().uid)
+  //   // localStorage.getItem("userID"))
+  //   // firebase.auth().currentUser.uid
+  //    //"FSlyGRJXj4RYgElBAib7oRran642")
+	// }
+}
 </script>
 
 <style scoped>
 .content h1:not(:first-child) {
   margin-top: 3px;
+}
+
+#MySongs{
+  padding: 3mm;
+}
+
+.listOfSongs {
+  padding-top: 2mm;
+  padding-bottom: 2mm;
+
+	display: flex;
+  flex-direction:column;
+  flex-wrap:nowrap;
+	/* flex-flow: row wrap; */
+	justify-content:flex-start;
+  align-content:center;
+	align-items:center;
 }
 </style>
