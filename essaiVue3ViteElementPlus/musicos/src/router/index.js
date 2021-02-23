@@ -1,9 +1,10 @@
 import { createWebHistory, createRouter } from "vue-router";
 // import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
+
 import Page from "../views/Page.vue";
 import Home from "../views/Home.vue";
-import Users from "../views/Users.vue";
 import MySongs from "../views/MySongs.vue";
 import FavouriteSongs from "../views/FavouriteSongs.vue";
 import Search from "../views/Search.vue";
@@ -69,7 +70,12 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
 ];
 
 const router = createRouter({
