@@ -45,7 +45,7 @@ export default {
 }
 
 .homeContent{
-  padding: 0.5cm;
-  padding-top: 0.2cm;
+  /* padding: 0.5cm;
+  padding-top: 0.2cm; */
 }
 </style>
