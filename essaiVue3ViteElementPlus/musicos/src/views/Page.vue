@@ -40,6 +40,14 @@ export default {
   width: 100%;
 } */
 
+.main-wrapper{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 body {
   color: black;
   background-color: white;
