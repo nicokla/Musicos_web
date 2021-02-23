@@ -50,3 +50,18 @@ https://github.com/zimeigui/zimeigui-vite2-vue3/blob/6839a8ef88c14c705b4fdc220b7
 
 tuto tailwind item cell :
 https://www.youtube.com/watch?v=JZQ8m08cbF0&list=LL&index=2&t=3537s
+https://nerdcave.com/tailwind-cheat-sheet
+https://tailwindcss.com/docs/background-color
+
+
+
+deleteAnimation:
+https://vuejs.org/v2/guide/transitions.html#List-Entering-Leaving-Transitions
+
+
+
+are you sure delete: TODO
+var result = confirm("Want to delete?");
+if (result) {
+    //Logic to delete the item
+}

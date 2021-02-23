@@ -1,8 +1,10 @@
+
+
 <template>
   <div id="MySongs">
     <h1 class="subheading grey--text">My Songs</h1>
     <div class="listOfSongs">
-      <SongCell v-for="song in songs" :theSong="song"/>
+      <SongCell v-for="song in songs" :theSong="song" @deleteEvent="deleteSong(song.id)"/>
     </div>
   </div>
 </template>
@@ -25,7 +27,7 @@ export default {
 		},
 		deleteSong(id){
 			db.collection('songs').doc(id).delete()
-      songs.splice(id, 1) // TODO : do it locally conditionnaly on delete() being successfull
+      this.songs.splice(id, 1) // TODO : do it locally conditionnaly on delete() being successfull
 		}
   },
   async mounted() {
