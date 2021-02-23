@@ -46,6 +46,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
+  background-color: #FEF3C7;
 }
 
 body {

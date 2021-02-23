@@ -15,30 +15,9 @@ https://iconify.design/icon-sets/
 <i-mdi-account-box style="font-size: 2em; color: red" /> -->
 
 
---------------------------------------------
-
-
-firebase
-https://console.firebase.google.com/u/0/project/essaifirebase-ea4fa/firestore/data~2Fsongs~2F5AACDD5A-8E5D-4E5F-A024-AA8F8B700E09
-
-
 
 remove at index x :
 someArray.splice(x, 1);
-
-
-
-remove children, use $emit in vue:
-https://stackoverflow.com/questions/40181133/delete-a-vue-child-component
-https://jsfiddle.net/mani04/4kyzkgLu/
-https://www.youtube.com/watch?v=5pvG6fzkdFM    (tuto net ninja)
--   child component side :
-functionChild(){
-  this.$emit('eventName', dataChild) // data is optionnal
-}
--   father component side :
-<componentChild v-on:eventName="functionFather($event, dataFather)" // $event is optionnal
-function functionFather(dataChild, dataFather){...} // data is optionnal
 
 
 
@@ -55,9 +34,29 @@ https://tailwindcss.com/docs/background-color
 
 
 
+
+remove children, use $emit in vue:
+https://stackoverflow.com/questions/40181133/delete-a-vue-child-component
+https://jsfiddle.net/mani04/4kyzkgLu/
+https://www.youtube.com/watch?v=5pvG6fzkdFM    (tuto net ninja)
+-   child component side :
+functionChild(){
+  this.$emit('eventName', dataChild) // data is optionnal
+}
+-   father component side :
+<componentChild v-on:eventName="functionFather($event, dataFather)" // $event is optionnal
+function functionFather(dataChild, dataFather){...} // data is optionnal
+
+
+============================================
+============================================
+
+firebase
+https://console.firebase.google.com/u/0/project/essaifirebase-ea4fa/firestore/data~2Fsongs~2F5AACDD5A-8E5D-4E5F-A024-AA8F8B700E09
+
+
 deleteAnimation:
 https://vuejs.org/v2/guide/transitions.html#List-Entering-Leaving-Transitions
-
 
 
 are you sure delete: TODO

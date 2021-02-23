@@ -43,6 +43,7 @@ ul {
 .tabs {
   height: 4rem;
   margin-bottom: 0px;
+  background-color: white;
 }
 
 li {

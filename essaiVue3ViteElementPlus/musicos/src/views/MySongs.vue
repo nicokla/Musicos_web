@@ -25,7 +25,10 @@ export default {
 		},
 		deleteSong(id){
 			db.collection('songs').doc(id).delete()
-      this.songs.splice(id, 1) // TODO : do it locally conditionnaly on delete() being successfull
+      this.songs = this.songs.filter(x => {
+        return x.id != id;
+      })
+      // TODO : do it locally conditionnaly on delete() being successfull
 		}
   },
   async mounted() {
