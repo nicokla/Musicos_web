@@ -48,4 +48,13 @@ export default {
   /* padding: 0.5cm;
   padding-top: 0.2cm; */
 }
+
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .homeContent{
+    padding-bottom: 5rem;
+  }
+
+}
 </style>
