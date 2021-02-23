@@ -16,6 +16,8 @@
 </template>
 
 <script setup>
+// [@vue/compiler-sfc] <script setup> is still an experimental proposal.
+// Follow its status at https://github.com/vuejs/rfcs/pull/227.
 import { defineProps, onMounted, reactive, ref, useContext, watch } from "vue";
 
 const ctx = useContext();

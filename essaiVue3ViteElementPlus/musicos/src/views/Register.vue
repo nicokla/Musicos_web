@@ -60,8 +60,7 @@
           <div class="text-center pt-12 pb-12">
             <p>
               Already have an account?
-              <a href="login.html" class="underline font-semibold"
-                >Log in here.</a>
+              <router-link class="underline font-semibold" :to="{name:'Login'}">Log in here.</router-link>
             </p>
           </div>
         </div>
@@ -78,14 +77,28 @@
 </template>
 
 <script>
+
+// Will be a modal later
 export default {
-  name: "login",
   data() {
-    return {};
+    return {
+      user: {
+        // email: 'admin@example.com',
+        // password: 'admin',
+        // name: 'John Doe',
+      },
+    }
   },
-  methods: {
-  },
-};
+  methods:{
+    goToSignIn(){
+      console.log('signin')
+      this.$router.push({name: 'Login'})
+    },
+    enterWebSite(){
+      this.$router.push({name: 'MySongs'})
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

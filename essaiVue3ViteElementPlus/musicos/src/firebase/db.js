@@ -60,6 +60,6 @@ const db = firebase.initializeApp(firebaseConfig).firestore();
 // setupShouldStayLoggedIn()
 export {db, firebase, logOut, getCurrentUser, isLoggedIn, setupShouldStayLoggedIn, detectIfConnected} // 
 
-(async () => {
-  await firebase.auth().signInWithEmailAndPassword("nicolas.klarsfeld@gmail.com","coucou123")
-})()
+// (async () => {
+//   await firebase.auth().signInWithEmailAndPassword("nicolas.klarsfeld@gmail.com","coucou123")
+// })()

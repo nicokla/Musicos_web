@@ -21,7 +21,7 @@ import Gems from '../views/Gems.vue'
 import SongSettings from '../views/SongSettings.vue'
 
 const routes = [
-  { path: '/', redirect: { name: 'Home' }},
+  { path: '/', redirect: { name: 'Login' }},
   {
     path: '/',
     component: Page,

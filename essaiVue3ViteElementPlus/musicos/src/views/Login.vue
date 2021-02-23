@@ -22,6 +22,7 @@
                 type="email"
                 id="email"
                 placeholder="your@email.com"
+                v-model="user.email"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
@@ -31,21 +32,25 @@
               <input
                 type="password"
                 id="password"
+                v-model="user.password"
                 placeholder="Password"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
 
+            <input type="checkbox" v-model="options.shouldStayLoggedIn">
+            <label for="checkbox">Stay logged in?</label>
+
             <input
               type="submit"
               value="Log In"
-              class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"/>
+              class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
+              @click="login()"/>
           </form>
           <div class="text-center pt-12 pb-12">
             <p>
               Don't have an account?
-              <a href="register.html" class="underline font-semibold"
-                >Register here.</a>
+              <router-link class="underline font-semibold" :to="{name:'Register'}">Register here.</router-link>
             </p>
           </div>
         </div>
@@ -62,37 +67,60 @@
 </template>
 
 <script>
+
+import {firebase, logOut, isLoggedIn, setupShouldStayLoggedIn} from '../firebase/db'
+
+// Will be a modal later
 export default {
-  name: "login",
   data() {
-    return {};
+    return  {
+      user: {
+        // email: 'admin@example.com',
+        // password: 'admin',
+        // name: 'John Doe',
+      },
+      options: {
+        // isLoggingIn: true,
+        shouldStayLoggedIn: JSON.parse(localStorage.getItem("shouldStayLoggedIn")),
+      },
+    }
   },
-  methods: {
-    simulateLogin() {
-      return new Promise((resolve) => {
-        setTimeout(resolve, 800);
+  async mounted(){
+    this.detectIfConnected()
+    setupShouldStayLoggedIn()
+	},
+  methods:{
+    detectIfConnected(){
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log('user!!', user)
+          localStorage.setItem("shouldLogIn", "true")
+          this.$router.push({name:'MySongs'})
+        } else {
+          localStorage.removeItem("shouldLogIn")
+          // this.$router.push('signIn')
+        }
       });
     },
-    async login() {
-      let valid = await this.$refs.form.validate();
-      if (!valid) {
-        return;
-      }
-      this.loading = true;
-      await this.simulateLogin();
-      this.loading = false;
-      if (
-        this.model.username === this.validCredentials.username &&
-        this.model.password === this.validCredentials.password
-      ) {
-        this.$message.success("Login successfull");
-        this.$router.push("Dashboard");
-      } else {
-        this.$message.error("Username or password is invalid");
-      }
+    goToSignUp(){
+      console.log('signup')
+      this.$router.push({name:'Register'})
     },
-  },
-};
+    enterWebSite(){
+      this.$router.push({name:'MySongs'})
+    },
+    async login(){
+      localStorage.setItem("shouldStayLoggedIn", JSON.stringify(this.options.shouldStayLoggedIn))
+
+      firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password).then(() => {
+        this.enterWebSite()
+      }).catch((error) => {
+        alert(error.message);
+      });
+
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
