@@ -64,3 +64,8 @@ var result = confirm("Want to delete?");
 if (result) {
     //Logic to delete the item
 }
+
+
+var str = JSON.stringify(obj, null, 2)
+
+

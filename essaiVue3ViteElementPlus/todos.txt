@@ -1,0 +1,20 @@
+
+TO INSERT
+login
+register
+algolia search
+
+TODO
+algolia display like mySongs
+right tabs, add buttons with flexbox
+like / dislike song
+follow / unfollow user
+display notes (json after opened)
+
+TODOS pas pressé
+pay gems (stripe)
+defilement
+music record
+
+TO INSERT pas pressé
+music read
