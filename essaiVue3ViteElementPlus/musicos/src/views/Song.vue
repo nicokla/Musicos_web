@@ -1,10 +1,7 @@
 <template>
-  <div class="Users">
-    <h1 class="subheading grey--text">Users</h1>
-
-    <i-carbon-accessibility/>
-    <i-mdi-account-box style="font-size: 2em; color: red"/>
-    
+  <div class="Song">
+    <h1 class="subheading grey--text">Song</h1>
+    <p>{{ $route.params.id }}</p>
   </div>
 </template>
 

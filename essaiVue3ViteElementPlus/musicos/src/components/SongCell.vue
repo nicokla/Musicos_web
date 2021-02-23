@@ -9,7 +9,7 @@
     <h2 class='font-bold text-xl'>{{theSong.title}}</h2>
     <h3>{{theSong.ownerName}}</h3>
   </div>
-  <div class='flex items-center ml-auto '>
+  <div v-if="canBeDeleted" class='flex items-center ml-auto '>
     <i-mdi-delete style="font-size: 2em; color: black" class='deleteButton' v-on:click="deleteSong"/>
   </div>
 </div>
@@ -29,6 +29,12 @@ const props = defineProps({
         imageUrl: '',
         ownerName: '',
       }
+    }
+  },
+  canBeDeleted:{
+    type: Boolean,
+    default() {
+      return true
     }
   }
 })
@@ -67,6 +73,7 @@ img {
 
 .item{
   width: calc(100% - 5mm);
+  cursor: pointer;
 }
 
 .itemOld{

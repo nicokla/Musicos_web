@@ -12,6 +12,8 @@ import SearchSong from "../views/SearchSong.vue";
 import SearchUser from "../views/SearchUser.vue";
 import AddSong from "../views/AddSong.vue";
 import Settings from "../views/Settings.vue";
+import Song from '../views/Song.vue'
+import User from '../views/User.vue'
 
 const routes = [
   { path: '/', redirect: { name: 'Home' }},
@@ -63,6 +65,16 @@ const routes = [
         path: 'settings',
         component: Settings,
         name: 'Settings',
+      },
+      {
+        path: 'song/:id',
+        name: 'Song',
+        component: Song
+      },
+      {
+        path: 'user/:id',
+        name: 'User',
+        component: User
       },
     ]
   },

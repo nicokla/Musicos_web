@@ -2,7 +2,8 @@
   <div id="FavouriteSongs">
     <h1 class="subheading grey--text">Favourite Songs</h1>
     <div class="listOfSongs">
-      <SongCell v-for="song in songs" :theSong="song" @deleteEvent="deleteSong(song.id)"/>
+      <SongCell v-for="song in songs" :theSong="song" 
+          @click="openSong(song)" :canBeDeleted="false"/>
     </div>
   </div>
 </template>
@@ -23,13 +24,9 @@ export default {
     async addItem(){
       await db.collection("songs").add({title: "truc"})
 		},
-		deleteSong(id){
-			db.collection('songs').doc(id).delete()
-      this.songs = this.songs.filter(x => {
-        return x.id != id;
-      })
-      // TODO : do it locally conditionnaly on delete() being successfull
-		}
+    openSong(song){
+      this.$router.push({name: 'Song', params: {id: song.id} })
+    }
   },
   async mounted() {
     // console.log('userID', isLoggedIn().uid)

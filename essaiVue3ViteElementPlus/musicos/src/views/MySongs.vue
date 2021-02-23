@@ -2,7 +2,9 @@
   <div id="MySongs">
     <h1 class="subheading grey--text">My Songs</h1>
     <div class="listOfSongs">
-      <SongCell v-for="song in songs" :theSong="song" @deleteEvent="deleteSong(song.id)"/>
+      <SongCell v-for="song in songs" :theSong="song"
+          @deleteEvent="deleteSong(song.id)"
+          @click="openSong(song)"/>
     </div>
   </div>
 </template>
@@ -29,7 +31,10 @@ export default {
         return x.id != id;
       })
       // TODO : do it locally conditionnaly on delete() being successfull
-		}
+		},
+    openSong(song){
+      this.$router.push({name: 'Song', params: {id: song.id} })
+    }
   },
   async mounted() {
     // console.log('userID', isLoggedIn().uid)
