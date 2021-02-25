@@ -11,7 +11,7 @@
 
         <div
           class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-          <p class="text-center text-3xl mt-6">Join Us.</p>
+          <p class="text-center text-3xl mt-6">Sign up</p>
           <form
             class="flex flex-col pt-3 md:pt-8"
             onsubmit="event.preventDefault();">
@@ -21,7 +21,8 @@
                 type="text"
                 id="name"
                 placeholder="John Smith"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"/>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                v-model="name"/>
             </div>
 
             <div class="flex flex-col pt-4">
@@ -30,7 +31,8 @@
                 type="email"
                 id="email"
                 placeholder="your@email.com"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"/>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                v-model="email"/>
             </div>
 
             <div class="flex flex-col pt-4">
@@ -39,7 +41,8 @@
                 type="password"
                 id="password"
                 placeholder="Password"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"/>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                v-model="password"/>
             </div>
 
             <div class="flex flex-col pt-4">
@@ -49,14 +52,16 @@
                 type="password"
                 id="confirm-password"
                 placeholder="Password"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"/>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                v-model="confirmation"/>
             </div>
 
             <input
               type="submit"
               value="Register"
               style="cursor: pointer;"
-              class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"/>
+              class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
+              @click="register()"/>
           </form>
           <div class="text-center pt-12 pb-12">
             <p>
@@ -78,25 +83,53 @@
 </template>
 
 <script>
+import {firebase, db} from '../firebase/db'
 
 // Will be a modal later
 export default {
   data() {
     return {
-      user: {
-        // email: 'admin@example.com',
-        // password: 'admin',
-        // name: 'John Doe',
-      },
+      name: '',
+      email: '',
+      password: '',
+      confirmation: ''
     }
   },
   methods:{
     goToSignIn(){
-      console.log('signin')
       this.$router.push({name: 'Login'})
     },
     enterWebSite(){
       this.$router.push({name: 'MySongs'})
+    },
+    async register(){
+      if(this.password != this.confirmation){
+        window.alert("The two passwords do not match.")
+        return ;
+      }
+
+      let data = {}
+      
+      try {
+        data = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        console.log('heyho', data.user)
+      } catch(err) {
+        window.alert(`Error ${err.code}: ${err.message}`)
+        return ;
+      }
+
+      try {
+        let id = data.user.uid
+        await db.collection("users").doc(id).set({
+          name: this.name,
+          objectID: id,
+        })
+      } catch(err) {
+        window.alert(`Error ${err.code}: ${err.message}`)
+        return ;
+      }
+
+      window.alert("User created successfully. You can now log in.");
     }
   }
 }

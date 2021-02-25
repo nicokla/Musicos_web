@@ -1,9 +1,7 @@
 
 
 TODO
-algolia
 register
-right tabs, add buttons with flexbox
 like / dislike song
 follow / unfollow user
 display notes (json after opened)
