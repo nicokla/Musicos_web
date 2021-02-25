@@ -23,7 +23,7 @@
 
 <script>
 import SongCell from '../components/SongCell.vue'
-import {client, indexUsers, indexSongs} from '../algolia/algolia.js'
+import {indexSongs} from '../algolia/algolia.js'
 
 export default {
   data() {
@@ -69,42 +69,16 @@ export default {
 }
 
 .my_container{
-  /* height: 100%;
-  width: 100%; */
-  /* padding-top: 0.2cm;
-  padding-bottom: 0.2cm; */
   padding-left: 1rem;
   padding-right: 1rem;
   flex-flow: column;
   flex: 1 1 auto;
   overflow-y: auto;
-  /* margin: 0.2cm; */
 	display: flex;
   flex-direction:column;
   flex-wrap:nowrap;
-	/* flex-flow: row wrap; */
 	justify-content:flex-start;
   align-items:stretch;
   align-content:stretch;
 }
-
-/* .item{
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 0.333;
-  line-height: 1cm;
-
-  margin-top: 4px;
-  margin-bottom: 4px;
-	padding: 10px;
-
-	opacity: 1;
-	cursor: pointer;
-	background-color: #ffd6a7;
-	border: 5px solid #ffc527;
-	border-radius: 8px;
-	color: rgb(0, 0, 0);
-	font-size: 24px;
-	text-align: center;
-} */
 </style>
