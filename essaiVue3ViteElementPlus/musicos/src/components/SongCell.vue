@@ -74,7 +74,7 @@ img {
 }
 
 .item{
-  width: calc(100% - 5mm);
+  /* width: calc(100% - 5mm); */
   cursor: pointer;
 }
 

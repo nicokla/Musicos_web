@@ -78,7 +78,7 @@ export default {
   flex-wrap:nowrap;
 	/* flex-flow: row wrap; */
 	justify-content:flex-start;
+  align-items:stretch;
   align-content:center;
-	align-items:center;
 }
 </style>
