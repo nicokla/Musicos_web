@@ -44,8 +44,10 @@ export default {
   margin-top: 3px;
 }
 
-.homeContent{
-  /* padding: 0.5cm;
-  padding-top: 0.2cm; */
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .Search{
+    padding-bottom: 5rem;
+  }
 }
 </style>

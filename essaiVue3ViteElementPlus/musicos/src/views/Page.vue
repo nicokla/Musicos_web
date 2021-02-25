@@ -76,7 +76,7 @@ body::-webkit-scrollbar-thumb {
 
 @media only screen and (max-width: 600px) {
   .content {
-    margin: 0;
+    margin-left: 0;
     margin-bottom: 5rem;
   }
 }

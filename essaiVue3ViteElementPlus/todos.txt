@@ -1,11 +1,8 @@
 
-TO INSERT
-login
-register
-algolia search
 
 TODO
-algolia display like mySongs
+algolia
+register
 right tabs, add buttons with flexbox
 like / dislike song
 follow / unfollow user
