@@ -7,10 +7,11 @@ right tabs, add buttons with flexbox
 like / dislike song
 follow / unfollow user
 display notes (json after opened)
+forgot password in login page
 
 TODOS pas pressé
 pay gems (stripe)
-defilement
+defilement des notes
 music record
 delete: areYouSure
 delete: animation

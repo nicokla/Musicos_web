@@ -43,6 +43,8 @@
 
 
 <script>
+import SongCell from '../components/SongCell.vue'
+import {client, indexUsers, indexSongs} from '../algolia/algolia.js'
 
 export default {
   data() {
@@ -67,6 +69,16 @@ export default {
     }
   },
   async mounted(){
+    indexSongs.search('ga').then(({ hits }) => {
+      this.songs = hits.map((el)=>{
+        return {
+          id: el.objectID,
+          imageUrl: el.imageUrl,
+          ownerName: el.ownerName,
+          title: el.title,
+        }
+      })
+    });
 	},
   methods:{
   }
