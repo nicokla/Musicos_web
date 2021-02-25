@@ -55,6 +55,5 @@ export default {
   .homeContent{
     padding-bottom: 5rem;
   }
-
 }
 </style>
