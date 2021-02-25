@@ -2,10 +2,10 @@
   <div class="AddSong">
     <!-- <h1 class="subheading grey--text">Add song</h1> -->
     <div class="my_container">
-      <div class='item'>
+      <div class='item' @click="$router.push({name: 'FollowedUsers'})">
         <h2>Followed users</h2>
       </div>
-      <div class='item'>
+      <div class='item' @click="$router.push({name: 'Gems'})">
         <h2>Gems</h2>
       </div>
       <div @click="logout()" class='item'>
