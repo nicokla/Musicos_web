@@ -12,7 +12,7 @@
 
         <div
           class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-          <p class="text-center text-3xl">Sign in</p>
+          <p class="text-center text-3xl">Log in</p>
           <form
             class="flex flex-col pt-3 md:pt-8"
             onsubmit="event.preventDefault();">
@@ -43,7 +43,7 @@
             </div>
             <input
               type="submit"
-              value="Log In"
+              value="Log in"
               class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-4"
               style="cursor: pointer;"
               @click="login()"/>

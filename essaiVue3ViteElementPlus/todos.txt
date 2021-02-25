@@ -1,10 +1,10 @@
 
 
 TODO
-register
+add song without video
+display notes (json after opened)
 like / dislike song
 follow / unfollow user
-display notes (json after opened)
 forgot password in login page
 
 TODOS pas pressé
