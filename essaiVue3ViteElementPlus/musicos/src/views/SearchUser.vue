@@ -2,7 +2,7 @@
   <div class="SearchSong paddedContainer">
     <div class="searchBar pb-5 px-5 pt-4">
       <div class="bg-white flex items-center rounded-full shadow-xl">
-        <input class="rounded-l-full w-full py-4 px-6 text-gray-700 leading-tight border-0 focus:ring-transparent no-underline" id="search" type="text" placeholder="Search" v-model="myText" @keyup.enter="search(myText)">
+        <input class="rounded-l-full w-full py-4 px-6 text-gray-700 leading-tight border-0 focus:ring-transparent no-underline text-xl" id="search" type="text" placeholder="Search" v-model="myText" @keyup.enter="search(myText)">
         
         <div class="p-4">
           <button class="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center" @click="search(myText)">
@@ -14,13 +14,8 @@
     </div>
     
     <div class="my_container">
-      <ul>
-        <li v-for="user in users">
-          {{user.name}}
-        </li>
-      </ul>
-      <!-- <UserCell v-for="user in users" :theUser="user" 
-          @click="openUser(user)" :canBeDeleted="false"/> -->
+      <UserCell v-for="user in users" :theUser="user" 
+          @click="openUser(user)"/>
     </div>
   </div>
 </template>
@@ -50,6 +45,9 @@ export default {
           name: el.name,
         }
       })
+    },
+    openUser(user){
+      this.$router.push({name: 'User', params: {id: user.id} })
     }
   }
 }
