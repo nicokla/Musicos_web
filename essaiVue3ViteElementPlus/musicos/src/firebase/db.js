@@ -21,7 +21,7 @@ function getCurrentUser(){
 }
 
 function isLoggedIn(){
-  return currentUser() == undefined
+  return getCurrentUser() == undefined
 }
 
 
