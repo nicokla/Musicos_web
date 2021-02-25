@@ -2,10 +2,10 @@
   <div class="SearchSong paddedContainer">
     <div class="searchBar pb-5 px-5 pt-4">
       <div class="bg-white flex items-center rounded-full shadow-xl">
-        <input class="rounded-l-full w-full py-4 px-6 text-gray-700 leading-tight border-0 focus:ring-transparent no-underline" id="search" type="text" placeholder="Search">
+        <input class="rounded-l-full w-full py-4 px-6 text-gray-700 leading-tight border-0 focus:ring-transparent no-underline" id="search" type="text" placeholder="Search" v-model="myText">
         
         <div class="p-4">
-          <button class="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center">
+          <button class="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center" @click="search(myText)">
             <!-- <i class="material-icons">search</i> -->
             <i-mdi-search/>
           </button>
@@ -49,28 +49,18 @@ import {client, indexUsers, indexSongs} from '../algolia/algolia.js'
 export default {
   data() {
     return {
-      songs: [
-        { id: 0, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 1, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 2, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 3, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 4, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 5, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 6, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 7, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 8, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 9, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 10, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 11, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 12, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 13, title: 'a', imageUrl: '', ownerName: 'b' },
-        { id: 14, title: 'a', imageUrl: '', ownerName: 'b' },
-      ]
+      songs: [],
+      myText: ''
     }
   },
   async mounted(){
-    indexSongs.search('ga').then(({ hits }) => {
-      this.songs = hits.map((el)=>{
+	},
+  methods:{
+    async search(myText){
+      console.log(myText)
+      let {hits} = await indexSongs.search(myText)
+      console.log(hits)
+      let hits2 = hits.map((el)=>{
         return {
           id: el.objectID,
           imageUrl: el.imageUrl,
@@ -78,9 +68,9 @@ export default {
           title: el.title,
         }
       })
-    });
-	},
-  methods:{
+      console.log(hits2)
+      this.songs=hits2
+    }
   }
 }
 </script>
