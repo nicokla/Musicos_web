@@ -55,6 +55,7 @@
             <input
               type="submit"
               value="Register"
+              style="cursor: pointer;"
               class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"/>
           </form>
           <div class="text-center pt-12 pb-12">

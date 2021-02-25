@@ -45,6 +45,7 @@
               type="submit"
               value="Log In"
               class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-4"
+              style="cursor: pointer;"
               @click="login()"/>
           </form>
           <div class="text-center pt-12 pb-12">
