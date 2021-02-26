@@ -1,8 +1,6 @@
 
 
 TODO
-list of followed users
-user page (list of songs)
 display notes (json after opened)
 
 add song without video
