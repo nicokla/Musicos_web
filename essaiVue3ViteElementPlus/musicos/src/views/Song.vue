@@ -28,6 +28,7 @@
       <button v-else class="button" @click="dislike">dislike</button>
       <br>
       <!-- {{ isLiked }} -->
+
     </section>
   </div>
 </template>
@@ -128,7 +129,8 @@ export default {
       return {
         midiNote: o.pitch,
         start: o.startTime,
-        duration: o.endTime - o.startTime
+        duration: o.endTime - o.startTime,
+        velocity: 80
       }
     })
     try{
@@ -155,6 +157,7 @@ export default {
           this.likeStatus = doc.data()
         });
     },
+
     mergeRecordedAndReset(){
       if (this.$options.recordedNotes.length === 0)
         return false // nothing happened
