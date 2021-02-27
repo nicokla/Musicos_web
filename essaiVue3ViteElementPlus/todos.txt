@@ -1,8 +1,6 @@
 
 
 TODO
-display notes (json after opened)
-
 add song without video
 like / dislike song
 follow / unfollow user
@@ -15,5 +13,3 @@ music record
 delete: areYouSure
 delete: animation
 
-TO INSERT pas pressé
-music read

@@ -68,4 +68,4 @@ if (result) {
 
 var str = JSON.stringify(obj, null, 2)
 
-
+time.toFixed(1)
