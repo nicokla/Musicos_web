@@ -5,21 +5,24 @@
       <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
       <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
       <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
-      <br><br>
       
-      <!-- <b>Play state: </b><span id="playState">{{ playState }}</span>
-      <br> -->
+      <!-- 
+        <br><br>
+        <b>Play state: </b><span id="playState">{{ playState }}</span>
+      -->
+
+      <br><br>
       <span><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
       <input type="range" id="slider" v-model="timeValue" :min="0" :max="totalTime" :step="1" @change="sliderChange"> 
       <!-- :value="0"
       @input="updateTimeValue"
         v-model="timeValue"  -->
       <span><b id="totalTime">{{ totalTime }}</b>s</span>
-      <br><br>
-
+      
+      <!-- <br><br>
       <p>note:
         <span id=myNote></span>
-      </p>
+      </p> -->
     </section>
     <p>
       
@@ -34,7 +37,8 @@ import axios from 'axios';
 // import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
 import {player} from '../magenta/magenta'
-import {synth, keyDownFunction, keyUpFunction} from '../tone/tone'
+import {synth, keyDownFunction, mergeByStartTime, midiDictionnary, 
+        startTimes, fired, Tone} from '../tone/tone'
 
 export default {
   data() {
@@ -87,11 +91,13 @@ export default {
     ],
     totalTime: 8
   },
+  recordedNotes: [], // {pitch: 60, startTime: 0.0, endTime: 0.5}
   lastTimeRel:0,
   lastTimeAbs:0,
   mounted: async function (){
+    player.stop()
     document.addEventListener("keydown", keyDownFunction)
-    document.addEventListener("keyup", keyUpFunction)
+    document.addEventListener("keyup", this.keyUpFunctionRecord)
     await this.getObject()
     await this.getObject2()
     // try {
@@ -108,12 +114,43 @@ export default {
     console.log('bye bye')
     clearInterval(this.$interval)
     document.removeEventListener("keydown", keyDownFunction)
-    document.removeEventListener("keyup", keyUpFunction)
+    document.removeEventListener("keyup", this.keyUpFunctionRecord)
   },
   methods:{
+    // keyDownFunctionRecord(e){
+    //   keyDownFunction(e)
+    // },
+    mergeRecordedAndReset(){
+      if (this.$options.recordedNotes.length === 0)
+        return false // nothing happened
+      var decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
+      this.$options.recordedNotes = this.$options.recordedNotes.map((e)=>{
+        return {
+          pitch: e.pitch,
+          startTime: e.startTime + decalage,
+          endTime: e.endTime + decalage
+        }
+      })
+      mergeByStartTime(this.$options.songForMagenta.notes, this.$options.recordedNotes)
+      console.log(this.$options.songForMagenta.notes)
+      this.$options.recordedNotes = []
+      return true
+    },
+    keyUpFunctionRecord(e){
+      console.log('heho')
+      let midiNote = midiDictionnary[e.code]
+      fired[midiNote] = false
+      synth.triggerRelease(Tone.Midi(midiNote))
+      this.$options.recordedNotes.push({
+        pitch: midiNote,
+        startTime: startTimes[midiNote],
+        endTime: Date.now()/1000
+      })
+    },
     playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
       player.start(this.$options.songForMagenta)
+      console.log(player)
       this.totalTime = this.$options.songForMagenta.totalTime
       this.timeValue = 0
       this.playState = player.getPlayState()
@@ -123,6 +160,7 @@ export default {
       this.resumeBtnDisabled = true
     },
     stopBtnClick(){
+      this.mergeRecordedAndReset()
       this.$options.lastTimeRel = 0
       player.stop()
       this.timeValue = 0
@@ -133,11 +171,20 @@ export default {
       this.resumeBtnDisabled = true
     },
     pauseBtnClick(){
+      let smthgHappened = this.mergeRecordedAndReset()
       let lastTimeAbsNew = Date.now()/1000
-      player.pause()
+      if(smthgHappened)
+        player.stop()
+      else
+        player.pause()
       this.$options.lastTimeRel += lastTimeAbsNew - this.$options.lastTimeAbs
       this.$options.lastTimeAbs = lastTimeAbsNew
       this.timeValue = this.$options.lastTimeRel
+      if (smthgHappened){ // we reload the songForMagenta
+        player.start(this.$options.songForMagenta)
+        player.pause()
+        player.seekTo(this.timeValue)
+      }
       this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false

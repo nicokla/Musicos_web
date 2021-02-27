@@ -48,11 +48,16 @@ for (let i=0; i<100; i++){
 	fired[i] = false
 }
 
+let startTimes = []
+for (let i=0; i<100; i++){
+	startTimes[i] = 0
+}
+
 let keyDownFunction = function(e){ 
   let midiNote = midiDictionnary[e.code]
   if(!fired[midiNote]) {
     fired[midiNote] = true
-
+    startTimes[midiNote] = Date.now()/1000
     // myNoteDom.innerText = midiDictionnary[e.code] + ": down"
     synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"	
   }
@@ -69,6 +74,31 @@ let keyUpFunction = function(e){
 // document.addEventListener("keydown", keyDownFunction)
 // document.addEventListener("keyup", keyUpFunction)
 
+// put arr2 in arr1
+function merge(arr1, arr2){
+  for(let a of arr2){
+    let i=0
+    while(a>arr1[i] && i<arr1.length){
+        i++;
+    }
+    arr1.splice(i, 0, a)
+  }
+}
+
+function mergeByStartTime(arr1, arr2){
+  console.log(arr1, arr2)
+  for(let a of arr2){
+    let i=0
+    while(i < arr1.length && a.startTime > arr1[i].startTime){
+        i++;
+    }
+    arr1.splice(i, 0, a)
+  }
+}
+
 prepare_midiDictionnary([0,2,3,5,7,8,10], 48)
 
-export {synth, keyDownFunction, keyUpFunction}
+export  {
+          Tone, synth, keyDownFunction, keyUpFunction, 
+          midiDictionnary, startTimes, fired, mergeByStartTime
+        }
