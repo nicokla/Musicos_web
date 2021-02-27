@@ -1,5 +1,11 @@
 <template>
   <div id="User" class="paddedContainer">
+    <h1 class="subheading grey--text">User: {{userName}}</h1>
+    <button v-if="!isFollowed" class="button" @click="follow">follow</button>
+    <button v-else class="button" @click="unfollow">unfollow</button>
+    
+    <br><br>
+
     <h1 class="subheading grey--text">User songs</h1>
     <div class="listOfSongs">
       <SongCell v-for="song in songs" :theSong="song"
@@ -10,18 +16,22 @@
 
 
 <script>
-import {db, getCurrentUser} from '../firebase/db'
+import {db, getCurrentUser, getUserName} from '../firebase/db'
 import SongCell from '../components/SongCell.vue'
 
 export default {
   data() {
     return {
       userId: this.$route.params.id,
-      songs: []
+      songs: [],
+      userName:'',
+      followStatus: '',
+      unsubscribe: {}
     }
   },
 
   async mounted(){
+    this.listenToChanges()
     const answer = await db.collection("songs").where("ownerID", "==", this.userId).get();
     this.songs=[]
     answer.forEach((doc)=>{
@@ -30,12 +40,39 @@ export default {
         ...doc.data()
       })
     })
+    this.userName = await getUserName(this.userId)
 	},
-  
+
+  computed: {
+    isFollowed(){
+      return this.followStatus !== undefined
+    }
+  },
+
   methods:{
     openSong(song){
       this.$router.push({name: 'Song', params: {id: song.id} })
-    }
+    },
+    async follow(){
+      let myId = getCurrentUser().uid
+      await db.collection("users").doc(myId).collection('followedUsers').doc(this.userId).set({
+        name: this.userName,
+        objectID: this.userId
+      })
+    },
+    async unfollow(){
+      let myId = getCurrentUser().uid
+      await db.collection("users").doc(myId).collection('followedUsers').doc(this.userId).delete()
+    },
+    listenToChanges(e){
+      let myId = getCurrentUser().uid
+      this.unsubscribe = db.collection("users")
+        .doc(myId).collection('followedUsers').doc(this.userId)
+        .onSnapshot((doc) => {
+          // console.log("Current data: ", doc.data());
+          this.followStatus = doc.data()
+        });
+    },
   }
 }
 </script>
