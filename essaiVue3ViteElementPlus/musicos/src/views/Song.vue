@@ -5,16 +5,21 @@
       <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
       <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
       <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
-      <br>
-      <br>
+      <br><br>
+      
       <!-- <b>Play state: </b><span id="playState">{{ playState }}</span>
       <br> -->
       <span><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
-      <input type="range" id="slider" v-model="timeValue" :min="0" :max="totalTime" :step="1" @change="sliderChange" @input="updateTimeValue"> 
+      <input type="range" id="slider" v-model="timeValue" :min="0" :max="totalTime" :step="1" @change="sliderChange"> 
       <!-- :value="0"
       @input="updateTimeValue"
         v-model="timeValue"  -->
       <span><b id="totalTime">{{ totalTime }}</b>s</span>
+      <br><br>
+
+      <p>note:
+        <span id=myNote></span>
+      </p>
     </section>
     <p>
       
@@ -28,8 +33,8 @@ import {db, firebase} from '../firebase/db'
 import axios from 'axios';
 // import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
-// import * as Tone from 'tone'
 import {player} from '../magenta/magenta'
+import {synth, keyDownFunction, keyUpFunction} from '../tone/tone'
 
 export default {
   data() {
@@ -85,6 +90,8 @@ export default {
   lastTimeRel:0,
   lastTimeAbs:0,
   mounted: async function (){
+    document.addEventListener("keydown", keyDownFunction)
+    document.addEventListener("keyup", keyUpFunction)
     await this.getObject()
     await this.getObject2()
     // try {
@@ -100,6 +107,8 @@ export default {
   unmounted: async function() {
     console.log('bye bye')
     clearInterval(this.$interval)
+    document.removeEventListener("keydown", keyDownFunction)
+    document.removeEventListener("keyup", keyUpFunction)
   },
   methods:{
     playBtnClick(){
@@ -162,11 +171,11 @@ export default {
         player.resume()
       }
     },
-    updateTimeValue(e){
-      // const t = parseFloat(e.target.value)
-      // this.timeValue = t
-      console.log(this.timeValue)
-    },
+    // updateTimeValue(e){
+    //   // const t = parseFloat(e.target.value)
+    //   // this.timeValue = t
+    //   // console.log(this.timeValue)
+    // },
     refreshTime(){
       if(this.playState !== 'started') // "started", "stopped", or "paused"
         return;
@@ -174,15 +183,6 @@ export default {
                          + Date.now()/1000 - 
                          parseFloat(this.$options.lastTimeAbs))
     },
-    // setupPlayerControlsDemo() {
-    //   player = new mm.Player(false, {
-    //     run: (note) => {
-    //       // slider.value = currentTime.textContent = note.startTime.toFixed(1)
-    //     },
-    //     stop: () => {}
-    //   })
-    //   this.playState = player.getPlayState()
-    // },
     async getObject(){
       var storage = firebase.storage();
       var ref = storage.ref('songs/' + this.songId);
