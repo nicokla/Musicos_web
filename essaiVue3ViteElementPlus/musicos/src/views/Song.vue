@@ -1,18 +1,20 @@
 <template>
   <div class="Song paddedContainer">
     <section>
-      <p>You can start, stop, pause and unpause a Player: </p>
       <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
       <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
       <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
       <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
       <br>
-      <b>Play state: </b><span id="playState">{{ playState }}</span>
-
-      <p>You can also seek to a point in the NoteSequence:</p>
-      <b id="currentTime">{{ timeValue }}</b>s
-      <input type="range" id="slider" min="0" :max="totalTime" step="0.5" v-model="timeValue" @change="sliderChange">
-      <b id="totalTime">{{ totalTime }}</b>s
+      <br>
+      <!-- <b>Play state: </b><span id="playState">{{ playState }}</span>
+      <br> -->
+      <span><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
+      <input type="range" id="slider" v-model="timeValue" :min="0" :max="totalTime" :step="1" @change="sliderChange" @input="updateTimeValue"> 
+      <!-- :value="0"
+      @input="updateTimeValue"
+        v-model="timeValue"  -->
+      <span><b id="totalTime">{{ totalTime }}</b>s</span>
     </section>
     <p>
       
@@ -142,10 +144,10 @@ export default {
       this.pauseBtnDisabled = false
       this.resumeBtnDisabled = true
     },
-    sliderChange(){
-      // const t = parseFloat(slider.value)
+    sliderChange(e){
+      // const t = parseFloat(e.target.value)
       // this.timeValue = t
-      this.$options.lastTimeRel = this.timeValue
+      this.$options.lastTimeRel = parseFloat(this.timeValue)
       this.$options.lastTimeAbs = Date.now() / 1000
       // currentTime.textContent = t.toFixed(1)
 
@@ -160,10 +162,17 @@ export default {
         player.resume()
       }
     },
+    updateTimeValue(e){
+      // const t = parseFloat(e.target.value)
+      // this.timeValue = t
+      console.log(this.timeValue)
+    },
     refreshTime(){
       if(this.playState !== 'started') // "started", "stopped", or "paused"
         return;
-      this.timeValue = (this.$options.lastTimeRel + Date.now()/1000 - this.$options.lastTimeAbs)
+      this.timeValue = (parseFloat(this.$options.lastTimeRel)
+                         + Date.now()/1000 - 
+                         parseFloat(this.$options.lastTimeAbs))
     },
     // setupPlayerControlsDemo() {
     //   player = new mm.Player(false, {
@@ -230,10 +239,18 @@ export default {
     }
   },
   computed: {
+    fixedTimeValue(){
+      return parseFloat(this.timeValue).toFixed(1)
+    }
   }
 }
 </script>
 
 <style scoped>
-
+/* span
+{
+   width:45px;
+   max-width:70px;
+   display: inline-block;
+} */
 </style>
