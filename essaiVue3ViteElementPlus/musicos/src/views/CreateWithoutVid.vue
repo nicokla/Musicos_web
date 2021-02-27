@@ -57,7 +57,7 @@ export default {
       // docRef = await db.collection("songs").add(mySong)
       // let id = docRef.id // uuid()
       mySong.objectID = id
-      mySong.datetime = Date.now()
+      mySong.datetime = Date.now()/1000
       console.log('id', id)
       await saveSongToFirestore(mySong, id)
       await saveSongToStorage(defaultSongStorage, id)

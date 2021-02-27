@@ -1,9 +1,8 @@
 
 
 TODO
-like / dislike song
-follow / unfollow user
 forgot password in login page
+delete all notes of a song
 
 tester disable console.log
 aws mettre online (en mode production)
@@ -17,5 +16,5 @@ delete song: animation
 TODOS page song
 custumize scale pattern
 customize scale root
-delete one or more notes (list ?)
+delete specific notes
 enable/disable recording the played notes
