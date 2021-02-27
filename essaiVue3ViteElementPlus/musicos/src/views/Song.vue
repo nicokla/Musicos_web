@@ -23,16 +23,18 @@
       <p>note:
         <span id=myNote></span>
       </p> -->
+      <br><br>
+      <button v-if="!isLiked" class="button" @click="like">like</button>
+      <button v-else class="button" @click="dislike">dislike</button>
+      <br>
+      <!-- {{ isLiked }} -->
     </section>
-    <p>
-      
-    </p>
   </div>
 </template>
 
 
 <script>
-import {db, firebase} from '../firebase/db'
+import {db, firebase, getCurrentUser} from '../firebase/db'
 import axios from 'axios';
 // import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
@@ -82,7 +84,9 @@ export default {
       pauseBtnDisabled: true,
       player: {},
       playState: "stopped",
-      totalTime: 60
+      totalTime: 60,
+      likeStatus: '',
+      unsubscribe: {}
     }
   },
   songForMagenta: {
@@ -95,6 +99,7 @@ export default {
   lastTimeRel:0,
   lastTimeAbs:0,
   mounted: async function (){
+    this.listenToChanges()
     player.stop()
     this.$options.lastTimeRel = 0
     this.timeValue = 0
@@ -114,6 +119,7 @@ export default {
 	},
   unmounted: async function() {
     player.stop()
+    this.unsubscribe()
     console.log('bye bye')
     clearInterval(this.$interval)
     document.removeEventListener("keydown", keyDownFunction)
@@ -132,9 +138,23 @@ export default {
     }
   },
   methods:{
-    // keyDownFunctionRecord(e){
-    //   keyDownFunction(e)
-    // },
+    async like(){
+      let myId = getCurrentUser().uid
+      await db.collection("users").doc(myId).collection('likedSongs').doc(this.songId).set(this.object2)
+    },
+    async dislike(){
+      let myId = getCurrentUser().uid
+      await db.collection("users").doc(myId).collection('likedSongs').doc(this.songId).delete()
+    },
+    listenToChanges(e){
+      let myId = getCurrentUser().uid
+      this.unsubscribe = db.collection("users")
+        .doc(myId).collection('likedSongs').doc(this.songId)
+        .onSnapshot((doc) => {
+          // console.log("Current data: ", doc.data());
+          this.likeStatus = doc.data()
+        });
+    },
     mergeRecordedAndReset(){
       if (this.$options.recordedNotes.length === 0)
         return false // nothing happened
@@ -311,6 +331,9 @@ export default {
   computed: {
     fixedTimeValue(){
       return parseFloat(this.timeValue).toFixed(1)
+    },
+    isLiked(){
+      return this.likeStatus !== undefined
     }
   }
 }
