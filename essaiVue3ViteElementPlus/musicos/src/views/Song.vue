@@ -23,6 +23,9 @@
       <p>note:
         <span id=myNote></span>
       </p> -->
+
+      <button class=button>like</button>
+      
     </section>
     <p>
       
@@ -32,7 +35,7 @@
 
 
 <script>
-import {db, firebase} from '../firebase/db'
+import {db, firebase, getCurrentUser} from '../firebase/db'
 import axios from 'axios';
 // import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
@@ -122,7 +125,8 @@ export default {
       return {
         midiNote: o.pitch,
         start: o.startTime,
-        duration: o.endTime - o.startTime
+        duration: o.endTime - o.startTime,
+        velocity: 80
       }
     })
     try{
@@ -132,6 +136,13 @@ export default {
     }
   },
   methods:{
+    listenToLike(){
+      let myId = getCurrentUser().uid
+      db.collection("users").doc(myId).collection('likedSongs').doc(songId)
+      .onSnapshot((doc) => {
+          console.log("Current data: ", doc.data());
+      });
+    },
     // keyDownFunctionRecord(e){
     //   keyDownFunction(e)
     // },
