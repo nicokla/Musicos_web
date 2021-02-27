@@ -34,7 +34,7 @@ function prepare_midiDictionnary(scale, root){
 	for(const line of lines){
 		let indexNote = 0
 		for(const code of line){
-			console.log(code, indexLine, indexNote)
+			// console.log(code, indexLine, indexNote)
 			let note = scale[indexNote % (scale.length)] + 12 * Math.floor(indexNote / scale.length)
 			midiDictionnary[code] = note + (12 * indexLine) + root
 			indexNote++

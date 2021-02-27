@@ -1,6 +1,7 @@
 <template>
   <div class="CreateWithVid paddedContainer">
     <h1 class="subheading grey--text">Create song with video</h1>
+    Work in progress.
   </div>
 </template>
 

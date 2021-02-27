@@ -1,7 +1,6 @@
 
 
 TODO
-add song without video
 like / dislike song
 follow / unfollow user
 forgot password in login page
@@ -9,11 +8,14 @@ forgot password in login page
 tester disable console.log
 aws mettre online (en mode production)
 
-
 TODOS pas pressé
 pay gems (stripe)
 defilement des notes
-music record
-delete: areYouSure
-delete: animation
+delete song: areYouSure
+delete song: animation
 
+TODOS page song
+custumize scale pattern
+customize scale root
+delete one or more notes (list ?)
+enable/disable recording the played notes

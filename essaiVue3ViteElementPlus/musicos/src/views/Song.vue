@@ -96,6 +96,7 @@ export default {
   lastTimeAbs:0,
   mounted: async function (){
     player.stop()
+    this.$options.lastTimeRel = 0
     this.timeValue = 0
     document.addEventListener("keydown", keyDownFunction)
     document.addEventListener("keyup", this.keyUpFunctionRecord)
@@ -166,7 +167,6 @@ export default {
       player.start(this.$options.songForMagenta)
       // console.log(player)
       this.totalTime = this.$options.songForMagenta.totalTime
-      this.timeValue = 0
       this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
@@ -175,8 +175,8 @@ export default {
     },
     stopBtnClick(){
       this.mergeRecordedAndReset()
-      this.$options.lastTimeRel = 0
       player.stop()
+      this.$options.lastTimeRel = 0
       this.timeValue = 0
       this.playState = player.getPlayState()
       this.playBtnDisabled = false
@@ -249,7 +249,6 @@ export default {
       var ref = storage.ref('songs/' + this.songId);
       try{
         await ref.putString(JSON.stringify(this.object))
-        console.log('Uploaded a raw string!');
       }catch(error){
         console.log(error)
       }
