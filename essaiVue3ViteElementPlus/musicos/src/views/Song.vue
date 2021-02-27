@@ -24,9 +24,10 @@
 <script>
 import {db, firebase} from '../firebase/db'
 import axios from 'axios';
-import * as mm from '@magenta/music';
+// import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
 // import * as Tone from 'tone'
+import {player} from '../magenta/magenta'
 
 export default {
   data() {
@@ -84,17 +85,12 @@ export default {
   mounted: async function (){
     await this.getObject()
     await this.getObject2()
-    try {
-      this.player = new mm.Player(false, {
-        run: (note) => {
-          // slider.value = currentTime.textContent = note.startTime.toFixed(1)
-        },
-        stop: () => {}
-      })
-      this.playState = this.player.getPlayState()
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   // player = 
+    //   this.playState = player.getPlayState()
+    // } catch (err) {
+    //   console.error(err);
+    // }
     this.$interval = setInterval(()=>{
 			this.refreshTime()
 		}, 700)
@@ -106,10 +102,10 @@ export default {
   methods:{
     playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
-      this.player.start(this.$options.songForMagenta)
+      player.start(this.$options.songForMagenta)
       this.totalTime = this.$options.songForMagenta.totalTime
       this.timeValue = 0
-      this.playState = this.player.getPlayState()
+      this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = false
@@ -117,9 +113,9 @@ export default {
     },
     stopBtnClick(){
       this.$options.lastTimeRel = 0
-      this.player.stop()
+      player.stop()
       this.timeValue = 0
-      this.playState = this.player.getPlayState()
+      this.playState = player.getPlayState()
       this.playBtnDisabled = false
       this.stopBtnDisabled = true
       this.pauseBtnDisabled = true
@@ -127,11 +123,11 @@ export default {
     },
     pauseBtnClick(){
       let lastTimeAbsNew = Date.now()/1000
-      this.player.pause()
+      player.pause()
       this.$options.lastTimeRel += lastTimeAbsNew - this.$options.lastTimeAbs
       this.$options.lastTimeAbs = lastTimeAbsNew
       this.timeValue = this.$options.lastTimeRel
-      this.playState = this.player.getPlayState()
+      this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = true
@@ -139,8 +135,8 @@ export default {
     },
     resumeBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
-      this.player.resume()
-      this.playState = this.player.getPlayState()
+      player.resume()
+      this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = false
@@ -155,13 +151,13 @@ export default {
 
       // You don't _have_ to pause and resume the context, but it makes
       // the UI jump around less.
-      const playing = (this.player.getPlayState() === 'started')
+      const playing = (player.getPlayState() === 'started')
       if (playing) {
-        this.player.pause()
+        player.pause()
       }
-      this.player.seekTo(this.timeValue)
+      player.seekTo(this.timeValue)
       if (playing) {
-        this.player.resume()
+        player.resume()
       }
     },
     refreshTime(){
@@ -170,7 +166,7 @@ export default {
       this.timeValue = (this.$options.lastTimeRel + Date.now()/1000 - this.$options.lastTimeAbs)
     },
     // setupPlayerControlsDemo() {
-    //   this.player = new mm.Player(false, {
+    //   player = new mm.Player(false, {
     //     run: (note) => {
     //       // slider.value = currentTime.textContent = note.startTime.toFixed(1)
     //     },
