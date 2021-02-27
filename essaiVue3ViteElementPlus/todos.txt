@@ -6,6 +6,10 @@ like / dislike song
 follow / unfollow user
 forgot password in login page
 
+tester disable console.log
+aws mettre online (en mode production)
+
+
 TODOS pas pressé
 pay gems (stripe)
 defilement des notes

@@ -10,7 +10,7 @@
     <h3>{{theSong.ownerName}}</h3>
   </div>
   <div v-if="canBeDeleted" class='flex items-center ml-auto '>
-    <i-mdi-delete style="font-size: 2em; color: black" class='deleteButton' v-on:click="deleteSong"/>
+    <i-mdi-delete style="font-size: 2em; color: black" class='deleteButton' @click.stop="deleteSong"/>
   </div>
 </div>
 </template>

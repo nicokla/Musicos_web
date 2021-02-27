@@ -96,6 +96,7 @@ export default {
   lastTimeAbs:0,
   mounted: async function (){
     player.stop()
+    this.timeValue = 0
     document.addEventListener("keydown", keyDownFunction)
     document.addEventListener("keyup", this.keyUpFunctionRecord)
     await this.getObject()
@@ -111,10 +112,23 @@ export default {
 		}, 700)
 	},
   unmounted: async function() {
+    player.stop()
     console.log('bye bye')
     clearInterval(this.$interval)
     document.removeEventListener("keydown", keyDownFunction)
     document.removeEventListener("keyup", this.keyUpFunctionRecord)
+    this.object.notes = this.$options.songForMagenta.notes.map((o) => {
+      return {
+        midiNote: o.pitch,
+        start: o.startTime,
+        duration: o.endTime - o.startTime
+      }
+    })
+    try{
+      await this.saveNotes()
+    }catch(error){
+      console.log(error)
+    }
   },
   methods:{
     // keyDownFunctionRecord(e){
@@ -150,7 +164,7 @@ export default {
     playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
       player.start(this.$options.songForMagenta)
-      console.log(player)
+      // console.log(player)
       this.totalTime = this.$options.songForMagenta.totalTime
       this.timeValue = 0
       this.playState = player.getPlayState()
@@ -229,6 +243,16 @@ export default {
       this.timeValue = (parseFloat(this.$options.lastTimeRel)
                          + Date.now()/1000 - 
                          parseFloat(this.$options.lastTimeAbs))
+    },
+    async saveNotes(){
+      var storage = firebase.storage();
+      var ref = storage.ref('songs/' + this.songId);
+      try{
+        await ref.putString(JSON.stringify(this.object))
+        console.log('Uploaded a raw string!');
+      }catch(error){
+        console.log(error)
+      }
     },
     async getObject(){
       var storage = firebase.storage();
