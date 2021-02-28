@@ -6,17 +6,15 @@ enable/disable recording the played notes
 delete song: areYouSure
 delete song: animation
 
-
 TODOS pas pressé
 pay gems (stripe)
-
+add song with video (youtube search api, youtube play)
 
 TODOs notes display
 defilement des notes
 alternatives pour le display des notes: 
 - petits rectangles dans un flexbox
 - defilement horizontal (cf partition) au lieu de vertical
-
 
 TODOS page song hors defilement
 custumize scale pattern
