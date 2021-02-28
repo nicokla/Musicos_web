@@ -19,6 +19,7 @@ import CreateWithoutVid from '../views/CreateWithoutVid.vue'
 import FollowedUsers from '../views/FollowedUsers.vue'
 import Gems from '../views/Gems.vue'
 import SongSettings from '../views/SongSettings.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 
 const routes = [
   { path: '/', redirect: { name: 'Login' }},
@@ -117,6 +118,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/forgot_passowrd',
+    name: 'ResetPassword',
+    component: ResetPassword
   },
 ];
 

@@ -1,20 +1,23 @@
 
-
 TODO
-forgot password in login page
-delete all notes of a song
-
-tester disable console.log
 aws mettre online (en mode production)
+
+enable/disable recording the played notes
+delete all notes from time x to y
+
 
 TODOS pas pressé
 pay gems (stripe)
-defilement des notes
 delete song: areYouSure
 delete song: animation
 
-TODOS page song
+TODOs notes display
+defilement des notes
+alternatives pour le display des notes: 
+- petits rectangles dans un flexbox
+- defilement horizontal (cf partition) au lieu de vertical
+
+TODOS page song hors defilement
 custumize scale pattern
 customize scale root
 delete specific notes
-enable/disable recording the played notes

@@ -1,6 +1,7 @@
 <template>
   <div class="Gems paddedContainer">
     <h1 class="subheading grey--text">Gems</h1>
+    Work in progress.
   </div>
 </template>
 

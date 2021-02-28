@@ -48,7 +48,10 @@
               style="cursor: pointer;"
               @click="login()"/>
           </form>
-          <div class="text-center pt-12 pb-12">
+          <div class="text-center pt-4">
+            <router-link class="underline font-light" :to="{name:'ResetPassword', params: {email: user.email}}">Forgot Password?</router-link>
+          </div>
+          <div class="text-center pt-3 pb-12">
             <p>
               Don't have an account?
               <router-link class="underline font-semibold" :to="{name:'Register'}">Register here.</router-link>
