@@ -1,11 +1,10 @@
 
 TODO
-aws mettre online (en mode production)
-ranger favoris
+ranger favoris internet liees au projet
 
 enable/disable recording the played notes
 delete all notes from time x to y
-
+fix navigation onglets back wrong
 
 TODOS pas pressé
 pay gems (stripe)

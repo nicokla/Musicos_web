@@ -12,7 +12,7 @@
 
         <div
           class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-          <p class="text-center text-3xl">Log in</p>
+          <p class="text-center text-3xl pt-4">Log in</p>
           <form
             class="flex flex-col pt-3 md:pt-8"
             onsubmit="event.preventDefault();">
@@ -27,7 +27,7 @@
               />
             </div>
 
-            <div class="flex flex-col pt-4">
+            <div class="flex flex-col pt-4 pb-3">
               <label for="password" class="text-lg">Password</label>
               <input
                 type="password"
@@ -37,10 +37,10 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
-            <div class="flex p-2 pl-0 mt-2 items-center">
+            <!-- <div class="flex p-2 pl-0 mt-2 items-center">
               <input type="checkbox" v-model="options.shouldStayLoggedIn">
               <label for="checkbox" class="ml-1.5">Stay logged in?</label>
-            </div>
+            </div> -->
             <input
               type="submit"
               value="Log in"
@@ -85,7 +85,7 @@ export default {
       },
       options: {
         // isLoggingIn: true,
-        shouldStayLoggedIn: JSON.parse(localStorage.getItem("shouldStayLoggedIn")),
+        shouldStayLoggedIn: false // JSON.parse(localStorage.getItem("shouldStayLoggedIn")),
       },
     }
   },
@@ -99,7 +99,7 @@ export default {
         if (user && isLoggedIn()) {
           console.log('user!!', user)
           localStorage.setItem("shouldLogIn", "true")
-          this.$router.push({name:'MySongs'})
+          this.$router.push({name:'MySongs'}) // Home
         } else {
           localStorage.removeItem("shouldLogIn")
           // this.$router.push('signIn')
