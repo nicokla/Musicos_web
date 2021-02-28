@@ -69,3 +69,14 @@ if (result) {
 var str = JSON.stringify(obj, null, 2)
 
 time.toFixed(1)
+
+-----------------------------------
+===================================
+=================================
+
+
+production:
+git clone --depth 1 https://github.com/user/repo.git
+
+https://www.scaleway.com/en/docs/how-to-configure-nginx-reverse-proxy/
+

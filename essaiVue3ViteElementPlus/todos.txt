@@ -1,6 +1,7 @@
 
 TODO
 aws mettre online (en mode production)
+ranger favoris
 
 enable/disable recording the played notes
 delete all notes from time x to y
