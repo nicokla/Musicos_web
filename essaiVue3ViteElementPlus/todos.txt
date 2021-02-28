@@ -2,9 +2,19 @@
 TODOs
 delete all notes from time x to y (with double range slider)
 enable/disable recording the played notes
-
+import song button
 delete song: areYouSure
 delete song: animation
+
+FIXES
+fix navigation onglets back wrong
+fix "stay connected" on deployed website
+secure firebase storage rules
+simultaneous delete song and in favourites of everybody
+search bar take less width on mobile
+
+
+--------------
 
 TODOS pas pressé
 pay gems (stripe)
@@ -21,12 +31,6 @@ custumize scale pattern
 customize scale root
 delete specific notes
 
--------------------
-
-FIXES
-
-fix navigation onglets back wrong
-fix "stay connected" on deployed website
 
 --------------------
 

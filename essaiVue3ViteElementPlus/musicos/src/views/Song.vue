@@ -35,7 +35,7 @@
 
 
 <script>
-import {db, firebase, getCurrentUser} from '../firebase/db'
+import {db, firebase, getCurrentUser, getMyId} from '../firebase/db'
 import axios from 'axios';
 // import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
@@ -125,18 +125,20 @@ export default {
     clearInterval(this.$interval)
     document.removeEventListener("keydown", keyDownFunction)
     document.removeEventListener("keyup", this.keyUpFunctionRecord)
-    this.object.notes = this.$options.songForMagenta.notes.map((o) => {
-      return {
-        midiNote: o.pitch,
-        start: o.startTime,
-        duration: o.endTime - o.startTime,
-        velocity: 80
+    if(this.object2.ownerID === getMyId()){
+      this.object.notes = this.$options.songForMagenta.notes.map((o) => {
+        return {
+          midiNote: o.pitch,
+          start: o.startTime,
+          duration: o.endTime - o.startTime,
+          velocity: 80
+        }
+      })
+      try{
+        await this.saveNotes()
+      }catch(error){
+        console.log(error)
       }
-    })
-    try{
-      await this.saveNotes()
-    }catch(error){
-      console.log(error)
     }
   },
   methods:{
