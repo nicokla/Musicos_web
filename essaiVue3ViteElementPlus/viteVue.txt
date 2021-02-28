@@ -55,6 +55,14 @@ firebase
 https://console.firebase.google.com/u/0/project/essaifirebase-ea4fa/firestore/data~2Fsongs~2F5AACDD5A-8E5D-4E5F-A024-AA8F8B700E09
 
 
+
+var str = JSON.stringify(obj, null, 2)
+
+time.toFixed(1)
+
+-----------------------------------
+
+
 deleteAnimation:
 https://vuejs.org/v2/guide/transitions.html#List-Entering-Leaving-Transitions
 
@@ -66,11 +74,10 @@ if (result) {
 }
 
 
-var str = JSON.stringify(obj, null, 2)
+vue double range slider
+https://dev.to/mandrewcito/vuejs-double-range-slider-component-2c5a
 
-time.toFixed(1)
 
------------------------------------
 ===================================
 =================================
 

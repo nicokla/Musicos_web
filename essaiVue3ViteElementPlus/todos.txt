@@ -1,15 +1,15 @@
 
-TODO
-ranger favoris internet liees au projet
-
+TODOs
+delete all notes from time x to y (with double range slider)
 enable/disable recording the played notes
-delete all notes from time x to y
-fix navigation onglets back wrong
+
+delete song: areYouSure
+delete song: animation
+
 
 TODOS pas pressé
 pay gems (stripe)
-delete song: areYouSure
-delete song: animation
+
 
 TODOs notes display
 defilement des notes
@@ -17,7 +17,21 @@ alternatives pour le display des notes:
 - petits rectangles dans un flexbox
 - defilement horizontal (cf partition) au lieu de vertical
 
+
 TODOS page song hors defilement
 custumize scale pattern
 customize scale root
 delete specific notes
+
+-------------------
+
+FIXES
+
+fix navigation onglets back wrong
+fix "stay connected" on deployed website
+
+--------------------
+
+TODO autres
+ranger favoris internet liees au projet
+
