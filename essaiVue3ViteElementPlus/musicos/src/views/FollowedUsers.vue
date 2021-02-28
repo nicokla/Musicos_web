@@ -51,6 +51,12 @@ export default {
   background-color: rgba(254, 243, 199, var(--tw-bg-opacity));	
 }
 
+@media only screen and (max-width: 600px) {
+  #FollowedUsers{
+    padding-bottom: 5rem;
+  }
+}
+
 .listOfUsers {
   padding-top: 2mm;
   padding-bottom: 2mm;

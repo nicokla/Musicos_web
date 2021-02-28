@@ -9,14 +9,14 @@
     <h1 class="subheading grey--text">User songs</h1>
     <div class="listOfSongs">
       <SongCell v-for="song in songs" :theSong="song"
-          @click="openSong(song)"/>
+          @click="openSong(song)" :canBeDeleted="false"/>
     </div>
   </div>
 </template>
 
 
 <script>
-import {db, getCurrentUser, getUserName} from '../firebase/db'
+import {db, getCurrentUser, getUserName, getMyId} from '../firebase/db'
 import SongCell from '../components/SongCell.vue'
 
 export default {
@@ -26,7 +26,8 @@ export default {
       songs: [],
       userName:'',
       followStatus: '',
-      unsubscribe: {}
+      unsubscribe: {},
+      isMe: false
     }
   },
 
@@ -41,6 +42,9 @@ export default {
       })
     })
     this.userName = await getUserName(this.userId)
+    // console.log(getMyId())
+    // console.log(this.userId)
+    this.isMe = (getMyId() === this.userId)
 	},
 
   computed: {
@@ -50,6 +54,9 @@ export default {
   },
 
   methods:{
+    // isMe(){
+    //   return (getMyId() === this.userId)
+    // },
     openSong(song){
       this.$router.push({name: 'Song', params: {id: song.id} })
     },
@@ -86,6 +93,12 @@ export default {
 #User{
   --tw-bg-opacity: 1;
   background-color: rgba(254, 243, 199, var(--tw-bg-opacity));	
+}
+
+@media only screen and (max-width: 600px) {
+  #User{
+    padding-bottom: 5rem;
+  }
 }
 
 .listOfSongs {

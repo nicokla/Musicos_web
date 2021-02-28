@@ -24,6 +24,9 @@ function isLoggedIn(){
   return getCurrentUser() == undefined
 }
 
+function getMyId(){
+  return getCurrentUser().uid || ''
+}
 
 async function setupShouldStayLoggedIn(){
   let shouldStayLoggedIn = JSON.parse(localStorage.getItem("shouldStayLoggedIn"))
@@ -136,7 +139,7 @@ export {db, firebase, logOut, getCurrentUser,
         detectIfConnected, 
         saveSongToStorage, defaultSongStorage, 
         saveSongToFirestore, defaultSongFirestore,
-        getUserName}
+        getUserName, getMyId}
 
 // (async () => {
 //   await firebase.auth().signInWithEmailAndPassword("nicolas.klarsfeld@gmail.com","coucou123")

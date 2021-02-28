@@ -104,3 +104,6 @@ https://medium.com/bb-tutorials-and-thoughts/how-to-serve-vue-js-application-wit
 
 netlify
 https://www.youtube.com/watch?v=mN9oI98As_4
+
+https://app.netlify.com/sites/musicos/deploys?filter
+
