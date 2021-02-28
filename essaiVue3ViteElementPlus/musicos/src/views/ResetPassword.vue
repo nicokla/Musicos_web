@@ -4,26 +4,26 @@
     <!-- <div class="container mx-auto"> -->
       <!-- <div class="flex justify-center px-6 my-12"> -->
         <!-- Row -->
-        <div class="w-full xl:w-3/4 lg:w-11/12 flex">
+        <div class="w-full flex">
           <!-- Col -->
-          <div
+          <!-- <div
             class="w-full h-auto bg-gray-400 hidden lg:block lg:w-1/2 bg-cover rounded-l-lg"
             style="
               background-image: url('https://source.unsplash.com/oWTW-jNGl9I/600x800');
             "
-          ></div>
+          ></div> -->
           <!-- Col -->
           <div
-            class="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none"
+            class="w-full bg-white p-5"
           >
-            <div class="px-8 mb-4 text-center">
+            <div class="pt-8 text-center mb-7">
               <h3 class="pt-4 mb-2 text-2xl">Forgot Your Password?</h3>
-              <p class="mb-4 text-sm text-gray-700">
+              <p class="mb-1 text-sm text-gray-700">
                 We get it, stuff happens. Just enter your email address below
                 and we'll send you a link to reset your password!
               </p>
             </div>
-            <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+            <form class="px-8 pb-8 mb-4 bg-white rounded">
               <div class="mb-4">
                 <label
                   class="block mb-2 text-sm font-bold text-gray-700"
@@ -84,7 +84,7 @@ export default {
     };
   },
   async mounted() {
-    this.email = this.$route.params.email
+    this.email = this.$route.params.email || ''
   },
   methods: {
     async sendEmail(){
