@@ -75,8 +75,32 @@ time.toFixed(1)
 =================================
 
 
-production:
-git clone --depth 1 https://github.com/user/repo.git
+* production:
 
-https://www.scaleway.com/en/docs/how-to-configure-nginx-reverse-proxy/
+ssh -i "toutouyoutou.pem" ubuntu@ec2-52-47-160-216.eu-west-3.compute.amazonaws.com
 
+export $(cat .env | xargs)
+
+git clone --depth 1 https://github.com/nicokla/Musicos_web.git
+https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-up-node-on-ec2-instance.html
+
+
+https://letsencrypt.org/fr/
+https://certbot.eff.org/
+https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
+
+https://www.sitepoint.com/configuring-nginx-ssl-node-js/
+
+https://curiousorbit.com/blog/resizing-an-ec2-instance/
+
+https://levelup.gitconnected.com/deploying-vue-js-to-aws-with-https-and-a-custom-domain-name-3ae1f79fe188
+
+https://medium.com/bb-tutorials-and-thoughts/how-to-serve-vue-js-application-with-nginx-and-docker-d8a872a02ea8
+
+
+# https://www.scaleway.com/en/docs/how-to-configure-nginx-reverse-proxy/
+
+----------------------
+
+netlify
+https://www.youtube.com/watch?v=mN9oI98As_4
