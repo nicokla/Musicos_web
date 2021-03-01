@@ -6,7 +6,12 @@ import song button
 delete song: areYouSure
 delete song: animation
 
+-----------
+
 FIXES
+pwd undefined
+menu scrollable chrome windows
+
 fix navigation onglets back wrong
 fix "stay connected" on deployed website
 secure firebase storage rules
@@ -19,21 +24,26 @@ search bar take less width on mobile
 TODOS pas pressé
 pay gems (stripe)
 add song with video (youtube search api, youtube play)
+connexion avec google, facebook
+pwa (installable)
+configure keyboard azerty/qwertz (necessaire???)
 
 TODOs notes display
-defilement des notes
-alternatives pour le display des notes: 
+- defilement des notes vertical
+* alternatives : 
 - petits rectangles dans un flexbox
 - defilement horizontal (cf partition) au lieu de vertical
+- defilement avec magenta (... ou ...)
 
 TODOS page song hors defilement
 custumize scale pattern
 customize scale root
 delete specific notes
-
+notes pour touch device (cf app)
 
 --------------------
 
 TODO autres
 ranger favoris internet liees au projet
-
+cv paragraphe debut
+linked in
