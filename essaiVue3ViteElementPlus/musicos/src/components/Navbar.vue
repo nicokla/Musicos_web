@@ -121,7 +121,7 @@ export default {
   position: fixed;
   background-color: var(--bg-primary);
   transition: width 600ms ease;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 .navbar-nav {

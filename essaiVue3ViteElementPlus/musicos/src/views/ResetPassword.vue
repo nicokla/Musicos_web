@@ -84,7 +84,11 @@ export default {
     };
   },
   async mounted() {
-    this.email = this.$route.params.email || ''
+    if (this.$route.params.email == undefined){
+      this.email = ''
+    } else {
+      this.email = this.$route.params.email
+    }
   },
   methods: {
     async sendEmail(){

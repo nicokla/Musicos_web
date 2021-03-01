@@ -9,9 +9,6 @@ delete song: animation
 -----------
 
 FIXES
-pwd undefined
-menu scrollable chrome windows
-
 fix navigation onglets back wrong
 fix "stay connected" on deployed website
 secure firebase storage rules
@@ -47,3 +44,9 @@ TODO autres
 ranger favoris internet liees au projet
 cv paragraphe debut
 linked in
+
+-----------------------
+
+FIXES finished (?)
+pwd undefined
+menu scrollable chrome windows
