@@ -30,6 +30,7 @@ let lines = [
 
 let midiDictionnary={}
 function prepare_midiDictionnary(scale, root){
+  midiDictionnary={}
 	let indexLine = 0
 	for(const line of lines){
 		let indexNote = 0
@@ -96,9 +97,30 @@ function mergeByStartTime(arr1, arr2){
   }
 }
 
-prepare_midiDictionnary([0,2,3,5,7,8,10], 48)
+function scaleIntegersToBooleans(listeInt){
+  let listeBool = [true, false, false, false, false, false,
+    false, false, false, false, false, false]
+  for(let a of listeInt){
+    listeBool[a] = true
+  }
+  return listeBool
+}
+
+function scaleBooleansToInteger(listeBool){
+  let listeInt = []
+  let i = 0
+  for(let a of listeBool){
+    if(a)
+      listeInt.push(i)
+    i++
+  }
+  return listeInt
+}
+
+// prepare_midiDictionnary([0,2,3,5,7,8,10], 48)
 
 export  {
           Tone, synth, keyDownFunction, keyUpFunction, 
-          midiDictionnary, startTimes, fired, mergeByStartTime
+          midiDictionnary, startTimes, fired, mergeByStartTime,
+          prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger
         }

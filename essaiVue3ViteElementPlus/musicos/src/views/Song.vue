@@ -28,6 +28,14 @@
       <button v-else class="button" @click="dislike">dislike</button>
       <br>
       <!-- {{ isLiked }} -->
+      <div class="flex-row mt-3">          
+          <!--  :checked="b" v-model="listeBool[index]"" -->
+          <span v-for="(b, index) in listeBool" class="mr-2">
+            <input type="checkbox" v-model="listeBool[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" style="vertical-align:middle;margin-bottom:.2em;"/>
+            <label 
+            :for="`checkbox-${index}`" style="display: inline-block; margin-left:3px;">{{$options.noteNames[index]}}</label>
+          </span>
+      </div>
 
     </section>
   </div>
@@ -41,11 +49,13 @@ import axios from 'axios';
 // import * as core from '@magenta/music/node/core'
 import {player} from '../magenta/magenta'
 import {synth, keyDownFunction, mergeByStartTime, midiDictionnary, 
-        startTimes, fired, Tone} from '../tone/tone'
+        startTimes, fired, Tone,
+        prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger} from '../tone/tone'
 
 export default {
   data() {
     return {
+      listeBool: [true, false, true, true, false, true, false, true, true, false, true, false],
       songId: this.$route.params.id,
       object: {
         "chordNames":["+","","-","","-","+","","+","","-","","dim","Δ","","m7","","m7","Δ","","7","","m7","","ø","Δ","","m7","","m7","Δ","","7","","m7","","ø"],
@@ -97,6 +107,7 @@ export default {
     totalTime: 8
   },
   recordedNotes: [], // {pitch: 60, startTime: 0.0, endTime: 0.5}
+  noteNames:['1','2b','2','3b','3','4','5b','5','6b','6','7b','7'],
   lastTimeRel:0,
   lastTimeAbs:0,
   mounted: async function (){
@@ -108,6 +119,7 @@ export default {
     document.addEventListener("keyup", this.keyUpFunctionRecord)
     await this.getObject()
     await this.getObject2()
+    this.updateScale() // !!!
     // try {
     //   // player = 
     //   this.playState = player.getPlayState()
@@ -142,6 +154,10 @@ export default {
     }
   },
   methods:{
+    async updateScale(){
+      console.log(this.listeBool)
+      prepare_midiDictionnary(scaleBooleansToInteger(this.listeBool), 48)
+    },
     async like(){
       let myId = getCurrentUser().uid
       await db.collection("users").doc(myId).collection('likedSongs').doc(this.songId).set(this.object2)

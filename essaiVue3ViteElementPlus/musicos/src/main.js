@@ -4,7 +4,7 @@ import App from './App.vue';
 import router from './router'
 import './index.css'
 
-console.log = function() {}
+// console.log = function() {}
 
 const app = createApp(App)
 app.use(router)
