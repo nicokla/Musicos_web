@@ -31,12 +31,20 @@
       <div class="flex-row mt-3">          
           <!--  :checked="b" v-model="listeBool[index]"" -->
           <span v-for="(b, index) in listeBool" class="mr-2">
-            <input type="checkbox" v-model="listeBool[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" style="vertical-align:middle;margin-bottom:.2em;"/>
+            <input type="checkbox" v-model="listeBool[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
             <label 
-            :for="`checkbox-${index}`" style="display: inline-block; margin-left:3px;">{{$options.noteNames[index]}}</label>
+            :for="`checkbox-${index}`" >{{$options.noteNames[index]}}</label>
           </span>
       </div>
 
+      <div>
+        <input type="checkbox" v-model="isRecording" id="recording"/>
+        <label for="recording" style="ml-2">{{ recordingText }}</label>
+      </div>
+      <br>
+
+      <DoubleRangeSlider :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="totalTime"></DoubleRangeSlider>
+      <button class="button">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
     </section>
   </div>
 </template>
@@ -45,6 +53,8 @@
 <script>
 import {db, firebase, getCurrentUser, getMyId} from '../firebase/db'
 import axios from 'axios';
+import DoubleRangeSlider from '../components/DoubleRangeSlider.vue'
+
 // import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
 import {player} from '../magenta/magenta'
@@ -55,6 +65,9 @@ import {synth, keyDownFunction, mergeByStartTime, midiDictionnary,
 export default {
   data() {
     return {
+      min: 0,
+      max: 10,
+      isRecording: true,
       listeBool: [true, false, true, true, false, true, false, true, true, false, true, false],
       songId: this.$route.params.id,
       object: {
@@ -197,11 +210,13 @@ export default {
       let midiNote = midiDictionnary[e.code]
       fired[midiNote] = false
       synth.triggerRelease(Tone.Midi(midiNote))
-      this.$options.recordedNotes.push({
-        pitch: midiNote,
-        startTime: startTimes[midiNote],
-        endTime: Date.now()/1000
-      })
+      if(this.isRecording){
+        this.$options.recordedNotes.push({
+          pitch: midiNote,
+          startTime: startTimes[midiNote],
+          endTime: Date.now()/1000
+        })
+      }
     },
     playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
@@ -338,6 +353,7 @@ export default {
           this.object2 = doc.data()
           // console.log('object2',this.object2)
           this.$options.songForMagenta.totalTime = this.object2.duration
+          this.totalTime = this.object2.duration
           // debugger
           console.log(this.$options.songForMagenta)
         }
@@ -355,6 +371,12 @@ export default {
     },
     isLiked(){
       return this.likeStatus !== undefined
+    },
+    recordingText(){
+      if(this.isRecording)
+        return "Recording"
+      else
+        return "Not recording"
     }
   }
 }
@@ -367,4 +389,14 @@ export default {
    max-width:70px;
    display: inline-block;
 } */
+
+input {
+  vertical-align:middle;
+  margin-bottom:.2em;
+}
+
+label{
+  display: inline-block;
+  margin-left:3px;
+}
 </style>
