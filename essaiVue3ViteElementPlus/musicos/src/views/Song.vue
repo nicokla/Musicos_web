@@ -1,57 +1,77 @@
-<template>
-  <div class="Song paddedContainer">
+<template> <div class="Song paddedContainer">
     <section>
-      <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
-      <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
-      <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
-      <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
-      
-      <!-- 
-        <br><br>
-        <b>Play state: </b><span id="playState">{{ playState }}</span>
-      -->
+      <div style="margin-top: 10px; margin-bottom: 10px;">
+        <h2>
+          - Play and record music
+        </h2>
 
-      <br><br>
-      <span><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
-      <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange"> 
-      <!-- :value="0"
-      @input="updateTimeValue"
-        v-model="timeValue"  -->
-      <span><b id="totalTime">{{ object2.duration }}</b>s</span>
-      
-      <br><br>
-      <p>note:
-        <span id=myNote>{{currentNote}}</span>
-      </p>
+        <div>
+          <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
+          <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
+          <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
+          <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
+        </div>
+        
+        <div style="margin-top: 6px;">
+          <span style="margin-top: 5px;"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
+          <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange"> 
+          <span><b id="totalTime">{{ object2.duration }}</b>s</span>
+        </div>
+        
+        <div style="margin-top: 12px;">
+          <input type="checkbox" v-model="isRecording" id="recording"/>
+          <label for="recording" style="ml-2">{{ recordingText }}</label>
+        </div>
 
-      <button v-if="!isLiked" class="button" @click="like">like</button>
-      <button v-else class="button" @click="dislike">dislike</button>
-      <br>
-      <!-- {{ isLiked }} -->
-      <div class="flex-row mt-3">          
-          <!--  :checked="b" v-model="listeBool[index]"" -->
-          <span v-for="(b, index) in object.chordsRoots" class="mr-2">
-            <input type="checkbox" v-model="object.chordsRoots[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
-            <label 
-            :for="`checkbox-${index}`" >{{$options.noteNames[index]}}</label>
-          </span>
+        <div style="margin-top: 10px;">
+          <!-- - The note from the playback :
+          <span id=playBackNote>{{currentNotePlayback}}</span>
+          <br> -->
+          - The note you play now :
+          <span id=myNote>{{currentNote}}</span>
+          <br>
+          - Notes display mode :
+          <input type="checkbox" v-model="currentNoteAbsolute" id="currentNoteAbs"/>
+          <label for="currentNoteAbs" style="ml-2">{{ currentNoteAbsoluteText }}</label>
+        </div>
       </div>
 
-      <br>
-      <PlusMinus  ref="plusMinus"
-                  :initialIndex="object.rootNote" 
-                  @eventRootChanged="theRootChanged($event)"></PlusMinus>
+      <div style="margin-top: 25px; margin-bottom: 10px;">
+        <h2>
+          - Scale parameters
+        </h2>
 
-      <br> <br>
-      <div>
-        <input type="checkbox" v-model="isRecording" id="recording"/>
-        <label for="recording" style="ml-2">{{ recordingText }}</label>
+        <div class="flex-row">          
+            <!--  :checked="b" v-model="listeBool[index]"" -->
+            <span v-for="(b, index) in object.chordsRoots" class="mr-2">
+              <input type="checkbox" v-model="object.chordsRoots[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
+              <label 
+              :for="`checkbox-${index}`" >{{$options.noteNames[index]}}</label>
+            </span>
+        </div>
+
+        <PlusMinus  ref="plusMinus"
+                    :initialIndex="object.rootNote" 
+                    @eventRootChanged="theRootChanged($event)"></PlusMinus>
       </div>
-      <br>
 
-      <DoubleRangeSlider ref="childComponent" :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="object2.duration"></DoubleRangeSlider>
-      <button class="button" @click="deleteNotesInRange">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
+      <div style="margin-top: 25px; margin-bottom: 10px;">
+        <h2>
+          - Delete notes
+        </h2>
 
+        <DoubleRangeSlider class="mb-1" ref="childComponent" :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="object2.duration"></DoubleRangeSlider>
+        
+        <button class="button mt-0" @click="deleteNotesInRange">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
+      </div>
+
+      <div style="margin-top: 25px; margin-bottom: 10px;">
+        <h2>
+          - Like or dislike this song
+        </h2>
+        <button v-if="!isLiked" class="button" @click="like">like</button>
+        <button v-else class="button" @click="dislike">dislike</button>
+      </div>
     </section>
   </div>
 </template>
@@ -65,7 +85,7 @@ import axios from 'axios';
 import DoubleRangeSlider from '../components/DoubleRangeSlider.vue'
 import {player} from '../magenta/magenta'
 import {synth, keyDownFunction, mergeByStartTime, midiDictionnary, 
-        startTimes, fired, Tone,
+        startTimes, fired, Tone, midiDictionnaryNameRelative,
         prepare_midiDictionnary, midiDictionnaryName,
         scaleIntegersToBooleans, scaleBooleansToInteger} from '../tone/tone'
 import PlusMinus from '../components/PlusMinus.vue';
@@ -73,6 +93,7 @@ import PlusMinus from '../components/PlusMinus.vue';
 export default {
   data() {
     return {
+      currentNoteAbsolute: true,
       currentNote: '',
       min: 0,
       max: 10,
@@ -203,7 +224,7 @@ export default {
       player.stop()
 
       // we take into account recorded notes
-      this.mergeRecordedAndReset()
+      this.mergeRecordedAndReset() // ??? TODO (debug) : negative times.
 
       // we delete the notes :
       // console.log('before',this.$options.songForMagenta.notes)
@@ -283,9 +304,14 @@ export default {
       if(!fired[midiNote]) {
         fired[midiNote] = true
         startTimes[midiNote] = Date.now()/1000
-        this.currentNote = midiDictionnaryName[e.code]
+        // this.currentNote = midiDictionnaryName[e.code]
+        if(this.currentNoteAbsolute){
+          this.currentNote = midiDictionnaryName[e.code]
+        } else {
+          this.currentNote = midiDictionnaryNameRelative[e.code]
+        }
         // myNoteDom.innerText = midiDictionnaryName[e.code]
-        console.log('prout prout' + midiDictionnaryName[e.code])
+        // console.log('prout prout' + midiDictionnaryName[e.code])
         synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"	
       }
     },
@@ -448,6 +474,12 @@ export default {
         return "Recording"
       else
         return "Not recording"
+    },
+    currentNoteAbsoluteText(){
+      if(this.currentNoteAbsolute)
+        return "Absolute"
+      else
+        return "Relative"
     }
   }
 }

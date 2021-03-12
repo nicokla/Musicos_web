@@ -37,11 +37,18 @@ function getNoteName(noteNumber){
   return noteName
 }
 
+let listeNotesRelative = ['1', '2b', '2', '3b', '3', '4', '5b', '5', '6b', '6', '7b', '7']
+function getNoteNameRelative(noteRelative){
+  return listeNotesRelative[noteRelative % 12]
+}
+
 let midiDictionnary={}
 let midiDictionnaryName={}
+let midiDictionnaryNameRelative={}
 function prepare_midiDictionnary(scale, root){
   midiDictionnary={}
   midiDictionnaryName={}
+  midiDictionnaryNameRelative={}
 	let indexLine = 0
 	for(const line of lines){
 		let indexNote = 0
@@ -51,6 +58,7 @@ function prepare_midiDictionnary(scale, root){
       let exactNote = note + (12 * indexLine) + root
 			midiDictionnary[code] = exactNote
       midiDictionnaryName[code] = getNoteName(exactNote)
+      midiDictionnaryNameRelative[code] = getNoteNameRelative(note)
 			indexNote++
 		}
 		indexLine++
@@ -137,5 +145,5 @@ export  {
           Tone, synth, keyDownFunction, keyUpFunction, 
           midiDictionnary, startTimes, fired, mergeByStartTime,
           prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger,
-          midiDictionnaryName
+          midiDictionnaryName, midiDictionnaryNameRelative
         }
