@@ -9,18 +9,29 @@
 
 <script>
 export default {
+  props: {
+    initialIndex: {
+      type: Number,
+      default: 48
+    }
+  },
   data(){
     return {
-      index: 60
+      index: this.initialIndex
     }
   },
   myNotes: ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'],
   methods:{
+    updateRootNote(realRootNote){
+      this.index = realRootNote
+    },
     plusClick(){
       this.index++
+      this.emitValue()
     },
     minusClick(){
       this.index--
+      this.emitValue()
     },
     getNoteName(noteNumber){
       let noteOutOf12 = (noteNumber + 1200) % 12
@@ -28,6 +39,9 @@ export default {
       let noteIndex = Math.floor(noteNumber / 12) - 1
       let noteName = `${noteName1}${noteIndex}`
       return noteName
+    },
+    emitValue(){
+      this.$emit('eventRootChanged', this.index)
     }
   },
   computed:{

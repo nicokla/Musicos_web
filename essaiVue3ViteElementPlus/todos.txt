@@ -1,14 +1,14 @@
 
 TODOs
-delete all notes from time x to y (with double range slider)
-enable/disable recording the played notes
-import song button
-delete song: areYouSure
-delete song: animation
+export to midi
+import song to MySongs
+svg defilement
+show note name when played
 
 -----------
 
 FIXES
+debug firefox
 fix navigation onglets back wrong
 fix "stay connected" on deployed website
 secure firebase storage rules
@@ -19,6 +19,8 @@ search bar take less width on mobile
 --------------
 
 TODOS pas pressé
+delete song: animation
+MySongs : if empty, display message "You have no song yet. To create one, click on the + tab."
 pay gems (stripe)
 add song with video (youtube search api, youtube play)
 connexion avec google, facebook
@@ -33,8 +35,6 @@ TODOs notes display
 - defilement avec magenta (... ou ...)
 
 TODOS page song hors defilement
-custumize scale pattern
-customize scale root
 delete specific notes
 notes pour touch device (cf app)
 

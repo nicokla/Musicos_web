@@ -17,8 +17,8 @@ const synth = new Tone.PolySynth(Tone.Synth, {
 	}
 }).toDestination()
 
-// var myNoteDom = document.querySelector('#myNote')
-// console.log(myNoteDom)
+var myNoteDom = document.querySelector('#myNote')
+// console.log('ehoh hihi',myNoteDom)
 // debugger
 
 let lines = [
@@ -28,16 +28,29 @@ let lines = [
 	["Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8","Digit9","Digit0","Minus","Equal","Backspace"]
 ]
 
+let listeNotes = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']
+function getNoteName(noteNumber){
+  let noteOutOf12 = (noteNumber + 1200) % 12
+  let noteName1 = listeNotes[noteOutOf12]
+  let noteIndex = Math.floor(noteNumber / 12) - 1
+  let noteName = `${noteName1}${noteIndex}`
+  return noteName
+}
+
 let midiDictionnary={}
+let midiDictionnaryName={}
 function prepare_midiDictionnary(scale, root){
   midiDictionnary={}
+  midiDictionnaryName={}
 	let indexLine = 0
 	for(const line of lines){
 		let indexNote = 0
 		for(const code of line){
 			// console.log(code, indexLine, indexNote)
 			let note = scale[indexNote % (scale.length)] + 12 * Math.floor(indexNote / scale.length)
-			midiDictionnary[code] = note + (12 * indexLine) + root
+      let exactNote = note + (12 * indexLine) + root
+			midiDictionnary[code] = exactNote
+      midiDictionnaryName[code] = getNoteName(exactNote)
 			indexNote++
 		}
 		indexLine++
@@ -59,7 +72,8 @@ let keyDownFunction = function(e){
   if(!fired[midiNote]) {
     fired[midiNote] = true
     startTimes[midiNote] = Date.now()/1000
-    // myNoteDom.innerText = midiDictionnary[e.code] + ": down"
+    myNoteDom.innerText = midiDictionnaryName[e.code]
+    console.log('prout prout' + midiDictionnaryName[e.code])
     synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"	
   }
 }
@@ -122,5 +136,6 @@ function scaleBooleansToInteger(listeBool){
 export  {
           Tone, synth, keyDownFunction, keyUpFunction, 
           midiDictionnary, startTimes, fired, mergeByStartTime,
-          prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger
+          prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger,
+          midiDictionnaryName
         }

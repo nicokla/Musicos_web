@@ -19,26 +19,28 @@
         v-model="timeValue"  -->
       <span><b id="totalTime">{{ object2.duration }}</b>s</span>
       
-      <!-- <br><br>
-      <p>note:
-        <span id=myNote></span>
-      </p> -->
       <br><br>
+      <p>note:
+        <span id=myNote>{{currentNote}}</span>
+      </p>
+
       <button v-if="!isLiked" class="button" @click="like">like</button>
       <button v-else class="button" @click="dislike">dislike</button>
       <br>
       <!-- {{ isLiked }} -->
       <div class="flex-row mt-3">          
           <!--  :checked="b" v-model="listeBool[index]"" -->
-          <span v-for="(b, index) in listeBool" class="mr-2">
-            <input type="checkbox" v-model="listeBool[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
+          <span v-for="(b, index) in object.chordsRoots" class="mr-2">
+            <input type="checkbox" v-model="object.chordsRoots[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
             <label 
             :for="`checkbox-${index}`" >{{$options.noteNames[index]}}</label>
           </span>
       </div>
 
       <br>
-      <PlusMinus></PlusMinus>
+      <PlusMinus  ref="plusMinus"
+                  :initialIndex="object.rootNote" 
+                  @eventRootChanged="theRootChanged($event)"></PlusMinus>
 
       <br> <br>
       <div>
@@ -64,16 +66,18 @@ import DoubleRangeSlider from '../components/DoubleRangeSlider.vue'
 import {player} from '../magenta/magenta'
 import {synth, keyDownFunction, mergeByStartTime, midiDictionnary, 
         startTimes, fired, Tone,
-        prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger} from '../tone/tone'
+        prepare_midiDictionnary, midiDictionnaryName,
+        scaleIntegersToBooleans, scaleBooleansToInteger} from '../tone/tone'
 import PlusMinus from '../components/PlusMinus.vue';
 
 export default {
   data() {
     return {
+      currentNote: '',
       min: 0,
       max: 10,
       isRecording: true,
-      listeBool: [true, false, true, true, false, true, false, true, true, false, true, false],
+      // listeBool: [true, false, true, true, false, true, false, true, true, false, true, false],
       songId: this.$route.params.id,
       object: {
         "chordNames":["+","","-","","-","+","","+","","-","","dim","Δ","","m7","","m7","Δ","","7","","m7","","ø","Δ","","m7","","m7","Δ","","7","","m7","","ø"],
@@ -133,12 +137,14 @@ export default {
     player.stop()
     this.$options.lastTimeRel = 0
     this.timeValue = 0
-    document.addEventListener("keydown", keyDownFunction)
+    // document.addEventListener("keydown", keyDownFunction)
+    document.addEventListener("keydown", this.keyDownFunctionShow)
     document.addEventListener("keyup", this.keyUpFunctionRecord)
     await this.getObject()
     await this.getObject2()
     this.updateScale() // !!!
     this.$refs.childComponent.setValue(this.object2.duration);
+    this.$refs.plusMinus.updateRootNote(this.object.rootNote)
     // try {
     //   // player = 
     //   this.playState = player.getPlayState()
@@ -154,7 +160,7 @@ export default {
     this.unsubscribe()
     console.log('bye bye')
     clearInterval(this.$interval)
-    document.removeEventListener("keydown", keyDownFunction)
+    document.removeEventListener("keydown", this.keyDownFunctionShow)
     document.removeEventListener("keyup", this.keyUpFunctionRecord)
     if(this.object2.ownerID === getMyId()){
       this.object.notes = this.$options.songForMagenta.notes.map((o) => {
@@ -177,7 +183,19 @@ export default {
     PlusMinus
   },
   methods:{
+    async theRootChanged(newRoot){
+      // console.log(newRoot)
+      this.object.rootNote = newRoot
+      this.updateScale()
+    },
     async deleteNotesInRange(){
+      let result = confirm(`Want to delete all notes from  ${this.min}s to ${this.max}s?`);
+      if (result) {
+        this.deleteNotesInRange_doIt()
+      }
+    },
+    async deleteNotesInRange_doIt(){
+      // console.log('coucou heho')
       const playing = (player.getPlayState() === 'started')
       if (playing) {
         player.pause()
@@ -209,8 +227,9 @@ export default {
       return (this.min <= note.startTime && note.startTime <= this.max)
     },
     async updateScale(){
-      console.log(this.listeBool)
-      prepare_midiDictionnary(scaleBooleansToInteger(this.listeBool), 48)
+      console.log('root note : ',this.object.rootNote)
+      console.log('scale : ', this.object.chordsRoots)
+      prepare_midiDictionnary(scaleBooleansToInteger(this.object.chordsRoots), this.object.rootNote)
     },
     async like(){
       let myId = getCurrentUser().uid
@@ -247,6 +266,7 @@ export default {
     },
     keyUpFunctionRecord(e){
       console.log('heho')
+      this.currentNote = ''
       let midiNote = midiDictionnary[e.code]
       fired[midiNote] = false
       synth.triggerRelease(Tone.Midi(midiNote))
@@ -256,6 +276,17 @@ export default {
           startTime: startTimes[midiNote],
           endTime: Date.now()/1000
         })
+      }
+    },
+    keyDownFunctionShow(e){
+      let midiNote = midiDictionnary[e.code]
+      if(!fired[midiNote]) {
+        fired[midiNote] = true
+        startTimes[midiNote] = Date.now()/1000
+        this.currentNote = midiDictionnaryName[e.code]
+        // myNoteDom.innerText = midiDictionnaryName[e.code]
+        console.log('prout prout' + midiDictionnaryName[e.code])
+        synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"	
       }
     },
     playBtnClick(){

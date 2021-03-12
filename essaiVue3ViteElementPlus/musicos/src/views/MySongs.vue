@@ -25,12 +25,18 @@ export default {
     async addItem(){
       await db.collection("songs").add({title: "truc"})
 		},
-		deleteSong(id){
-			db.collection('songs').doc(id).delete()
-      this.songs = this.songs.filter(x => {
-        return x.id != id;
-      })
-      // TODO : do it locally conditionnaly on delete() being successfull
+		async deleteSong(id){
+      let result = confirm(`Want to delete the song ?`);
+      if (result) {
+        try{
+          await db.collection('songs').doc(id).delete()
+          this.songs = this.songs.filter(x => {
+            return x.id != id;
+          })
+        }catch(err){
+          window.alert(`Error: ${err}`)
+        }
+      }
 		},
     openSong(song){
       this.$router.push({name: 'Song', params: {id: song.id} })
