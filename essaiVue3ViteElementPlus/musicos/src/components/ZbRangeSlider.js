@@ -153,15 +153,15 @@ export default function (id) {
       // eslint-disable-next-line no-new-func
       var fn = new Function('min, max', slider.getAttribute('on-change'))
       fn(
-        slider.getAttribute('se-min-value'),
-        slider.getAttribute('se-max-value')
+        parseFloat(slider.getAttribute('se-min-value')),
+        parseFloat(slider.getAttribute('se-max-value'))
       )
     }
 
     if (self.onChange) {
       self.onChange(
-        slider.getAttribute('se-min-value'),
-        slider.getAttribute('se-max-value')
+        parseFloat(slider.getAttribute('se-min-value')),
+        parseFloat(slider.getAttribute('se-max-value'))
       )
     }
   }
@@ -182,15 +182,15 @@ export default function (id) {
       // eslint-disable-next-line no-new-func
       var fn = new Function('min, max', slider.getAttribute('did-changed'))
       fn(
-        slider.getAttribute('se-min-value'),
-        slider.getAttribute('se-max-value')
+        parseFloat(slider.getAttribute('se-min-value')),
+        parseFloat(slider.getAttribute('se-max-value'))
       )
     }
 
     if (self.didChanged) {
       self.didChanged(
-        slider.getAttribute('se-min-value'),
-        slider.getAttribute('se-max-value')
+        parseFloat(slider.getAttribute('se-min-value')),
+        parseFloat(slider.getAttribute('se-max-value'))
       )
     }
   }

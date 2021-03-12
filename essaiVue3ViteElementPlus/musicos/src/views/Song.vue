@@ -13,11 +13,11 @@
 
       <br><br>
       <span><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
-      <input type="range" id="slider" v-model="timeValue" :min="0" :max="totalTime" :step="1" @change="sliderChange"> 
+      <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange"> 
       <!-- :value="0"
       @input="updateTimeValue"
         v-model="timeValue"  -->
-      <span><b id="totalTime">{{ totalTime }}</b>s</span>
+      <span><b id="totalTime">{{ object2.duration }}</b>s</span>
       
       <!-- <br><br>
       <p>note:
@@ -43,8 +43,8 @@
       </div>
       <br>
 
-      <DoubleRangeSlider :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="totalTime"></DoubleRangeSlider>
-      <button class="button">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
+      <DoubleRangeSlider ref="childComponent" :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="object2.duration"></DoubleRangeSlider>
+      <button class="button" @click="deleteNotesInRange">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
     </section>
   </div>
 </template>
@@ -108,14 +108,14 @@ export default {
       pauseBtnDisabled: true,
       player: {},
       playState: "stopped",
-      totalTime: 60,
+      // totalTime: 60,
       likeStatus: '',
       unsubscribe: {}
     }
   },
   songForMagenta: {
     notes: [
-      {pitch: 60, startTime: 0.0, endTime: 0.5},
+      // {pitch: 60, startTime: 0.0, endTime: 0.5},
     ],
     totalTime: 8
   },
@@ -133,6 +133,7 @@ export default {
     await this.getObject()
     await this.getObject2()
     this.updateScale() // !!!
+    this.$refs.childComponent.setValue(this.object2.duration);
     // try {
     //   // player = 
     //   this.playState = player.getPlayState()
@@ -166,7 +167,41 @@ export default {
       }
     }
   },
+  components:{
+    'child-component':DoubleRangeSlider
+  },
   methods:{
+    async deleteNotesInRange(){
+      const playing = (player.getPlayState() === 'started')
+      if (playing) {
+        player.pause()
+      }
+      player.stop()
+
+      // we take into account recorded notes
+      this.mergeRecordedAndReset()
+
+      // we delete the notes :
+      console.log('before',this.$options.songForMagenta.notes)
+      this.$options.songForMagenta.notes = this.$options.songForMagenta.notes.filter(note=>!this.isInRange(note)) 
+      console.log('after',this.$options.songForMagenta.notes)
+
+      // we restart the player so that the deletions are taken into account
+      player.start(this.$options.songForMagenta)
+      player.pause()
+      player.seekTo(this.timeValue)
+
+      // we notice the ui that player is in pause state
+      this.playState = player.getPlayState()
+      this.playBtnDisabled = true
+      this.stopBtnDisabled = false
+      this.pauseBtnDisabled = true
+      this.resumeBtnDisabled = false
+    },
+    isInRange(note){
+      console.log(this.min, note.startTime, this.max)
+      return (this.min <= note.startTime && note.startTime <= this.max)
+    },
     async updateScale(){
       console.log(this.listeBool)
       prepare_midiDictionnary(scaleBooleansToInteger(this.listeBool), 48)
@@ -188,7 +223,6 @@ export default {
           this.likeStatus = doc.data()
         });
     },
-
     mergeRecordedAndReset(){
       if (this.$options.recordedNotes.length === 0)
         return false // nothing happened
@@ -222,7 +256,7 @@ export default {
       this.$options.lastTimeAbs = Date.now()/1000
       player.start(this.$options.songForMagenta)
       // console.log(player)
-      this.totalTime = this.$options.songForMagenta.totalTime
+      // this.totalTime = this.$options.songForMagenta.totalTime
       this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
@@ -353,7 +387,7 @@ export default {
           this.object2 = doc.data()
           // console.log('object2',this.object2)
           this.$options.songForMagenta.totalTime = this.object2.duration
-          this.totalTime = this.object2.duration
+          // this.totalTime = this.object2.duration
           // debugger
           console.log(this.$options.songForMagenta)
         }
