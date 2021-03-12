@@ -1,4 +1,4 @@
-export default function (id) {
+export default function (id, maxiMax) {
   var self = this
   var startX = 0
   var x = 0
@@ -11,7 +11,7 @@ export default function (id) {
 
   // get some properties
   var min = parseFloat(slider.getAttribute('se-min'))
-  var max = parseFloat(slider.getAttribute('se-max'))
+  var max = maxiMax // parseFloat(slider.getAttribute('se-max'))
 
   // retrieve default values
   var defaultMinValue = min

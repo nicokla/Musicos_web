@@ -47,8 +47,8 @@ export default {
     }
   },
   mounted: function () {
-    this.instance = new ZbRangeSlider('my-slider')
-    this.instance.onChange = (min, max) => this.updateValues(min, max)
+    // this.instance = new ZbRangeSlider('my-slider')
+    // this.instance.onChange = (min, max) => this.updateValues(min, max)
   },
   unmounted: function () {
 
@@ -56,9 +56,9 @@ export default {
   methods: {
     setValue: function(value) {
       console.log('new max:', value)
-      this.maxThreshold123 = value;
-      this.instance.max = value
-      this.instance = new ZbRangeSlider('my-slider')
+      // this.maxThreshold123 = value;
+      // this.instance.max = value
+      this.instance = new ZbRangeSlider('my-slider', value)
       this.instance.onChange = (min, max) => this.updateValues(min, max)
       // this.instance.setMinValue(this.instance.defaultMinValue)
       // this.instance.setMaxValue(this.instance.defaultMaxValue)
