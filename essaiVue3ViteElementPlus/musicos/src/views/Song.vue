@@ -37,6 +37,10 @@
           </span>
       </div>
 
+      <br>
+      <PlusMinus></PlusMinus>
+
+      <br> <br>
       <div>
         <input type="checkbox" v-model="isRecording" id="recording"/>
         <label for="recording" style="ml-2">{{ recordingText }}</label>
@@ -45,22 +49,23 @@
 
       <DoubleRangeSlider ref="childComponent" :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="object2.duration"></DoubleRangeSlider>
       <button class="button" @click="deleteNotesInRange">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
+
     </section>
   </div>
 </template>
 
 
 <script>
+// import * as mm from '@magenta/music';
+// import * as core from '@magenta/music/node/core'
 import {db, firebase, getCurrentUser, getMyId} from '../firebase/db'
 import axios from 'axios';
 import DoubleRangeSlider from '../components/DoubleRangeSlider.vue'
-
-// import * as mm from '@magenta/music';
-// import * as core from '@magenta/music/node/core'
 import {player} from '../magenta/magenta'
 import {synth, keyDownFunction, mergeByStartTime, midiDictionnary, 
         startTimes, fired, Tone,
         prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger} from '../tone/tone'
+import PlusMinus from '../components/PlusMinus.vue';
 
 export default {
   data() {
@@ -168,7 +173,8 @@ export default {
     }
   },
   components:{
-    'child-component':DoubleRangeSlider
+    'child-component':DoubleRangeSlider,
+    PlusMinus
   },
   methods:{
     async deleteNotesInRange(){

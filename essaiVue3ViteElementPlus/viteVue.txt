@@ -78,6 +78,18 @@ vue double range slider
 https://dev.to/mandrewcito/vuejs-double-range-slider-component-2c5a
 
 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+data : internals objects, reactifs
+this.$options : object pas reactifs
+this.$refs : appeler une fonction from parent to child
+this.$emit : emit event from child to parent
+props : arguments from parent to child
+
+!!!!!!!!!!!!!!!!!!!!!!
+
+
 ===================================
 =================================
 
