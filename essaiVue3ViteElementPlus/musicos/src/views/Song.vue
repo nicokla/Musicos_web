@@ -182,9 +182,9 @@ export default {
       this.mergeRecordedAndReset()
 
       // we delete the notes :
-      console.log('before',this.$options.songForMagenta.notes)
+      // console.log('before',this.$options.songForMagenta.notes)
       this.$options.songForMagenta.notes = this.$options.songForMagenta.notes.filter(note=>!this.isInRange(note)) 
-      console.log('after',this.$options.songForMagenta.notes)
+      // console.log('after',this.$options.songForMagenta.notes)
 
       // we restart the player so that the deletions are taken into account
       player.start(this.$options.songForMagenta)

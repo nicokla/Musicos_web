@@ -55,10 +55,13 @@ export default {
   },
   methods: {
     setValue: function(value) {
+      console.log('new max:', value)
       this.maxThreshold123 = value;
       this.instance.max = value
-      this.instance.setMinValue(this.instance.defaultMinValue)
-      this.instance.setMaxValue(this.instance.defaultMaxValue)
+      this.instance = new ZbRangeSlider('my-slider')
+      this.instance.onChange = (min, max) => this.updateValues(min, max)
+      // this.instance.setMinValue(this.instance.defaultMinValue)
+      // this.instance.setMaxValue(this.instance.defaultMaxValue)
     },
     updateValues: function (min, max) {
       this.$emit('update:min', min)
