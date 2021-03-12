@@ -502,4 +502,11 @@ label{
   display: inline-block;
   margin-left:3px;
 }
+
+.plusminus{
+  margin-top: 5px;
+}
+h2{
+  margin-bottom:10px;
+}
 </style>
