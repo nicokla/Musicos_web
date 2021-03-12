@@ -13,11 +13,11 @@
 
       <br><br>
       <span><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
-      <input type="range" id="slider" v-model="timeValue" :min="0" :max="totalTime" :step="1" @change="sliderChange"> 
+      <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange"> 
       <!-- :value="0"
       @input="updateTimeValue"
         v-model="timeValue"  -->
-      <span><b id="totalTime">{{ totalTime }}</b>s</span>
+      <span><b id="totalTime">{{ object2.duration }}</b>s</span>
       
       <!-- <br><br>
       <p>note:
@@ -31,12 +31,20 @@
       <div class="flex-row mt-3">          
           <!--  :checked="b" v-model="listeBool[index]"" -->
           <span v-for="(b, index) in listeBool" class="mr-2">
-            <input type="checkbox" v-model="listeBool[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" style="vertical-align:middle;margin-bottom:.2em;"/>
+            <input type="checkbox" v-model="listeBool[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
             <label 
-            :for="`checkbox-${index}`" style="display: inline-block; margin-left:3px;">{{$options.noteNames[index]}}</label>
+            :for="`checkbox-${index}`" >{{$options.noteNames[index]}}</label>
           </span>
       </div>
 
+      <div>
+        <input type="checkbox" v-model="isRecording" id="recording"/>
+        <label for="recording" style="ml-2">{{ recordingText }}</label>
+      </div>
+      <br>
+
+      <DoubleRangeSlider ref="childComponent" :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="object2.duration"></DoubleRangeSlider>
+      <button class="button" @click="deleteNotesInRange">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
     </section>
   </div>
 </template>
@@ -45,6 +53,8 @@
 <script>
 import {db, firebase, getCurrentUser, getMyId} from '../firebase/db'
 import axios from 'axios';
+import DoubleRangeSlider from '../components/DoubleRangeSlider.vue'
+
 // import * as mm from '@magenta/music';
 // import * as core from '@magenta/music/node/core'
 import {player} from '../magenta/magenta'
@@ -55,6 +65,9 @@ import {synth, keyDownFunction, mergeByStartTime, midiDictionnary,
 export default {
   data() {
     return {
+      min: 0,
+      max: 10,
+      isRecording: true,
       listeBool: [true, false, true, true, false, true, false, true, true, false, true, false],
       songId: this.$route.params.id,
       object: {
@@ -95,14 +108,14 @@ export default {
       pauseBtnDisabled: true,
       player: {},
       playState: "stopped",
-      totalTime: 60,
+      // totalTime: 60,
       likeStatus: '',
       unsubscribe: {}
     }
   },
   songForMagenta: {
     notes: [
-      {pitch: 60, startTime: 0.0, endTime: 0.5},
+      // {pitch: 60, startTime: 0.0, endTime: 0.5},
     ],
     totalTime: 8
   },
@@ -120,6 +133,7 @@ export default {
     await this.getObject()
     await this.getObject2()
     this.updateScale() // !!!
+    this.$refs.childComponent.setValue(this.object2.duration);
     // try {
     //   // player = 
     //   this.playState = player.getPlayState()
@@ -153,7 +167,41 @@ export default {
       }
     }
   },
+  components:{
+    'child-component':DoubleRangeSlider
+  },
   methods:{
+    async deleteNotesInRange(){
+      const playing = (player.getPlayState() === 'started')
+      if (playing) {
+        player.pause()
+      }
+      player.stop()
+
+      // we take into account recorded notes
+      this.mergeRecordedAndReset()
+
+      // we delete the notes :
+      console.log('before',this.$options.songForMagenta.notes)
+      this.$options.songForMagenta.notes = this.$options.songForMagenta.notes.filter(note=>!this.isInRange(note)) 
+      console.log('after',this.$options.songForMagenta.notes)
+
+      // we restart the player so that the deletions are taken into account
+      player.start(this.$options.songForMagenta)
+      player.pause()
+      player.seekTo(this.timeValue)
+
+      // we notice the ui that player is in pause state
+      this.playState = player.getPlayState()
+      this.playBtnDisabled = true
+      this.stopBtnDisabled = false
+      this.pauseBtnDisabled = true
+      this.resumeBtnDisabled = false
+    },
+    isInRange(note){
+      console.log(this.min, note.startTime, this.max)
+      return (this.min <= note.startTime && note.startTime <= this.max)
+    },
     async updateScale(){
       console.log(this.listeBool)
       prepare_midiDictionnary(scaleBooleansToInteger(this.listeBool), 48)
@@ -175,7 +223,6 @@ export default {
           this.likeStatus = doc.data()
         });
     },
-
     mergeRecordedAndReset(){
       if (this.$options.recordedNotes.length === 0)
         return false // nothing happened
@@ -197,17 +244,19 @@ export default {
       let midiNote = midiDictionnary[e.code]
       fired[midiNote] = false
       synth.triggerRelease(Tone.Midi(midiNote))
-      this.$options.recordedNotes.push({
-        pitch: midiNote,
-        startTime: startTimes[midiNote],
-        endTime: Date.now()/1000
-      })
+      if(this.isRecording){
+        this.$options.recordedNotes.push({
+          pitch: midiNote,
+          startTime: startTimes[midiNote],
+          endTime: Date.now()/1000
+        })
+      }
     },
     playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
       player.start(this.$options.songForMagenta)
       // console.log(player)
-      this.totalTime = this.$options.songForMagenta.totalTime
+      // this.totalTime = this.$options.songForMagenta.totalTime
       this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
@@ -338,6 +387,7 @@ export default {
           this.object2 = doc.data()
           // console.log('object2',this.object2)
           this.$options.songForMagenta.totalTime = this.object2.duration
+          // this.totalTime = this.object2.duration
           // debugger
           console.log(this.$options.songForMagenta)
         }
@@ -355,6 +405,12 @@ export default {
     },
     isLiked(){
       return this.likeStatus !== undefined
+    },
+    recordingText(){
+      if(this.isRecording)
+        return "Recording"
+      else
+        return "Not recording"
     }
   }
 }
@@ -367,4 +423,14 @@ export default {
    max-width:70px;
    display: inline-block;
 } */
+
+input {
+  vertical-align:middle;
+  margin-bottom:.2em;
+}
+
+label{
+  display: inline-block;
+  margin-left:3px;
+}
 </style>
