@@ -3,7 +3,10 @@ TODOs
 export to midi
 import song to MySongs
 svg defilement
-show note name when played
+
+Cool but difficult (later)
+show note name from recording --> because pb reference to view from player
+
 
 -----------
 
