@@ -1,4 +1,66 @@
 
+- done in iOS version, et important:
+svg defilement integrer
+youtube search
+youtube play video
+defilement: haut/bas/moyen
+import song
+boutons smartphone play
+
+- not done in iOS version, et important:
+export song to midi file
+pwa
+default scales
+delete account
+
+- not done in iOS version, et pas tres important
+spotify
+jouer depuis piano keyboard
+payment : stripe ou braintree
+ssr : nuxt ou laravel
+connect: google, facebook
+zones scales/chords
+zoom defilement
+defilements : display alternatifs
+import midi file, track (or all tracks, merged) to song
+
+- done in iOS version, et pas tres important
+changer instruments
+accords
+volumes ytb vs song
+
+- debugs
+debug firefox
+debug delete song aussi dans storage
+debug sometimes tone.js fails, needs to restart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------
+
+
+=======================
+======================
+old todos
+=======================
+=======================
+
+
 TODOs
 export to midi
 import song to MySongs
