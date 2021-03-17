@@ -126,3 +126,15 @@ https://www.youtube.com/watch?v=mN9oI98As_4
 
 https://app.netlify.com/sites/musicos/deploys?filter
 
+
+
+--------------------------
+
+
+
+GET https://youtube.googleapis.com/youtube/v3/search?type=video&q=soccer&maxResults=10&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
+
+
+GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=svOaII_HOOU&id=uKWNAe3b3EI&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
+
+

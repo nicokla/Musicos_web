@@ -1,5 +1,7 @@
 <template> <div class="Song paddedContainer">
     <section>
+      <Defilement ref="defilement"></Defilement>
+
       <div style="margin-top: 10px; margin-bottom: 10px;">
         <h2>
           - Play and record music
@@ -14,7 +16,7 @@
         
         <div style="margin-top: 6px;">
           <span style="margin-top: 5px;"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
-          <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange"> 
+          <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput"> 
           <span><b id="totalTime">{{ object2.duration }}</b>s</span>
         </div>
         
@@ -89,6 +91,7 @@ import {synth, keyDownFunction, mergeByStartTime, midiDictionnary,
         prepare_midiDictionnary, midiDictionnaryName,
         scaleIntegersToBooleans, scaleBooleansToInteger} from '../tone/tone'
 import PlusMinus from '../components/PlusMinus.vue';
+import Defilement from '../components/Defilement.vue';
 
 export default {
   data() {
@@ -175,6 +178,7 @@ export default {
     this.$interval = setInterval(()=>{
 			this.refreshTime()
 		}, 700)
+    this.$refs.defilement.setTime(0)
 	},
   unmounted: async function() {
     player.stop()
@@ -208,6 +212,8 @@ export default {
       // console.log(newRoot)
       this.object.rootNote = newRoot
       this.updateScale()
+      this.$refs.defilement.root = newRoot
+      this.$refs.defilement.$forceUpdate()
     },
     async deleteNotesInRange(){
       let result = confirm(`Want to delete all notes from  ${this.min}s to ${this.max}s?`);
@@ -315,7 +321,7 @@ export default {
         synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"	
       }
     },
-    playBtnClick(){
+    async playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
       player.start(this.$options.songForMagenta)
       // console.log(player)
@@ -325,6 +331,7 @@ export default {
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = false
       this.resumeBtnDisabled = true
+      await this.$refs.defilement.moveToTime(this.object2.duration)
     },
     stopBtnClick(){
       this.mergeRecordedAndReset()
@@ -336,6 +343,8 @@ export default {
       this.stopBtnDisabled = true
       this.pauseBtnDisabled = true
       this.resumeBtnDisabled = true
+      this.$refs.defilement.killCurrentAnimation()
+      this.$refs.defilement.setTime(0)
     },
     pauseBtnClick(){
       let smthgHappened = this.mergeRecordedAndReset()
@@ -357,8 +366,9 @@ export default {
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = true
       this.resumeBtnDisabled = false
+      this.$refs.defilement.killCurrentAnimation()
     },
-    resumeBtnClick(){
+    async resumeBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
       player.resume()
       this.playState = player.getPlayState()
@@ -366,6 +376,11 @@ export default {
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = false
       this.resumeBtnDisabled = true
+      await this.$refs.defilement.moveToTime(this.object2.duration)
+    },
+    sliderInput(e){
+      this.$options.lastTimeRel = parseFloat(this.timeValue)
+      this.$refs.defilement.setTime(this.$options.lastTimeRel)
     },
     sliderChange(e){
       // const t = parseFloat(e.target.value)
@@ -380,7 +395,8 @@ export default {
       if (playing) {
         player.pause()
       }
-      player.seekTo(this.timeValue)
+      player.seekTo(this.$options.lastTimeRel)
+      this.$refs.defilement.setTime(this.$options.lastTimeRel)
       if (playing) {
         player.resume()
       }
@@ -440,6 +456,7 @@ export default {
           endTime: o.start + o.duration
         }
       })
+      this.$refs.defilement.notes = this.$options.songForMagenta.notes
       // debugger
       console.log(this.$options.songForMagenta)
     },
