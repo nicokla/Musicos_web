@@ -92,7 +92,7 @@ export default {
       const isDiese = isDieseArray[pitchRelModulo12] ? 1 : 0;
       const colorsArray = [['#A8D6FF', '#0070D5'],
         ['#CAFFC7', '#0AB702'],
-        ['#FFBF01', '#FFA502'],
+        ['#DEB887', '#A0522D'],
         ['#FF9393','#B40001']]
       let colorIndex = 0
       if(pitchRel >= 12 && pitchRel < 24){
