@@ -8,46 +8,47 @@
         {{zoomTime}} seconds
       </div>
       
-      <div>Present (0=low, 1=high) : 
+      <div>
+        Present (0=low, 1=high) : 
         <input type="range" v-model="hauteurPresent" :min="0" :max="1" :step="0.05" @input="updateDefilement">
         {{hauteurPresent}}
       </div>
 
-      <div style="margin-top: 30px; margin-bottom: 10px;">
-        <h2>
+      <!-- <div style="margin-top: 30px; margin-bottom: 10px;"> -->
+        <!-- <h2>
           - Play and record music
-        </h2>
+        </h2> -->
 
-        <div>
-          <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
-          <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
-          <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
-          <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
-        </div>
-        
-        <div style="margin-top: 6px;">
-          <span style="margin-top: 5px;"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
-          <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput"> 
-          <span><b id="totalTime">{{ object2.duration }}</b>s</span>
-        </div>
-        
-        <div style="margin-top: 12px;">
-          <input type="checkbox" v-model="isRecording" id="recording"/>
-          <label for="recording" style="ml-2">{{ recordingText }}</label>
-        </div>
-
-        <div style="margin-top: 10px;">
-          <!-- - The note from the playback :
-          <span id=playBackNote>{{currentNotePlayback}}</span>
-          <br> -->
-          - The note you play now :
-          <span id=myNote>{{currentNote}}</span>
-          <br>
-          - Notes display mode :
-          <input type="checkbox" v-model="currentNoteAbsolute" id="currentNoteAbs"/>
-          <label for="currentNoteAbs" style="ml-2">{{ currentNoteAbsoluteText }}</label>
-        </div>
+      <div style="margin-top: 10px;">
+        <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
+        <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
+        <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
+        <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
       </div>
+      
+      <div style="margin-top: 6px;">
+        <span style="margin-top: 5px;"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
+        <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput"> 
+        <span><b id="totalTime">{{ object2.duration }}</b>s</span>
+      </div>
+      
+      <div style="margin-top: 12px;">
+        <input type="checkbox" v-model="isRecording" id="recording"/>
+        <label for="recording" style="ml-2">{{ recordingText }}</label>
+      </div>
+
+      <div style="margin-top: 10px;">
+        <!-- - The note from the playback :
+        <span id=playBackNote>{{currentNotePlayback}}</span>
+        <br> -->
+        - The note you play now :
+        <span id=myNote>{{currentNote}}</span>
+        <br>
+        - Notes display mode :
+        <input type="checkbox" v-model="currentNoteAbsolute" id="currentNoteAbs"/>
+        <label for="currentNoteAbs" style="ml-2">{{ currentNoteAbsoluteText }}</label>
+      </div>
+      <!-- </div> -->
 
       <div style="margin-top: 25px; margin-bottom: 10px;">
         <h2>
