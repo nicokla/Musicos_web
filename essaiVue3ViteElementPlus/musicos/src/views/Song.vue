@@ -255,7 +255,9 @@ export default {
 
       // we delete the notes :
       // console.log('before',this.$options.songForMagenta.notes)
-      this.$options.songForMagenta.notes = this.$options.songForMagenta.notes.filter(note=>!this.isInRange(note)) 
+      this.$options.songForMagenta.notes = this.$options.songForMagenta.notes.filter(note=>!this.isInRange(note))
+      this.$refs.defilement.notes = Array.from(this.$options.songForMagenta.notes)
+
       // console.log('after',this.$options.songForMagenta.notes)
 
       // we restart the player so that the deletions are taken into account
