@@ -564,4 +564,11 @@ label{
 h2{
   margin-bottom:10px;
 }
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .Song{
+    padding-bottom: 5rem;
+  }
+}
 </style>
