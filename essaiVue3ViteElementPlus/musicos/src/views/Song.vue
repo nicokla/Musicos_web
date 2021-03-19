@@ -1,7 +1,10 @@
 <template> 
   <div class="Song paddedContainer">
     <section>
-      <Defilement ref="defilement" :zoomTime="zoomTime" :hauteurPresent="hauteurPresent"></Defilement>
+      <Defilement ref="defilement" 
+        :zoomTime="zoomTime" 
+        :hauteurPresent="hauteurPresent"
+        :root="object.rootNote"></Defilement>
       
       <div style="margin-top: 10px;">Zoom : 
         <input type="range" v-model="zoomTime" :min="1" :max="20" :step="0.5">
@@ -229,8 +232,9 @@ export default {
       // console.log(newRoot)
       this.object.rootNote = newRoot
       this.updateScale()
-      this.$refs.defilement.root = newRoot
-      this.$refs.defilement.$forceUpdate()
+      // don't need those two lines (props are reactive):
+      // this.$refs.defilement.root = newRoot
+      // this.$refs.defilement.$forceUpdate()
     },
     async deleteNotesInRange(){
       let result = confirm(`Want to delete all notes from  ${this.min}s to ${this.max}s?`);
@@ -484,7 +488,7 @@ export default {
           endTime: o.start + o.duration
         }
       })
-      this.$refs.defilement.notes = this.$options.songForMagenta.notes
+      this.$refs.defilement.notes = Array.from(this.$options.songForMagenta.notes)
       // debugger
       console.log(this.$options.songForMagenta)
     },

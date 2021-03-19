@@ -55,6 +55,10 @@ export default {
     hauteurPresent: {
       type: Number,
       default: 0
+    },
+    root: {
+      type: Number,
+      default: 48
     }
   },
   data() {
@@ -73,7 +77,7 @@ export default {
         // {pitch:5,startTime:7},
         // {pitch:10,startTime:8},
       ],
-      root: 48,
+      // root: 48,
       currentTime: 0,
     }
   },
