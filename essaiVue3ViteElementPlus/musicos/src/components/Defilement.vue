@@ -1,6 +1,6 @@
 
 <template>
-  <svg version="1.1" id="theSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="500px" height="500px" viewBox="0 0 700 700"     xml:space="preserve" style="background-color: black;">
+  <svg version="1.1" id="theSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 700 700"     xml:space="preserve" style="background-color: black;">
       <!-- <rect y="0" fill="#534741" stroke="#000000" stroke-miterlimit="10" width="250" height="250"/>
       <text transform="matrix(1 0 0 1 101.5219 140.1159)" font-family="'MyriadPro-Regular'" font-size="72px">1</text> -->
       <ellipse v-for="note in notes" :cx="getColonne(note.pitch) * 100 + 50" :cy="getHauteurFromTime(note.startTime)" rx="50" ry="25" style="fill:yellow;stroke:purple;stroke-width:2" />
@@ -47,11 +47,21 @@
 import {gsap} from 'gsap'
 
 export default {
+  props:{
+    zoomTime: {
+      type: Number,
+      default: 6
+    },
+    hauteurPresent: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       svg: document.querySelector('svg'),
-      totalTime: 6,
-      hauteurPresent: 0, // 0 => modeLecture / 1 => modeEcriture
+      // zoomTime: 6,
+      // hauteurPresent: 0, // 0 => modeLecture / 1 => modeEcriture
       notes: [
         // {pitch:0,startTime:0.5},
         // {pitch:5,startTime:1},
@@ -76,10 +86,10 @@ export default {
       return liste[(pitch - this.root + 1200) % 12]
     },
     getTimeFromHauteur(hauteur){
-      return -(hauteur / 700) * this.totalTime
+      return -(hauteur / 700) * this.zoomTime
     },
     getHauteurFromTime(time) {
-      return 700 * (-(time/this.totalTime))
+      return 700 * (-(time/this.zoomTime))
     },
     // ellipse(time, colonne){
     //   return `<ellipse cx="${colonne * 100 + 50}" cy="${this.getHauteurFromTime(time)}" rx="50" ry="25" style="fill:yellow;stroke:purple;stroke-width:2" />`
@@ -89,7 +99,7 @@ export default {
     //   this.svg.insertAdjacentHTML("beforeend", this.ellipse(time, colonne)); 
     // },
     getHauteurCameraFromHauteurPresent(hauteurNow, time) {
-      return (-700 + 700*hauteurNow - 700/this.totalTime*time)
+      return (-700 + 700*hauteurNow - 700/this.zoomTime*time)
     },
     setTime(time){
       this.killCurrentAnimation()

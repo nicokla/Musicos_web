@@ -1,8 +1,19 @@
-<template> <div class="Song paddedContainer">
+<template> 
+  <div class="Song paddedContainer">
     <section>
-      <Defilement ref="defilement"></Defilement>
+      <Defilement ref="defilement" :zoomTime="zoomTime" :hauteurPresent="hauteurPresent"></Defilement>
+      
+      <div style="margin-top: 10px;">Zoom : 
+        <input type="range" v-model="zoomTime" :min="1" :max="20" :step="0.5">
+        {{zoomTime}} seconds
+      </div>
+      
+      <div>Present (0=low, 1=high) : 
+        <input type="range" v-model="hauteurPresent" :min="0" :max="1" :step="0.05" @input="updateDefilement">
+        {{hauteurPresent}}
+      </div>
 
-      <div style="margin-top: 10px; margin-bottom: 10px;">
+      <div style="margin-top: 30px; margin-bottom: 10px;">
         <h2>
           - Play and record music
         </h2>
@@ -96,6 +107,8 @@ import Defilement from '../components/Defilement.vue';
 export default {
   data() {
     return {
+      hauteurPresent: 0,
+      zoomTime: 6,
       wasPlaying: false,
       currentNoteAbsolute: true,
       currentNote: '',
@@ -208,6 +221,9 @@ export default {
     Defilement
   },
   methods:{
+    updateDefilement(){
+      this.$refs.defilement.setTime(this.timeValue)
+    },
     async theRootChanged(newRoot){
       // console.log(newRoot)
       this.object.rootNote = newRoot
@@ -278,12 +294,12 @@ export default {
     mergeRecordedAndReset(){
       if (this.$options.recordedNotes.length === 0)
         return false // nothing happened
-      var decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
+      // const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
       this.$options.recordedNotes = this.$options.recordedNotes.map((e)=>{
         return {
           pitch: e.pitch,
-          startTime: e.startTime + decalage,
-          endTime: e.endTime + decalage
+          startTime: e.startTime, // + decalage,
+          endTime: e.endTime //+ decalage
         }
       })
       mergeByStartTime(this.$options.songForMagenta.notes, this.$options.recordedNotes)
@@ -297,11 +313,12 @@ export default {
       let midiNote = midiDictionnary[e.code]
       fired[midiNote] = false
       synth.triggerRelease(Tone.Midi(midiNote))
+      const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
       if(this.isRecording){
         this.$options.recordedNotes.push({
           pitch: midiNote,
-          startTime: startTimes[midiNote],
-          endTime: Date.now()/1000
+          startTime: startTimes[midiNote] + decalage,
+          endTime: Date.now()/1000 + decalage
         })
       }
     },
@@ -309,7 +326,8 @@ export default {
       let midiNote = midiDictionnary[e.code]
       if(!fired[midiNote]) {
         fired[midiNote] = true
-        startTimes[midiNote] = Date.now()/1000
+        const now = Date.now()/1000
+        startTimes[midiNote] = now
         // this.currentNote = midiDictionnaryName[e.code]
         if(this.currentNoteAbsolute){
           this.currentNote = midiDictionnaryName[e.code]
@@ -319,6 +337,8 @@ export default {
         // myNoteDom.innerText = midiDictionnaryName[e.code]
         // console.log('prout prout' + midiDictionnaryName[e.code])
         synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"	
+        const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
+        this.$refs.defilement.notes.push({pitch: midiNote, startTime: now + decalage})
       }
     },
     async playBtnClick(){
@@ -516,6 +536,10 @@ export default {
    max-width:70px;
    display: inline-block;
 } */
+
+.Song{
+  background-color: #FEF3C7;
+}
 
 input {
   vertical-align:middle;
