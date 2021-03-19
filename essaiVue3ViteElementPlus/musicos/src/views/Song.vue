@@ -96,6 +96,7 @@ import Defilement from '../components/Defilement.vue';
 export default {
   data() {
     return {
+      wasPlaying: false,
       currentNoteAbsolute: true,
       currentNote: '',
       min: 0,
@@ -140,8 +141,6 @@ export default {
       resumeBtnDisabled: true,
       pauseBtnDisabled: true,
       player: {},
-      playState: "stopped",
-      // totalTime: 60,
       likeStatus: '',
       unsubscribe: {}
     }
@@ -205,7 +204,8 @@ export default {
   },
   components:{
     'child-component':DoubleRangeSlider,
-    PlusMinus
+    PlusMinus,
+    Defilement
   },
   methods:{
     async theRootChanged(newRoot){
@@ -243,7 +243,7 @@ export default {
       player.seekTo(this.timeValue)
 
       // we notice the ui that player is in pause state
-      this.playState = player.getPlayState()
+      // this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = true
@@ -326,7 +326,7 @@ export default {
       player.start(this.$options.songForMagenta)
       // console.log(player)
       // this.totalTime = this.$options.songForMagenta.totalTime
-      this.playState = player.getPlayState()
+      // this.playState = player.getPlayState()
       this.playBtnDisabled = true
       this.stopBtnDisabled = false
       this.pauseBtnDisabled = false
@@ -338,7 +338,7 @@ export default {
       player.stop()
       this.$options.lastTimeRel = 0
       this.timeValue = 0
-      this.playState = player.getPlayState()
+      // this.playState = player.getPlayState()
       this.playBtnDisabled = false
       this.stopBtnDisabled = true
       this.pauseBtnDisabled = true
@@ -346,72 +346,79 @@ export default {
       this.$refs.defilement.killCurrentAnimation()
       this.$refs.defilement.setTime(0)
     },
-    pauseBtnClick(){
+    pauseBtnClick(show=true, updateTimeRelAndCo=true){
       let smthgHappened = this.mergeRecordedAndReset()
       let lastTimeAbsNew = Date.now()/1000
       if(smthgHappened)
         player.stop()
       else
         player.pause()
-      this.$options.lastTimeRel += lastTimeAbsNew - this.$options.lastTimeAbs
-      this.$options.lastTimeAbs = lastTimeAbsNew
-      this.timeValue = this.$options.lastTimeRel
+      if(updateTimeRelAndCo){
+        this.$options.lastTimeRel += lastTimeAbsNew - this.$options.lastTimeAbs
+        this.$options.lastTimeAbs = lastTimeAbsNew
+        this.timeValue = this.$options.lastTimeRel
+      }
       if (smthgHappened){ // we reload the songForMagenta
         player.start(this.$options.songForMagenta)
         player.pause()
         player.seekTo(this.timeValue)
       }
-      this.playState = player.getPlayState()
-      this.playBtnDisabled = true
-      this.stopBtnDisabled = false
-      this.pauseBtnDisabled = true
-      this.resumeBtnDisabled = false
+      // this.playState = player.getPlayState()
+      if(show){
+        this.playBtnDisabled = true
+        this.stopBtnDisabled = false
+        this.pauseBtnDisabled = true
+        this.resumeBtnDisabled = false
+      }
       this.$refs.defilement.killCurrentAnimation()
     },
-    async resumeBtnClick(){
-      this.$options.lastTimeAbs = Date.now()/1000
+    async resumeBtnClick(show=true, updateTimeRelAndCo=true){
+      if(updateTimeRelAndCo){
+        this.$options.lastTimeAbs = Date.now()/1000
+      }
       player.resume()
-      this.playState = player.getPlayState()
-      this.playBtnDisabled = true
-      this.stopBtnDisabled = false
-      this.pauseBtnDisabled = false
-      this.resumeBtnDisabled = true
+      // this.playState = player.getPlayState()
+      if(show){
+        this.playBtnDisabled = true
+        this.stopBtnDisabled = false
+        this.pauseBtnDisabled = false
+        this.resumeBtnDisabled = true
+      }
       await this.$refs.defilement.moveToTime(this.object2.duration)
     },
     sliderInput(e){
-      this.$options.lastTimeRel = parseFloat(this.timeValue)
-      this.$refs.defilement.setTime(this.$options.lastTimeRel)
-    },
-    sliderChange(e){
-      // const t = parseFloat(e.target.value)
-      // this.timeValue = t
-      this.$options.lastTimeRel = parseFloat(this.timeValue)
-      this.$options.lastTimeAbs = Date.now() / 1000
-      // currentTime.textContent = t.toFixed(1)
-
-      // You don't _have_ to pause and resume the context, but it makes
-      // the UI jump around less.
       const playing = (player.getPlayState() === 'started')
+      console.log(player.getPlayState())
+      // this.$options.lastTimeRel = parseFloat(this.timeValue)
       if (playing) {
+        this.wasPlaying = playing
         player.pause()
       }
+      // }
+      this.$refs.defilement.setTime(parseFloat(this.timeValue))
+    },
+    sliderChange(e){
+      this.pauseBtnClick(false, false) // recording is done here
+
+      this.$options.lastTimeRel = parseFloat(this.timeValue)
+      this.$options.lastTimeAbs = Date.now() / 1000
       player.seekTo(this.$options.lastTimeRel)
       this.$refs.defilement.setTime(this.$options.lastTimeRel)
-      if (playing) {
-        player.resume()
+
+      if (this.wasPlaying) {
+        this.resumeBtnClick(false, false)
       }
+      this.wasPlaying = false
     },
-    // updateTimeValue(e){
-    //   // const t = parseFloat(e.target.value)
-    //   // this.timeValue = t
-    //   // console.log(this.timeValue)
-    // },
     refreshTime(){
-      if(this.playState !== 'started') // "started", "stopped", or "paused"
+      console.log('refresh', player.getPlayState())
+      if(player.getPlayState() !== 'started') // "started", "stopped", or "paused"
         return;
-      this.timeValue = (parseFloat(this.$options.lastTimeRel)
+      else{
+        this.timeValue = (parseFloat(this.$options.lastTimeRel)
                          + Date.now()/1000 - 
                          parseFloat(this.$options.lastTimeAbs))
+      }
     },
     async saveNotes(){
       var storage = firebase.storage();
