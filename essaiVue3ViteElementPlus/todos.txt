@@ -1,11 +1,9 @@
 
 - done in iOS version, et important:
-svg defilement integrer
+boutons smartphone play
+import song to my songs
 youtube search
 youtube play video
-defilement: haut/bas/moyen
-import song
-boutons smartphone play
 
 - not done in iOS version, et important:
 export song to midi file
@@ -14,13 +12,13 @@ default scales
 delete account
 
 - not done in iOS version, et pas tres important
+cancel all changes (in a song)
 spotify
 jouer depuis piano keyboard
 payment : stripe ou braintree
 ssr : nuxt ou laravel
 connect: google, facebook
 zones scales/chords
-zoom defilement
 defilements : display alternatifs
 import midi file, track (or all tracks, merged) to song
 
