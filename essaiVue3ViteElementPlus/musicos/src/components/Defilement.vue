@@ -49,6 +49,7 @@
 // https://greensock.com/docs/v3/GSAP/gsap.timeline()
 // https://greensock.com/docs/v3/GSAP/Timeline/kill()
 import {gsap} from 'gsap'
+import {getColor} from '../tone/tone.js'
 
 export default {
   props:{
@@ -94,28 +95,8 @@ export default {
     }
   },
   methods:{
-    getColor(pitch, root){
-      const pitchRel = pitch - root
-      const pitchRelModulo12 = (pitch - root + 1200) % 12
-      const isDieseArray = [false, true, false, true, false, false, true, false, true, false, true, false]
-      const isDiese = isDieseArray[pitchRelModulo12] ? 1 : 0;
-      const colorsArray = [['#A8D6FF', '#0070D5'],
-        ['#CAFFC7', '#0AB702'],
-        ['#DEB887', '#A0522D'],
-        ['#FF9393','#B40001']]
-      let colorIndex = 0
-      if(pitchRel >= 12 && pitchRel < 24){
-        colorIndex = 1
-      } else if(pitchRel >= 24 && pitchRel < 36){
-        colorIndex = 2
-      } else if (pitchRel >= 36) {
-        colorIndex = 3
-      }
-      return colorsArray[colorIndex][isDiese]
-    },
     getEllipseStyle(pitch){
-      //
-      return `fill:${this.getColor(pitch, this.root)};stroke:purple;stroke-width:2;`
+      return `fill:${getColor(pitch, this.root)};stroke:purple;stroke-width:2;`
     },
     getColonne(pitch){
       let liste = [0,1,1,2,2,3,4,4,5,5,6,6]

@@ -6,6 +6,32 @@
         :hauteurPresent="hauteurPresent"
         :root="object.rootNote"></Defilement>
       
+      <!-- 
+        touchstart touchend
+        mousedown mouseup
+      -->
+      <div v-if="isTouchDevice()" class="flex flex-col flex-start">
+        <div class="myContainer">
+          <div v-for="note in scaleIntegers" class="myElement" @touchstart="actionButtonDown(note + object.rootNote + 24)" @touchend="actionButtonUp(note + object.rootNote + 24)"
+          :style="getStyle(note + object.rootNote + 24)">
+            {{$options.noteNames[note]}}
+          </div>
+        </div>
+        <div class="myContainer">
+          <div v-for="note in scaleIntegers" class="myElement" @touchstart="actionButtonDown(note + object.rootNote + 12)" @touchend="actionButtonUp(note + object.rootNote + 12)"
+          :style="getStyle(note + object.rootNote + 12)">
+            {{$options.noteNames[note]}}
+          </div>
+        </div>
+        <div class="myContainer">
+          <div v-for="note in scaleIntegers" class="myElement" @touchstart="actionButtonDown(note + object.rootNote)" @touchend="actionButtonUp(note + object.rootNote)"
+          :style="getStyle(note + object.rootNote)">
+            {{$options.noteNames[note]}}
+          </div>
+        </div>
+      </div>
+      
+
       <div style="margin-top: 10px;">Zoom : 
         <input type="range" v-model="zoomTime" :min="1" :max="20" :step="0.5">
         {{zoomTime}} seconds
@@ -35,7 +61,7 @@
         <span><b id="currentTime">{{ fixedTimeValue }}</b>s / </span>
         <span><b id="totalTime">{{ object2.duration }}</b>s</span>
       </div>
-      
+
       <div style="margin-top: 12px;">
         <input type="checkbox" v-model="isRecording" id="recording"/>
         <label for="recording" style="ml-2">{{ recordingText }}</label>
@@ -61,8 +87,8 @@
 
         <div class="flex-row">          
             <!--  :checked="b" v-model="listeBool[index]"" -->
-            <span v-for="(b, index) in object.chordsRoots" class="mr-2">
-              <input type="checkbox" v-model="object.chordsRoots[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
+            <span v-for="(b, index) in object.scale" class="mr-2">
+              <input type="checkbox" v-model="object.scale[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
               <label 
               :for="`checkbox-${index}`" >{{$options.noteNames[index]}}</label>
             </span>
@@ -105,7 +131,8 @@ import {player} from '../magenta/magenta'
 import {synth, keyDownFunction, mergeByStartTime, midiDictionnary, 
         startTimes, fired, Tone, midiDictionnaryNameRelative,
         prepare_midiDictionnary, midiDictionnaryName,
-        scaleIntegersToBooleans, scaleBooleansToInteger} from '../tone/tone'
+        scaleIntegersToBooleans, scaleBooleansToInteger,
+        getColor} from '../tone/tone'
 import PlusMinus from '../components/PlusMinus.vue';
 import Defilement from '../components/Defilement.vue';
 
@@ -136,7 +163,7 @@ export default {
         ],
         "notesAccompagnement":[],
         "rootNote":48,
-        "scale":[true,true,true,true,true,true,true,true,true,true,true,true],
+        "scale":[true,false,true,false,true,true,false,true,false,true,false,true],
         "showChords":0,
         "volumePlayer":100,
         "volumeRecording":90,
@@ -226,6 +253,22 @@ export default {
     Defilement
   },
   methods:{
+    getStyle(note){
+      return `background-color:${getColor(note, this.object.rootNote)};`
+    },
+    actionButtonDown(note){
+      // synth.triggerAttack(Tone.Midi('C4'))
+      this.attackNote(note)
+    },
+    actionButtonUp(note){
+      // synth.triggerRelease(Tone.Midi('C4'))
+      this.releaseNote(note)
+    },
+    isTouchDevice(){
+      return (('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        (navigator.msMaxTouchPoints > 0));
+    },
     updateDefilement(){
       this.$refs.defilement.setTime(this.timeValue)
     },
@@ -279,8 +322,8 @@ export default {
     },
     async updateScale(){
       console.log('root note : ',this.object.rootNote)
-      console.log('scale : ', this.object.chordsRoots)
-      prepare_midiDictionnary(scaleBooleansToInteger(this.object.chordsRoots), this.object.rootNote)
+      console.log('scale : ', this.object.scale)
+      prepare_midiDictionnary(scaleBooleansToInteger(this.object.scale), this.object.rootNote)
     },
     async like(){
       let myId = getCurrentUser().uid
@@ -315,10 +358,8 @@ export default {
       this.$options.recordedNotes = []
       return true
     },
-    keyUpFunctionRecord(e){
-      console.log('heho')
+    releaseNote(midiNote){
       this.currentNote = ''
-      let midiNote = midiDictionnary[e.code]
       fired[midiNote] = false
       synth.triggerRelease(Tone.Midi(midiNote))
       const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
@@ -330,26 +371,33 @@ export default {
         })
       }
     },
-    keyDownFunctionShow(e){
+    keyUpFunctionRecord(e){
       let midiNote = midiDictionnary[e.code]
+      this.releaseNote(midiNote)
+    },
+    attackNote(midiNote){
       if(!fired[midiNote]) {
         fired[midiNote] = true
         const now = Date.now()/1000
         startTimes[midiNote] = now
-        // this.currentNote = midiDictionnaryName[e.code]
+        // this.currentNote = midiDictionnaryName[midiNote]
         if(this.currentNoteAbsolute){
-          this.currentNote = midiDictionnaryName[e.code]
+          this.currentNote = midiDictionnaryName[midiNote]
         } else {
-          this.currentNote = midiDictionnaryNameRelative[e.code]
+          this.currentNote = midiDictionnaryNameRelative[midiNote]
         }
-        // myNoteDom.innerText = midiDictionnaryName[e.code]
-        // console.log('prout prout' + midiDictionnaryName[e.code])
+        // myNoteDom.innerText = midiDictionnaryName[midiNote]
+        // console.log('prout prout' + midiDictionnaryName[midiNote])
         synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"
         if(this.isRecording){
           const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
           this.$refs.defilement.notes.push({pitch: midiNote, startTime: now + decalage})
         }
       }
+    },
+    keyDownFunctionShow(e){
+      let midiNote = midiDictionnary[e.code]
+      this.attackNote(midiNote)
     },
     async playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
@@ -517,6 +565,9 @@ export default {
     }
   },
   computed: {
+    scaleIntegers() {
+      return scaleBooleansToInteger(this.object.scale)
+    },
     fixedTimeValue(){
       return parseFloat(this.timeValue).toFixed(1)
     },
@@ -573,5 +624,59 @@ h2{
   .Song{
     padding-bottom: 5rem;
   }
+}
+
+
+
+.myContainer{
+  /* height: 100%;
+  width: 100%; */
+  /* padding-left: 1rem;
+  padding-right: 1rem; */
+  flex-flow: column;
+  flex: 1 1 auto;
+  /* overflow-y: auto; */
+  /* margin: 0.2cm; */
+	display: flex;
+  flex-direction:row;
+  flex-wrap:nowrap;
+	/* flex-flow: row wrap; */
+	justify-content:stretch;
+  align-items:stretch;
+  align-content:stretch;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.myElement{
+  flex-grow: 1;
+  flex-shrink: 1;
+  /* flex-basis: 0.333; */
+  /* flex: 0 0 0.333; */
+  /* width: 80%; */
+  /* height: 1cm; */
+  line-height: 1cm;
+
+  /* margin-top: 4px;
+  margin-bottom: 4px; */
+  /* margin-right: 2mm;
+  margin-left: 2mm; */
+	padding: 10px;
+
+	opacity: 1;
+	/* cursor: pointer; */
+	background-color: #ffd6a7;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	color: rgb(0, 0, 0);
+	font-size: 24px;
+	text-align: center;
+  /* vertical-align: center; */
+
+	display: flex;
+  flex-direction:column;
+	justify-content:center;
 }
 </style>

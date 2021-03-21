@@ -138,3 +138,12 @@ GET https://youtube.googleapis.com/youtube/v3/search?type=video&q=soccer&maxResu
 GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=svOaII_HOOU&id=uKWNAe3b3EI&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
 
 
+------------------------------------
+
+https://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-a-touch-screen-device-using-javascript
+
+function isTouchDevice() {
+  return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0));
+}

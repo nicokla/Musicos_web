@@ -141,9 +141,29 @@ function scaleBooleansToInteger(listeBool){
 
 // prepare_midiDictionnary([0,2,3,5,7,8,10], 48)
 
+let getColor = function(pitch, root){
+  const pitchRel = pitch - root
+  const pitchRelModulo12 = (pitch - root + 1200) % 12
+  const isDieseArray = [false, true, false, true, false, false, true, false, true, false, true, false]
+  const isDiese = isDieseArray[pitchRelModulo12] ? 1 : 0;
+  const colorsArray = [['#A8D6FF', '#0070D5'],
+    ['#CAFFC7', '#0AB702'],
+    ['#DEB887', '#A0522D'],
+    ['#FF9393','#B40001']]
+  let colorIndex = 0
+  if(pitchRel >= 12 && pitchRel < 24){
+    colorIndex = 1
+  } else if(pitchRel >= 24 && pitchRel < 36){
+    colorIndex = 2
+  } else if (pitchRel >= 36) {
+    colorIndex = 3
+  }
+  return colorsArray[colorIndex][isDiese]
+}
+
 export  {
           Tone, synth, keyDownFunction, keyUpFunction, 
           midiDictionnary, startTimes, fired, mergeByStartTime,
           prepare_midiDictionnary, scaleIntegersToBooleans, scaleBooleansToInteger,
-          midiDictionnaryName, midiDictionnaryNameRelative
+          midiDictionnaryName, midiDictionnaryNameRelative, getColor
         }
