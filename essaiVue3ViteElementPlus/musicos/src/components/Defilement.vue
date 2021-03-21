@@ -1,9 +1,13 @@
 
 <template>
-  <svg version="1.1" id="theSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 700 700"     xml:space="preserve" style="background-color: black;">
-      <!-- <rect y="0" fill="#534741" stroke="#000000" stroke-miterlimit="10" width="250" height="250"/>
-      <text transform="matrix(1 0 0 1 101.5219 140.1159)" font-family="'MyriadPro-Regular'" font-size="72px">1</text> -->
-      <ellipse v-for="note in notes" :cx="getColonne(note.pitch) * 100 + 50" :cy="getHauteurFromTime(note.startTime)" rx="50" ry="25" :style="getEllipseStyle(note.pitch)" />
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 700 700"     xml:space="preserve" style="background-color: black;">
+      <svg  x="0" y="0" width="100%" height="100%" id="theSVG">
+        <ellipse v-for="note in notes" :cx="getColonne(note.pitch) * 100 + 50" :cy="getHauteurFromTime(note.startTime)" rx="50" ry="25" :style="getEllipseStyle(note.pitch)" />
+      </svg>                                                  
+      <svg x="0" y="0" width="100%" height="100%">
+        <line id="line" x1="0" x2="700" :y1="hauteurSVGPresent" :y2="hauteurSVGPresent" stroke="white" fill="transparent" stroke-width="3"/>
+      </svg>
+
   </svg>  
   <!-- <h1>{{ msg }}</h1>
 
@@ -63,7 +67,7 @@ export default {
   },
   data() {
     return {
-      svg: document.querySelector('svg'),
+      // svg: document.querySelector('#theSVG'),
       // zoomTime: 6,
       // hauteurPresent: 0, // 0 => modeLecture / 1 => modeEcriture
       notes: [
@@ -83,6 +87,11 @@ export default {
   },
   tl: gsap.timeline({repeat: 0}),
   mounted: async function (){
+  },
+  computed:{
+    hauteurSVGPresent(){
+      return 700*(1-this.hauteurPresent)
+    }
   },
   methods:{
     getColor(pitch, root){
