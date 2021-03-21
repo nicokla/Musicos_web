@@ -30,8 +30,9 @@
       </div>
       
       <div style="margin-top: 6px;">
-        <span style="margin-top: 5px;"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
-        <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput"> 
+        <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput" style="width:70%;"> 
+        <br>
+        <span><b id="currentTime">{{ fixedTimeValue }}</b>s / </span>
         <span><b id="totalTime">{{ object2.duration }}</b>s</span>
       </div>
       
