@@ -111,7 +111,7 @@ import Defilement from '../components/Defilement.vue';
 export default {
   data() {
     return {
-      hauteurPresent: 0,
+      hauteurPresent: 0.5,
       zoomTime: 6,
       wasPlaying: false,
       currentNoteAbsolute: true,
@@ -343,9 +343,11 @@ export default {
         }
         // myNoteDom.innerText = midiDictionnaryName[e.code]
         // console.log('prout prout' + midiDictionnaryName[e.code])
-        synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"	
-        const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
-        this.$refs.defilement.notes.push({pitch: midiNote, startTime: now + decalage})
+        synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"
+        if(this.isRecording){
+          const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
+          this.$refs.defilement.notes.push({pitch: midiNote, startTime: now + decalage})
+        }
       }
     },
     async playBtnClick(){
