@@ -1,6 +1,33 @@
 
+- login google
+- import song
+
+- create a song with video (search ytb, etc)
+- youtube play (load, play, pause, setTime)
+- try it page
+- select a note/delete selected notes/unselect all
+
+- volume ytb
+- play with real piano keyboard
+- export to midi
+- jouer au ralenti ?? cf magenta, animation, ytb (ytb : que 0.25, 0.5, 0.75, 1)
+
+chgt root / gammes en cours de route
+gammes pre pretes
+spotify login, search, play
+soundcloud search, play
+login facebook
+autres displays alternatifs du defilement
+pwa
+
+
+
+
+------------------------
+
+OLD TODOS
+
 - done in iOS version, et important:
-boutons smartphone play
 youtube search
 youtube play video
 import song to my songs
