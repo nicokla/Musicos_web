@@ -1,16 +1,19 @@
 <template> 
   <div class="Song paddedContainer">
     <section>
-      <Defilement ref="defilement" 
-        :zoomTime="zoomTime" 
-        :hauteurPresent="hauteurPresent"
-        :root="object.rootNote"></Defilement>
+      <div style="text-align: center;">
+        <Defilement ref="defilement" 
+          :zoomTime="zoomTime" 
+          :hauteurPresent="hauteurPresent"
+          :root="object.rootNote"></Defilement>
+      </div>
       
       <!-- 
         touchstart touchend
         mousedown mouseup
       -->
-      <div v-if="isTouchDevice()" class="flex flex-col flex-start">
+      <div v-if="isTouchDevice()" class="flex flex-col flex-start" 
+        style="margin-top:10px;">
         <div class="myContainer">
           <div v-for="note in scaleIntegers" class="myElement" @touchstart="actionButtonDown(note + object.rootNote + 24)" @touchend="actionButtonUp(note + object.rootNote + 24)"
           :style="getStyle(note + object.rootNote + 24)">
@@ -106,7 +109,7 @@
 
         <DoubleRangeSlider class="mb-1" ref="childComponent" :min="min" :max="max" @update:min="value => min = value" @update:max="value => max = value" :minThreshold="0" :maxThreshold="object2.duration"></DoubleRangeSlider>
         
-        <button class="button mt-0" @click="deleteNotesInRange">Clear notes in the interval ({{min}} seconds to {{max}} seconds).</button>
+        <button class="button mt-0" @click="deleteNotesInRange">Clear notes (from {{min}} seconds to {{max}} seconds).</button>
       </div>
 
       <div style="margin-top: 25px; margin-bottom: 10px;">
@@ -253,8 +256,14 @@ export default {
     Defilement
   },
   methods:{
+    getSize(){
+      const a = this.scaleIntegers.length
+      const num = 5 * (7 / a)
+      return num
+    },
     getStyle(note){
       return `background-color:${getColor(note, this.object.rootNote)};`
+      // font-size: ${this.getSize()}vw;
     },
     actionButtonDown(note){
       // synth.triggerAttack(Tone.Midi('C4'))
@@ -651,8 +660,16 @@ h2{
 }
 
 .myElement{
-  flex-grow: 1;
-  flex-shrink: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-touch-callout : none;
+
+  /* flex-grow: 1;
+  flex-shrink: 1; */
+  flex: 1 1 0px;
   /* flex-basis: 0.333; */
   /* flex: 0 0 0.333; */
   /* width: 80%; */
@@ -663,7 +680,8 @@ h2{
   margin-bottom: 4px; */
   /* margin-right: 2mm;
   margin-left: 2mm; */
-	padding: 10px;
+	padding-bottom: 16px;
+  padding-top: 16px;
 
 	opacity: 1;
 	/* cursor: pointer; */
@@ -671,12 +689,14 @@ h2{
 	border: 1px solid #000000;
 	border-radius: 5px;
 	color: rgb(0, 0, 0);
-	font-size: 24px;
 	text-align: center;
   /* vertical-align: center; */
 
 	display: flex;
   flex-direction:column;
 	justify-content:center;
+
+  font-size: 24px;
+  /* font-size: 4vw; */
 }
 </style>

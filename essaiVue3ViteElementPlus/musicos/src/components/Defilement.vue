@@ -1,6 +1,6 @@
 
 <template>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 700 700"     xml:space="preserve" style="background-color: black;">
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 700 700"     xml:space="preserve" style="background-color: black; display: inline-block;">
       <svg  x="0" y="0" width="100%" height="100%" id="theSVG">
         <ellipse v-for="note in notes" :cx="getColonne(note.pitch) * 100 + 50" :cy="getHauteurFromTime(note.startTime)" rx="50" ry="25" :style="getEllipseStyle(note.pitch)" />
       </svg>                                                  
@@ -82,11 +82,15 @@ export default {
         // {pitch:5,startTime:7},
         // {pitch:10,startTime:8},
       ],
+      // mysvg:document.querySelector("#theSVG"),
       // root: 48,
       currentTime: 0,
     }
   },
   tl: gsap.timeline({repeat: 0}),
+  created: async function(){
+    // this.mysvg = document.querySelector("#theSVG")
+  },
   mounted: async function (){
   },
   computed:{
@@ -121,7 +125,7 @@ export default {
     setTime(time){
       this.killCurrentAnimation()
       // this.$options.tl = gsap.timeline({repeat: 0})
-      gsap.set("#theSVG",{
+      gsap.set('#theSVG',{
         attr:{
           viewBox:`0 ${this.getHauteurCameraFromHauteurPresent(this.hauteurPresent, time)} 700 700`
         }
@@ -131,7 +135,7 @@ export default {
     async moveToTime(time){
       this.killCurrentAnimation()
       this.$options.tl = gsap.timeline({repeat: 0})
-      await this.$options.tl.to("#theSVG",{
+      await this.$options.tl.to('#theSVG',{
         attr:{
           viewBox:`0 ${this.getHauteurCameraFromHauteurPresent(this.hauteurPresent, time)} 700 700`
         },
