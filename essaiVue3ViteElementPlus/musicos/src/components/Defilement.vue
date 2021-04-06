@@ -107,7 +107,7 @@ export default {
       return liste[(pitch - this.root + 1200) % 12]
     },
     getTimeFromHauteur(hauteur){
-      return -(hauteur / 700) * this.zoomTime
+      return (- (hauteur / 700)) * this.zoomTime
     },
     getHauteurFromTime(time) {
       return 700 * (-(time/this.zoomTime))
@@ -119,8 +119,8 @@ export default {
     //   // afterbegin beforeend etc.
     //   this.svg.insertAdjacentHTML("beforeend", this.ellipse(time, colonne)); 
     // },
-    getHauteurCameraFromHauteurPresent(hauteurNow, time) {
-      return (-700 + 700*hauteurNow - 700/this.zoomTime*time)
+    getHauteurCameraFromHauteurPresent(hauteurPresent, time) {
+      return 700 * (- time/this.zoomTime - (1 - hauteurPresent))
     },
     setTime(time){
       this.killCurrentAnimation()
@@ -162,6 +162,11 @@ export default {
     //     this.$options.tl.pause()
     //   }
     // }
+  },
+  watch:{
+    zoomTime: function (val){
+      this.setTime(this.currentTime)
+    }
   }
 }
 

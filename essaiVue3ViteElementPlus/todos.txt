@@ -1,4 +1,96 @@
 
+
+musicos pas code
+
+- facebook groups musicians / tech / impro / jazz
+- journaux de musique (en ligne, en librairie, etc)
+Diapason, Classica, La lettre du Musicien, autres pays, blues, jazz, classique, etc.
+- connaissances : luc seabright, supaero gars guitare, papa, amis papa (sophie, anne vanhems, luca, claudine), marie jose perisse, copains maman musiciens, michael korchia, instagram musician israel, soeur robin, antony mancini, augustin, ...
+- youtube music influencers
+- instagram music/young influencers
+
+
+--------
+musicos code
+
+- create a song with video (search ytb, display song list)
+- youtube play (load, play, pause, setTime, volume)
+- import song
+
+
+- lecture defaut : a) notes pas jouees (volume notes preenregistré reglable), b) notes pas enregistrées (par defaut), c) present vers le bas (par defaut)
+- bouton record == bouton rouge vs gris
+- or the user does not ... exist (have pwd ???)
+- message : 1) click on the green button to start recording. 2) To play notes, type on your keyboard.
+- separation colonnes visibles / pas visible (visibles mais margin !!)
+- login google
+
+
+- glide and play notes as finger slide on buttons
+- reglages poussés a mettre dans pannel retractable (ou dans modal) "reglages avances"
+- nb de colonnes defilement : 7 fixe, vs nb notes dans gamme (hors gamme = etroit)
+- clavier visible vs invisible activable (touch screen et click meme effet) : si pas smartphone ni tablette, preciser les touches clavier.
+- setup clavier, meme delire que nb de colonnes defilement : doit suivre le nb de colonnes defilement, pour que ça soit aligné (mais on peut le reset separement pour avoir different, exemple 7 pour defilement et #gammes pour clavier)
+- couleurs : foncé = hors gamme, vs foncé = bemol (default)
+- si ordi, lettres qwerty a linterieur des ovales pour savoir quoi jouer (on pourra plus tard changer en azerty, qwertz)
+- user settings / preferences : activé la reglabilité de tel ou tel parametre dans la page song. simple / advanced / custom
+- exemple : notes buttons tjrs visible sur ordi / jamais visible sur ordi / let the user choose
+- read / write : mettre default present bas (0.1) / haut (0.9)
+
+
+
+- status of a song : visible ? or private : share by link only. to do this, pay !!!
+- people can make their songs payante (genre 2$ ?) to import, we get 5, 7, 10, 15, 20% ?
+- unlock skins (payant, genre 1$)
+- premium, a vie genre 35 $, ou abonnement genre 1$/mois
+- trucs payants : stripe
+
+
+- mode garder accord enfoncé avec arpege / avec accord / mode ne pas garder enfoncé
+- modes affichage accord : durée visible
+- modes affichage accord : normal, toute notes visibles, toutes noted visibles avec mise en avant de root de laccord
+- defilement a un rythme qui depend de la rapidité a laquelle joue le musicien ? deep learning
+- loading trop lent ---> pwa ? pb maj ? (cache)
+
+
+- creer modulation à instant t (event midi note zero, ajouté dans le magenta mais pas dans le graphique ; 1) debut modulation ; 2) vecteur gamme ; 3) root / choper de la database, et la sauvegarder bien / modification root ou gamme : laquelle modifier ? i=0; while (i+1)<nb de zones if( debut[i+1] > time ) i++ else return i / et puis finalement, trigger l'event avec magenta (if pitch==0, ...) / modulation visibles par un trait blanc mouvant avec le temps
+- is touchable AND is not computer (condition affichage boutons)
+- youtube, spotify, soundcloud, deezer
+- mode notes inconnues : difficulté (pourcentage notes inconnues, nb de possibilitées), score
+- leaderboard ? only in verified songs section, niveaux normalisés au lieu de genérés
+- mode ralenti (vitesse du temps, 0.75, 0.5, 0.25)
+- nb de likes
+----> classer search par nb de likes (algolia?)
+- par style (jazz, classique, blues, chanson française, rnb, rock, rap)
+----> add this parameter when create song
+----> onglet explore
+- algolia, verifier nb search limited
+- mention original creator (id+name), + last imported(id+name)
+
+
+- try it page
+- select a note/delete selected notes/unselect all
+- play with real piano keyboard
+- export to midi
+- jouer au ralenti ?? cf magenta, animation, ytb (ytb : que 0.25, 0.5, 0.75, 1)
+
+
+chgt root/gamme pendant song (modulation)
+spotify login, search, play
+soundcloud search, play
+login facebook
+autres displays alternatifs du defilement
+pwa
+
+
+
+
+==============================================
+==============================================
+___________________________________________
+
+OLD TODOS 1
+
 - login google
 - import song
 
@@ -23,9 +115,12 @@ pwa
 
 
 
-------------------------
+==============================================
+==============================================
+___________________________________________
 
-OLD TODOS
+OLD TODOS 2
+
 
 - done in iOS version, et important:
 youtube search

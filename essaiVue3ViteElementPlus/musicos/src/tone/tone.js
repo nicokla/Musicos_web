@@ -57,8 +57,8 @@ function prepare_midiDictionnary(scale, root){
 			let note = scale[indexNote % (scale.length)] + 12 * Math.floor(indexNote / scale.length)
       let exactNote = note + (12 * indexLine) + root
 			midiDictionnary[code] = exactNote
-      midiDictionnaryName[code] = getNoteName(exactNote)
-      midiDictionnaryNameRelative[code] = getNoteNameRelative(note)
+      midiDictionnaryName[exactNote] = getNoteName(exactNote)
+      midiDictionnaryNameRelative[exactNote] = getNoteNameRelative(note)
 			indexNote++
 		}
 		indexLine++

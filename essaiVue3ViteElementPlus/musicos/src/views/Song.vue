@@ -7,7 +7,6 @@
           :hauteurPresent="hauteurPresent"
           :root="object.rootNote"></Defilement>
       </div>
-      
       <!-- 
         touchstart touchend
         mousedown mouseup
@@ -35,6 +34,32 @@
       </div>
       
 
+      
+
+      <!-- <div style="margin-top: 30px; margin-bottom: 10px;"> -->
+        <!-- <h2>
+          - Play and record music
+        </h2> -->
+        <!--  class="ml-0 mr-0 flex flex-col justify-start content-center items-stretch mt-4" -->
+      <div class="mt-2">
+        <div class="flex flex-row justify-center">
+          <svg @click="playPauseFunction()" class="play-button " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="true" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="#626262"><path :d="playPauseSvg"/></g></svg>
+        </div>
+        <div class="mt-2 flex flex-row justify-center" style>
+          <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput" style="width:70%;"> 
+          <span class="ml-2"><b id="currentTime">{{ fixedTimeValue }}</b>s / </span>
+          <span><b id="totalTime">{{ object2.duration }}</b>s</span>
+        </div>
+      </div>
+      <div class="flex flex-row" style="margin-top: 10px;">
+        <!-- <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
+        <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
+        <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
+        <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button> -->
+        
+        
+      </div>
+      
       <div style="margin-top: 10px;">Zoom : 
         <input type="range" v-model="zoomTime" :min="1" :max="20" :step="0.5">
         {{zoomTime}} seconds
@@ -44,25 +69,6 @@
         Present (0=low, 1=high) : 
         <input type="range" v-model="hauteurPresent" :min="0" :max="1" :step="0.05" @input="updateDefilement">
         {{hauteurPresent}}
-      </div>
-
-      <!-- <div style="margin-top: 30px; margin-bottom: 10px;"> -->
-        <!-- <h2>
-          - Play and record music
-        </h2> -->
-
-      <div style="margin-top: 10px;">
-        <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
-        <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
-        <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
-        <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button>
-      </div>
-      
-      <div style="margin-top: 6px;">
-        <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput" style="width:70%;"> 
-        <br>
-        <span><b id="currentTime">{{ fixedTimeValue }}</b>s / </span>
-        <span><b id="totalTime">{{ object2.duration }}</b>s</span>
       </div>
 
       <div style="margin-top: 12px;">
@@ -91,7 +97,7 @@
         <div class="flex-row">          
             <!--  :checked="b" v-model="listeBool[index]"" -->
             <span v-for="(b, index) in object.scale" class="mr-2">
-              <input type="checkbox" v-model="object.scale[index]" :id="`checkbox-${index}`" @change="updateScale()" :disabled="index == 0" />
+              <input type="checkbox" v-model="object.scale[index]" :id="`checkbox-${index}`" @change="scaleText = 'Choose scale'; updateScale()" :disabled="index == 0" />
               <label 
               :for="`checkbox-${index}`" >{{$options.noteNames[index]}}</label>
             </span>
@@ -100,6 +106,14 @@
         <PlusMinus  ref="plusMinus"
                     :initialIndex="object.rootNote" 
                     @eventRootChanged="theRootChanged($event)"></PlusMinus>
+        
+        <div>
+          <select @keypress.prevent v-model="scaleText">
+            <option v-for="scale in Object.keys($options.scalesContent)" v-bind:value="scale">
+              {{ scale }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div style="margin-top: 25px; margin-bottom: 10px;">
@@ -184,13 +198,15 @@ export default {
         videoID: ''
       },
       timeValue: 0,
-      playBtnDisabled: false,
-      stopBtnDisabled: true,
-      resumeBtnDisabled: true,
-      pauseBtnDisabled: true,
+      // playBtnDisabled: false,
+      // stopBtnDisabled: true,
+      // resumeBtnDisabled: true,
+      // pauseBtnDisabled: true,
       player: {},
       likeStatus: '',
-      unsubscribe: {}
+      unsubscribe: {},
+      playState: '',
+      scaleText: 'Choose scale',
     }
   },
   songForMagenta: {
@@ -203,6 +219,36 @@ export default {
   noteNames:['1','2b','2','3b','3','4','5b','5','6b','6','7b','7'],
   lastTimeRel:0,
   lastTimeAbs:0,
+  scalesContent:{
+    'Choose scale': [],
+    'Major': [0,2,4,5,7,9,11],
+    'Mixolydian (Major 7♭)': [0,2,4,5,7,9,10],
+    'Lydian (Major 4♯)': [0,2,4,6,7,9,11],
+    'Minor': [0,2,3,5,7,8,10],
+    'Minor harmonic (Minor 7♮)': [0,2,3,5,7,8,11],
+    'Dorian (Minor 6♮)': [0,2,3,5,7,9,10],
+    'Phrygian (Minor 2♭)': [0,1,3,5,7,8,10],
+    'Whole tone': [0,2,4,6,8,10],
+    'Chromatic': [0,1,2,3,4,5,6,7,8,9,10,11],
+
+    'Spanish (Phrygian major)': [0,1,4,5,7,8,10],
+    'Pentatonic': [0,2,4,7,9],
+    'Blues (Pentatonic minor)': [0,3,5,7,10],
+    'Jazz': [0,3,5,6,7,10],
+    'Bebop':[0,2,4,5,7,9,10,11],
+    'Half-whole diminished':[0,1,3,4,6,7,9,10],
+    'Whole-half diminished':[0,2,3,5,6,8,9,11],
+    'Half diminished':[0,2,3,5,6,8,10],
+    'Augmented' : [0,3,4,7,8,11],
+
+    'Japanese mode':[0,2,3,7,8],
+    'Insen': [0,1,5,7,10],
+    'Hirajoshi': [0,1,5,6,10],
+
+    'Marwa':[0,1,4,6,7,9,11],
+    'Purvi':[0,1,4,6,7,8,11],
+    'Todi':[0,1,3,6,7,8,11],
+  },
   mounted: async function (){
     this.listenToChanges()
     player.stop()
@@ -216,12 +262,11 @@ export default {
     this.updateScale() // !!!
     this.$refs.childComponent.setValue(this.object2.duration);
     this.$refs.plusMinus.updateRootNote(this.object.rootNote)
-    // try {
-    //   // player = 
-    //   this.playState = player.getPlayState()
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    try {
+      this.playState = player.getPlayState()
+    } catch (err) {
+      console.error(err);
+    }
     this.$interval = setInterval(()=>{
 			this.refreshTime()
 		}, 700)
@@ -256,6 +301,13 @@ export default {
     Defilement
   },
   methods:{
+    // updatePlayState(){
+    //   try {
+    //     this.playState = player.getPlayState()
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // },
     getSize(){
       const a = this.scaleIntegers.length
       const num = 5 * (7 / a)
@@ -320,10 +372,10 @@ export default {
 
       // we notice the ui that player is in pause state
       // this.playState = player.getPlayState()
-      this.playBtnDisabled = true
-      this.stopBtnDisabled = false
-      this.pauseBtnDisabled = true
-      this.resumeBtnDisabled = false
+      // this.playBtnDisabled = true
+      // this.stopBtnDisabled = false
+      // this.pauseBtnDisabled = true
+      // this.resumeBtnDisabled = false
     },
     isInRange(note){
       console.log(this.min, note.startTime, this.max)
@@ -408,16 +460,31 @@ export default {
       let midiNote = midiDictionnary[e.code]
       this.attackNote(midiNote)
     },
+    async playPauseFunction(){
+      switch(this.playState){
+        case 'stopped':
+          this.playBtnClick()
+          break;
+        case 'paused':
+          this.resumeBtnClick()
+          break;
+        case 'started':
+          this.pauseBtnClick()
+          break;
+        default:
+          break;
+      }
+    },
     async playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
       player.start(this.$options.songForMagenta)
       // console.log(player)
       // this.totalTime = this.$options.songForMagenta.totalTime
-      // this.playState = player.getPlayState()
-      this.playBtnDisabled = true
-      this.stopBtnDisabled = false
-      this.pauseBtnDisabled = false
-      this.resumeBtnDisabled = true
+      this.playState = player.getPlayState()
+      // this.playBtnDisabled = true
+      // this.stopBtnDisabled = false
+      // this.pauseBtnDisabled = false
+      // this.resumeBtnDisabled = true
       await this.$refs.defilement.moveToTime(this.object2.duration)
     },
     stopBtnClick(){
@@ -425,11 +492,11 @@ export default {
       player.stop()
       this.$options.lastTimeRel = 0
       this.timeValue = 0
-      // this.playState = player.getPlayState()
-      this.playBtnDisabled = false
-      this.stopBtnDisabled = true
-      this.pauseBtnDisabled = true
-      this.resumeBtnDisabled = true
+      this.playState = player.getPlayState()
+      // this.playBtnDisabled = false
+      // this.stopBtnDisabled = true
+      // this.pauseBtnDisabled = true
+      // this.resumeBtnDisabled = true
       this.$refs.defilement.killCurrentAnimation()
       this.$refs.defilement.setTime(0)
     },
@@ -450,26 +517,27 @@ export default {
         player.pause()
         player.seekTo(this.timeValue)
       }
-      // this.playState = player.getPlayState()
+      this.playState = player.getPlayState()
       if(show){
-        this.playBtnDisabled = true
-        this.stopBtnDisabled = false
-        this.pauseBtnDisabled = true
-        this.resumeBtnDisabled = false
+        // this.playBtnDisabled = true
+        // this.stopBtnDisabled = false
+        // this.pauseBtnDisabled = true
+        // this.resumeBtnDisabled = false
       }
       this.$refs.defilement.killCurrentAnimation()
+      this.$refs.defilement.setTime(this.timeValue)
     },
     async resumeBtnClick(show=true, updateTimeRelAndCo=true){
       if(updateTimeRelAndCo){
         this.$options.lastTimeAbs = Date.now()/1000
       }
       player.resume()
-      // this.playState = player.getPlayState()
+      this.playState = player.getPlayState()
       if(show){
-        this.playBtnDisabled = true
-        this.stopBtnDisabled = false
-        this.pauseBtnDisabled = false
-        this.resumeBtnDisabled = true
+        // this.playBtnDisabled = true
+        // this.stopBtnDisabled = false
+        // this.pauseBtnDisabled = false
+        // this.resumeBtnDisabled = true
       }
       await this.$refs.defilement.moveToTime(this.object2.duration)
     },
@@ -573,7 +641,24 @@ export default {
       }
     }
   },
+  watch:{
+    scaleText: async function(val){
+      let newScale = this.$options.scalesContent[val]
+      console.log(newScale)
+      if(newScale.length > 0){
+        this.object.scale = scaleIntegersToBooleans(newScale)
+        this.updateScale()
+        // prepare_midiDictionnary(newScale, this.object.rootNote)
+      }
+    }
+  },
   computed: {
+    playPauseSvg(){
+      if(this.playState == 'started')
+        return "M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"
+      else
+        return 'M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z'
+    },
     scaleIntegers() {
       return scaleBooleansToInteger(this.object.scale)
     },
@@ -698,5 +783,15 @@ h2{
 
   font-size: 24px;
   /* font-size: 4vw; */
+}
+
+.play-button{
+  border-radius: 100%;
+  border-width: 2px;
+  background-color: greenyellow;
+  border-color: black;
+  width: 20vmin;
+  height: 20vmin;
+  cursor: pointer;
 }
 </style>
