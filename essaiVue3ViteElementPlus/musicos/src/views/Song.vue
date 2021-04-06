@@ -1,13 +1,21 @@
 <template> 
   <div class="Song paddedContainer">
     <section>
-      <div class="flex flex-col items-center justify-center">
-        <YoutubePlayer v-if="thereIsAVideo" ref="youtube" :videoid="object2.videoID"  :width="200" :height="100" @ended="onEnded" @paused="onPaused" @played="onPlayed"/>
-        <Defilement @deleteEvent="deleteTheNotes($event)"
-          ref="defilement" 
-          :zoomTime="parseFloat(zoomTime)" 
-          :hauteurPresent="parseFloat(hauteurPresent)"
-          :root="object.rootNote"/>
+      <div class="flex flex-col items-stretch">
+        <div class="flex flex-row justify-center">
+          <YoutubePlayer v-if="thereIsAVideo" ref="youtube" :videoid="object2.videoID"  :width="200" :height="100" @ended="onEnded" @paused="onPaused" @played="onPlayed"/>
+        </div>
+        <div v-if="thereIsAVideo" class="mt-1 flex flex-row justify-center">
+          <span class="ml-1 mr-1">Youtube volume: <b>{{ youtubeVolume }}</b></span>
+          <input class="flex-grow" type="range" id="slider" v-model="youtubeVolume" :min="0" :max="100" :step="1" @input="setYoutubeVolume(youtubeVolume)"> 
+        </div>
+        <div class="flex flex-row justify-center">
+          <Defilement class="mt-1" @deleteEvent="deleteTheNotes($event)"
+            ref="defilement" 
+            :zoomTime="parseFloat(zoomTime)" 
+            :hauteurPresent="parseFloat(hauteurPresent)"
+            :root="object.rootNote"/>
+        </div>
       </div>
       <!-- 
         touchstart touchend
@@ -48,8 +56,10 @@
           <svg @click="playPauseFunction()" class="play-button " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="true" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="#626262"><path :d="playPauseSvg"/></g></svg>
         </div>
         <div class="mt-2 flex flex-row justify-center" style>
-          <span class="mr-1"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
           <input class="flex-grow" type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="0.2" @change="sliderChange" @input="sliderInput"> 
+        </div>
+        <div class="flex flex-row justify-between" style>
+          <span class="mr-1"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
           <span class="ml-1"><b id="totalTime">{{ fixedDuration }}</b>s</span>
         </div>
       </div>
@@ -165,7 +175,7 @@ export default {
     return {
       // temp: { video_id:"3P1CnWI62Ik", loop:0 }, // !!!
       // play : { video_id:"3P1CnWI62Ik", loop:0 },
-
+      youtubeVolume: 90,
       hauteurPresent: 0.5,
       zoomTime: 6,
       wasPlaying: false,
@@ -270,6 +280,7 @@ export default {
     await this.getObject()
     await this.getObject2()
     this.updateScale() // !!!
+    this.youtubeVolume = 100 * this.object.volumeYoutube
     this.$refs.childComponent.setValue(this.object2.duration);
     this.$refs.plusMinus.updateRootNote(this.object.rootNote)
     try {
@@ -289,6 +300,7 @@ export default {
     clearInterval(this.$interval)
     document.removeEventListener("keydown", this.keyDownFunctionShow)
     document.removeEventListener("keyup", this.keyUpFunctionRecord)
+    this.object.volumeYoutube = this.youtubeVolume / 100
     if(this.object2.ownerID === getMyId()){
       this.object.notes = this.$options.songForMagenta.notes.map((o) => {
         return {
@@ -299,7 +311,7 @@ export default {
         }
       })
       try{
-        await this.saveNotes()
+        await this.saveObject()
       }catch(error){
         console.log(error)
       }
@@ -312,6 +324,10 @@ export default {
     // YoutubePlayer
   },
   methods:{
+    setYoutubeVolume(youtubeVolume){
+      if(this.thereIsAVideo)
+        this.$refs.youtube.player.setVolume(youtubeVolume);
+    },
     beSurePlayerStopped(){
       const playing = (player.getPlayState() === 'started')
       if (playing) {
@@ -365,7 +381,6 @@ export default {
     },
     onPlayed() {
       console.log("## OnPlayed")
-      this.playBtnClick()
       switch(this.playState){
         case 'stopped':
           this.playBtnClick()
@@ -496,7 +511,7 @@ export default {
       fired[midiNote] = false
       synth.triggerRelease(Tone.Midi(midiNote))
       const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
-      if(this.isRecording){
+      if(this.isRecordingNow){
         this.$options.recordedNotes.push({
           pitch: midiNote,
           startTime: startTimes[midiNote] + decalage,
@@ -522,7 +537,7 @@ export default {
         // myNoteDom.innerText = midiDictionnaryName[midiNote]
         // console.log('prout prout' + midiDictionnaryName[midiNote])
         synth.triggerAttack(Tone.Midi(midiNote)) // "C4", "8n"
-        if(this.isRecording){
+        if(this.isRecordingNow){
           const decalage = this.$options.lastTimeRel - this.$options.lastTimeAbs
           this.$refs.defilement.notes.push({pitch: midiNote, startTime: now + decalage})
         }
@@ -533,6 +548,7 @@ export default {
       this.attackNote(midiNote)
     },
     async playPauseFunction(){
+      this.playState = player.getPlayState()
       switch(this.playState){
         case 'stopped':
           this.playBtnClick()
@@ -576,6 +592,7 @@ export default {
       this.$refs.defilement.setTime(0)
     },
     pauseBtnClick(show=true, updateTimeRelAndCo=true){
+      console.log('we want to pause')
       let smthgHappened = this.mergeRecordedAndReset()
       let lastTimeAbsNew = Date.now()/1000
       if(smthgHappened)
@@ -659,7 +676,7 @@ export default {
                          parseFloat(this.$options.lastTimeAbs))
       }
     },
-    async saveNotes(){
+    async saveObject(){
       var storage = firebase.storage();
       var ref = storage.ref('songs/' + this.songId);
       try{
@@ -737,6 +754,9 @@ export default {
     }
   },
   computed: {
+    isRecordingNow(){
+      return this.isRecording && this.playState == 'started'
+    },
     thereIsAVideo(){
       return this.object2.videoID != ''
     },

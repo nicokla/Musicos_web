@@ -13,22 +13,20 @@ Diapason, Classica, La lettre du Musicien, autres pays, blues, jazz, classique, 
 --------
 musicos code
 
-- youtube volume
-player.setVolume(volume:Number)
-- unselect all notes
-
-
 - create a song with video (search ytb, display song list)
 GET https://youtube.googleapis.com/youtube/v3/search?type=video&q=soccer&maxResults=10&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
 GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=svOaII_HOOU&id=uKWNAe3b3EI&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
 - import song
 
+
+- new create song button in home page
 - lecture defaut : a) notes pas jouees (volume notes preenregistré reglable), b) notes pas enregistrées (par defaut), c) present vers le bas (par defaut)
 - bouton record == bouton rouge vs gris
 - or the user does not ... exist (have pwd ???)
 - message : 1) click on the green button to start recording. 2) To play notes, type on your keyboard.
 - separation colonnes visibles / pas visible (visibles mais margin !!)
 - login google
+- unselect all notes to delete
 
 
 - glide and play notes as finger slide on buttons

@@ -147,3 +147,10 @@ function isTouchDevice() {
      (navigator.maxTouchPoints > 0) ||
      (navigator.msMaxTouchPoints > 0));
 }
+
+
+----------------------
+
+https://flexbox.help/
+https://nerdcave.com/tailwind-cheat-sheet
+
