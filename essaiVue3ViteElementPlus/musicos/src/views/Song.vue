@@ -1,6 +1,19 @@
 <template> 
   <div class="Song paddedContainer">
     <section>
+      <!-- <div>
+        <div>
+          video_id : <input type="text" v-model="temp.video_id" /><br />
+          loop : <input type="number"  v-model.number="temp.loop" /><br />
+          <button class=button @click="applyConfig">Apply</button>
+          <button class=button @click="playCurrentVideo">Play</button>
+          <button class=button @click="stopCurrentVideo">Stop</button>
+          <button class=button @click="pauseCurrentVideo">Pause</button>
+        </div>
+
+        <YoutubePlayer ref="youtube" :videoid="play.video_id"  :width="480" :height="320" @ended="onEnded" @paused="onPaused" @played="onPlayed"/>
+      </div> -->
+
       <div style="text-align: center;">
         <Defilement ref="defilement" 
           :zoomTime="zoomTime" 
@@ -152,10 +165,14 @@ import {synth, keyDownFunction, mergeByStartTime, midiDictionnary,
         getColor} from '../tone/tone'
 import PlusMinus from '../components/PlusMinus.vue';
 import Defilement from '../components/Defilement.vue';
+// import YoutubePlayer from '../components/YoutubePlayer.vue';
 
 export default {
   data() {
     return {
+      // temp: { video_id:"3P1CnWI62Ik", loop:0 }, // !!!
+      // play : { video_id:"3P1CnWI62Ik", loop:0 },
+
       hauteurPresent: 0.5,
       zoomTime: 6,
       wasPlaying: false,
@@ -298,9 +315,33 @@ export default {
   components:{
     'child-component':DoubleRangeSlider,
     PlusMinus,
-    Defilement
+    Defilement,
+    // YoutubePlayer
   },
   methods:{
+    // applyConfig() { // !!!
+    //   this.play = Object.assign(this.play, this.temp)
+    // },
+    // playCurrentVideo() {
+    //   this.$refs.youtube.player.playVideo();
+    // },
+    // stopCurrentVideo() {
+    //   this.$refs.youtube.player.stopVideo();
+    // },
+    // pauseCurrentVideo() {
+    //   this.$refs.youtube.player.pauseVideo();
+    // },
+    // onEnded() {
+    //   console.log("## OnEnded")
+    // },
+    // onPaused() {
+    //   console.log("## OnPaused")
+    // },
+    // onPlayed() {
+    //   console.log("## OnPlayed")
+    // },
+
+
     // updatePlayState(){
     //   try {
     //     this.playState = player.getPlayState()
@@ -558,6 +599,9 @@ export default {
       this.$options.lastTimeRel = parseFloat(this.timeValue)
       this.$options.lastTimeAbs = Date.now() / 1000
       player.seekTo(this.$options.lastTimeRel)
+
+      // this.$refs.youtube.player.seekTo(this.$options.lastTimeRel) // !!!
+      
       this.$refs.defilement.setTime(this.$options.lastTimeRel)
 
       if (this.wasPlaying) {

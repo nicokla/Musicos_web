@@ -13,6 +13,7 @@ Diapason, Classica, La lettre du Musicien, autres pays, blues, jazz, classique, 
 --------
 musicos code
 
+- select, unselect notes/delete selected notes/unselect all
 - create a song with video (search ytb, display song list)
 - youtube play (load, play, pause, setTime, volume)
 - import song
@@ -69,7 +70,6 @@ musicos code
 
 
 - try it page
-- select a note/delete selected notes/unselect all
 - play with real piano keyboard
 - export to midi
 - jouer au ralenti ?? cf magenta, animation, ytb (ytb : que 0.25, 0.5, 0.75, 1)
