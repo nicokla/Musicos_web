@@ -2,49 +2,16 @@
 <template>
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="300px" height="300px" viewBox="0 0 700 700"     xml:space="preserve" style="background-color: black; display: inline-block;">
       <svg  x="0" y="0" width="100%" height="100%" id="theSVG">
-        <ellipse v-for="note in notes" :cx="getColonne(note.pitch) * 100 + 50" :cy="getHauteurFromTime(note.startTime)" rx="50" ry="25" :style="getEllipseStyle(note.pitch)" />
+        <ellipse v-for="note in notes" :cx="getColonne(note.pitch) * 100 + 50" :cy="getHauteurFromTime(note.startTime)" rx="50" ry="25" :style="getEllipseStyle(note.pitch, note.selected)" @click="select(note)"/>
       </svg>                                                  
       <svg x="0" y="0" width="100%" height="100%">
         <line id="line" x1="0" x2="700" :y1="hauteurSVGPresent" :y2="hauteurSVGPresent" stroke="white" fill="transparent" stroke-width="3"/>
       </svg>
 
   </svg>  
-  <!-- <h1>{{ msg }}</h1>
-
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">Vite Documentation</a> |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Documentation</a>
-  </p>
-
-  <button @click="state.count++">count is: {{ state.count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p> -->
 </template>
 
-
-
-
-
-
-
 <script> 
-
-//script setup
-// import { defineProps, onMounted, reactive, ref, useContext, watch } from "vue";
-
-// defineProps({
-//   notes: Object
-// })
-
-// const state = reactive({ count: 0 })
-
-// onMounted(async () => {
-//   // ...
-// })
-
-// ---------------------
 
 // https://greensock.com/docs/v3/GSAP/gsap.timeline()
 // https://greensock.com/docs/v3/GSAP/Timeline/kill()
@@ -69,21 +36,9 @@ export default {
   data() {
     return {
       // svg: document.querySelector('#theSVG'),
-      // zoomTime: 6,
-      // hauteurPresent: 0, // 0 => modeLecture / 1 => modeEcriture
       notes: [
-        // {pitch:0,startTime:0.5},
-        // {pitch:5,startTime:1},
-        // {pitch:10,startTime:2},
-        // {pitch:0,startTime:3},
-        // {pitch:5,startTime:4},
-        // {pitch:10,startTime:5},
-        // {pitch:0,startTime:6},
-        // {pitch:5,startTime:7},
-        // {pitch:10,startTime:8},
+        // {pitch:0, startTime:0.5, endTime:1},
       ],
-      // mysvg:document.querySelector("#theSVG"),
-      // root: 48,
       currentTime: 0,
     }
   },
@@ -99,8 +54,18 @@ export default {
     }
   },
   methods:{
-    getEllipseStyle(pitch){
-      return `fill:${getColor(pitch, this.root)};stroke:purple;stroke-width:2;`
+    deleteSelectedNotes(){
+      const notesToDelete = this.notes.filter((note)=>note.selected)
+      this.$emit('deleteEvent', notesToDelete)
+      this.notes = this.notes.filter((note)=>!note.selected)
+    },
+    select(note){
+      note.selected = !note.selected;
+    },
+    getEllipseStyle(pitch, selected){
+      const stroke = selected ? 'red' : 'purple';
+      const strokeWidth = selected ? '8' : '2';
+      return `fill:${getColor(pitch, this.root)};stroke:${stroke};stroke-width:${strokeWidth};`
     },
     getColonne(pitch){
       let liste = [0,1,1,2,2,3,4,4,5,5,6,6]

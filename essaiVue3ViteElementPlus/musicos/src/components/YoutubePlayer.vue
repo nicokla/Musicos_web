@@ -15,6 +15,7 @@ export default {
   },
   methods:{
     // https://github.com/gajus/youtube-player/search?q=seek
+    // https://developers.google.com/youtube/iframe_api_reference?hl=fr#seekTo
   },
   data() {
     return {

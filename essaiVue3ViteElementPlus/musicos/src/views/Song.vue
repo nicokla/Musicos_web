@@ -1,24 +1,13 @@
 <template> 
   <div class="Song paddedContainer">
     <section>
-      <!-- <div>
-        <div>
-          video_id : <input type="text" v-model="temp.video_id" /><br />
-          loop : <input type="number"  v-model.number="temp.loop" /><br />
-          <button class=button @click="applyConfig">Apply</button>
-          <button class=button @click="playCurrentVideo">Play</button>
-          <button class=button @click="stopCurrentVideo">Stop</button>
-          <button class=button @click="pauseCurrentVideo">Pause</button>
-        </div>
-
-        <YoutubePlayer ref="youtube" :videoid="play.video_id"  :width="480" :height="320" @ended="onEnded" @paused="onPaused" @played="onPlayed"/>
-      </div> -->
-
-      <div style="text-align: center;">
-        <Defilement ref="defilement" 
-          :zoomTime="zoomTime" 
-          :hauteurPresent="hauteurPresent"
-          :root="object.rootNote"></Defilement>
+      <div class="flex flex-col items-center justify-center">
+        <YoutubePlayer v-if="thereIsAVideo" ref="youtube" :videoid="object2.videoID"  :width="200" :height="100" @ended="onEnded" @paused="onPaused" @played="onPlayed"/>
+        <Defilement @deleteEvent="deleteTheNotes($event)"
+          ref="defilement" 
+          :zoomTime="parseFloat(zoomTime)" 
+          :hauteurPresent="parseFloat(hauteurPresent)"
+          :root="object.rootNote"/>
       </div>
       <!-- 
         touchstart touchend
@@ -59,18 +48,20 @@
           <svg @click="playPauseFunction()" class="play-button " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="true" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="#626262"><path :d="playPauseSvg"/></g></svg>
         </div>
         <div class="mt-2 flex flex-row justify-center" style>
-          <input type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="1" @change="sliderChange" @input="sliderInput" style="width:70%;"> 
-          <span class="ml-2"><b id="currentTime">{{ fixedTimeValue }}</b>s / </span>
-          <span><b id="totalTime">{{ object2.duration }}</b>s</span>
+          <span class="mr-1"><b id="currentTime">{{ fixedTimeValue }}</b>s</span>
+          <input class="flex-grow" type="range" id="slider" v-model="timeValue" :min="0" :max="object2.duration" :step="0.2" @change="sliderChange" @input="sliderInput"> 
+          <span class="ml-1"><b id="totalTime">{{ fixedDuration }}</b>s</span>
         </div>
       </div>
-      <div class="flex flex-row" style="margin-top: 10px;">
-        <!-- <button class=button id="play" :disabled="playBtnDisabled" @click="playBtnClick">Play</button>
-        <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
+
+      <!-- class="flex flex-row"  -->
+      <div style="margin-top: 10px;">
+        <button class=button :disabled="playState == 'started'" @click="triggerDelete()">
+          Delete selected notes
+        </button>
+        <!-- <button class=button id="stop" :disabled="stopBtnDisabled" @click="stopBtnClick">Stop</button>
         <button class=button id="pause" :disabled="pauseBtnDisabled" @click="pauseBtnClick">Pause</button>
         <button class=button id="resume" :disabled="resumeBtnDisabled" @click="resumeBtnClick">Resume</button> -->
-        
-        
       </div>
       
       <div style="margin-top: 10px;">Zoom : 
@@ -104,8 +95,16 @@
 
       <div style="margin-top: 25px; margin-bottom: 10px;">
         <h2>
-          - Scale parameters
+          - Scale
         </h2>
+
+        <div class="mb-1">
+          <select @keypress.prevent v-model="scaleText">
+            <option v-for="scale in Object.keys($options.scalesContent)" v-bind:value="scale">
+              {{ scale }}
+            </option>
+          </select>
+        </div>
 
         <div class="flex-row">          
             <!--  :checked="b" v-model="listeBool[index]"" -->
@@ -120,13 +119,7 @@
                     :initialIndex="object.rootNote" 
                     @eventRootChanged="theRootChanged($event)"></PlusMinus>
         
-        <div>
-          <select @keypress.prevent v-model="scaleText">
-            <option v-for="scale in Object.keys($options.scalesContent)" v-bind:value="scale">
-              {{ scale }}
-            </option>
-          </select>
-        </div>
+        
       </div>
 
       <div style="margin-top: 25px; margin-bottom: 10px;">
@@ -319,27 +312,71 @@ export default {
     // YoutubePlayer
   },
   methods:{
-    // applyConfig() { // !!!
-    //   this.play = Object.assign(this.play, this.temp)
-    // },
-    // playCurrentVideo() {
-    //   this.$refs.youtube.player.playVideo();
-    // },
-    // stopCurrentVideo() {
-    //   this.$refs.youtube.player.stopVideo();
-    // },
-    // pauseCurrentVideo() {
-    //   this.$refs.youtube.player.pauseVideo();
-    // },
-    // onEnded() {
-    //   console.log("## OnEnded")
-    // },
-    // onPaused() {
-    //   console.log("## OnPaused")
-    // },
-    // onPlayed() {
-    //   console.log("## OnPlayed")
-    // },
+    beSurePlayerStopped(){
+      const playing = (player.getPlayState() === 'started')
+      if (playing) {
+        player.pause()
+      }
+      player.stop()
+    },
+    restartPlayer(){
+      player.start(this.$options.songForMagenta)
+      player.pause()
+      player.seekTo(this.timeValue)
+    },
+    triggerDelete(){
+      this.$refs.defilement.deleteSelectedNotes()
+    },
+    deleteTheNotes(notesToDelete){
+      this.beSurePlayerStopped()
+      for(const note1 of notesToDelete){
+        this.$options.songForMagenta.notes.splice(
+          this.$options.songForMagenta.notes.findIndex(note2 => {
+            return (note2.pitch === note1.pitch &&
+                      note2.startTime === note1.startTime)
+          }),
+          1
+        )
+      }
+      this.restartPlayer()
+    },
+    playCurrentVideo() {
+      if(this.thereIsAVideo)
+        this.$refs.youtube.player.playVideo();
+    },
+    stopCurrentVideo() {
+      if(this.thereIsAVideo)
+        this.$refs.youtube.player.stopVideo();
+    },
+    pauseCurrentVideo() {
+      if(this.thereIsAVideo)
+        this.$refs.youtube.player.pauseVideo();
+    },
+    seekCurrentVideo(time, isChangeNotInput){
+      if(this.thereIsAVideo)
+        this.$refs.youtube.player.seekTo(time, isChangeNotInput);
+    },
+    onEnded() {
+      console.log("## OnEnded")
+    },
+    onPaused() {
+      console.log("## OnPaused")
+      this.pauseBtnClick()
+    },
+    onPlayed() {
+      console.log("## OnPlayed")
+      this.playBtnClick()
+      switch(this.playState){
+        case 'stopped':
+          this.playBtnClick()
+          break;
+        case 'paused':
+          this.resumeBtnClick()
+          break;
+        default:
+          break;
+      }
+    },
 
 
     // updatePlayState(){
@@ -390,11 +427,7 @@ export default {
     },
     async deleteNotesInRange_doIt(){
       // console.log('coucou heho')
-      const playing = (player.getPlayState() === 'started')
-      if (playing) {
-        player.pause()
-      }
-      player.stop()
+      this.beSurePlayerStopped()
 
       // we take into account recorded notes
       this.mergeRecordedAndReset() // ??? TODO (debug) : negative times.
@@ -407,9 +440,7 @@ export default {
       // console.log('after',this.$options.songForMagenta.notes)
 
       // we restart the player so that the deletions are taken into account
-      player.start(this.$options.songForMagenta)
-      player.pause()
-      player.seekTo(this.timeValue)
+      this.restartPlayer()
 
       // we notice the ui that player is in pause state
       // this.playState = player.getPlayState()
@@ -518,6 +549,7 @@ export default {
     },
     async playBtnClick(){
       this.$options.lastTimeAbs = Date.now()/1000
+      this.playCurrentVideo()
       player.start(this.$options.songForMagenta)
       // console.log(player)
       // this.totalTime = this.$options.songForMagenta.totalTime
@@ -531,6 +563,8 @@ export default {
     stopBtnClick(){
       this.mergeRecordedAndReset()
       player.stop()
+      this.stopCurrentVideo()
+      this.playCurrentVideo()
       this.$options.lastTimeRel = 0
       this.timeValue = 0
       this.playState = player.getPlayState()
@@ -548,6 +582,7 @@ export default {
         player.stop()
       else
         player.pause()
+      this.pauseCurrentVideo()
       if(updateTimeRelAndCo){
         this.$options.lastTimeRel += lastTimeAbsNew - this.$options.lastTimeAbs
         this.$options.lastTimeAbs = lastTimeAbsNew
@@ -557,6 +592,7 @@ export default {
         player.start(this.$options.songForMagenta)
         player.pause()
         player.seekTo(this.timeValue)
+        this.seekCurrentVideo(this.timeValue, false)
       }
       this.playState = player.getPlayState()
       if(show){
@@ -574,6 +610,7 @@ export default {
       }
       player.resume()
       this.playState = player.getPlayState()
+      this.playCurrentVideo()
       if(show){
         // this.playBtnDisabled = true
         // this.stopBtnDisabled = false
@@ -591,7 +628,9 @@ export default {
         player.pause()
       }
       // }
-      this.$refs.defilement.setTime(parseFloat(this.timeValue))
+      const theTime = parseFloat(this.timeValue)
+      this.$refs.defilement.setTime(theTime)
+      this.seekCurrentVideo(theTime, false)
     },
     sliderChange(e){
       this.pauseBtnClick(false, false) // recording is done here
@@ -601,7 +640,8 @@ export default {
       player.seekTo(this.$options.lastTimeRel)
 
       // this.$refs.youtube.player.seekTo(this.$options.lastTimeRel) // !!!
-      
+      this.seekCurrentVideo(this.$options.lastTimeRel, true)
+
       this.$refs.defilement.setTime(this.$options.lastTimeRel)
 
       if (this.wasPlaying) {
@@ -697,6 +737,9 @@ export default {
     }
   },
   computed: {
+    thereIsAVideo(){
+      return this.object2.videoID != ''
+    },
     playPauseSvg(){
       if(this.playState == 'started')
         return "M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"
@@ -708,6 +751,9 @@ export default {
     },
     fixedTimeValue(){
       return parseFloat(this.timeValue).toFixed(1)
+    },
+    fixedDuration(){
+      return parseFloat(this.object2.duration).toFixed(1)
     },
     isLiked(){
       return this.likeStatus !== undefined
