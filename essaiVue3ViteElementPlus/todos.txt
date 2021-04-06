@@ -15,7 +15,14 @@ musicos code
 
 - select, unselect notes/delete selected notes/unselect all
 - create a song with video (search ytb, display song list)
-- youtube play (load, play, pause, setTime, volume)
+GET https://youtube.googleapis.com/youtube/v3/search?type=video&q=soccer&maxResults=10&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
+GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=svOaII_HOOU&id=uKWNAe3b3EI&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
+- youtube play (play(ok), pause(ok), seek(ok), volume(todo))
+https://developers.google.com/youtube/iframe_api_reference?hl=fr#seekTo
+player.setVolume(volume:Number)
+player.seekTo(seconds:Number, allowSeekAhead:Boolean) // input,false puis change,true
+player.playVideo()
+player.pauseVideo()
 - import song
 
 
