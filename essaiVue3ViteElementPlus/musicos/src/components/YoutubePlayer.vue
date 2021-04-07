@@ -11,6 +11,7 @@ export default {
     height: { type:Number, default:320 },
     // autoplay: { type:Number, default:1, validator: (v) => Number(v)===0||Number(v)===1 },
     videoid : { type:String, required:true },
+    youtubeVolume: { type:Number, default: 90 },
     // loop : { type:Number, default:0, validator: (v) => Number(v)===0||Number(v)===1 }
   },
   methods:{
@@ -50,13 +51,17 @@ export default {
       } else if (e.data === window.YT.PlayerState.PLAYING) {
         this.$emit('played')
       } 
-    });        
+    });
+    this.player.setVolume(this.youtubeVolume)      
   },
   unmounted() {
     this.player.destroy()
     delete this.player
   },
   watch : {
+    youtubeVolume(){
+      this.player.setVolume(this.youtubeVolume)
+    },
     videoid() {
       this.player.loadVideoById(this.videoid);
       this.player.playVideo();

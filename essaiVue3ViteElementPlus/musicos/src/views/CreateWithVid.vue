@@ -46,9 +46,9 @@ export default {
   methods:{
     stringToSeconds(duration) {
       // P3Y6M4DT12H30M5S
-      const a = dayjs.duration(duration)
-      console.log('boubou', a.format('X')) // a.$ms/1000
-      return a.format('X')
+      const a = dayjs.duration(duration).asSeconds()
+      console.log('boubou', a) // a.$ms/1000
+      return a
     },
     async search(myText){
       console.log(myText)

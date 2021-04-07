@@ -3,11 +3,12 @@
     <section>
       <div class="flex flex-col items-stretch">
         <div class="flex flex-row justify-center">
-          <YoutubePlayer v-if="thereIsAVideo" ref="youtube" :videoid="object2.videoID"  :width="200" :height="100" @ended="onEnded" @paused="onPaused" @played="onPlayed"/>
+          <YoutubePlayer v-if="thereIsAVideo" ref="youtube" :videoid="object2.videoID"  :width="200" :height="100" @ended="onEnded" @paused="onPaused" @played="onPlayed" :youtubeVolume="parseFloat(youtubeVolume)"/>
         </div>
         <div v-if="thereIsAVideo" class="mt-1 flex flex-row justify-center">
           <span class="ml-1 mr-1">Youtube volume: <b>{{ youtubeVolume }}</b></span>
-          <input class="flex-grow" type="range" id="slider" v-model="youtubeVolume" :min="0" :max="100" :step="1" @input="setYoutubeVolume(youtubeVolume)"> 
+          <input class="flex-grow" type="range" id="slider" v-model="youtubeVolume" :min="0" :max="100" :step="1"> 
+          <!--  @input="setYoutubeVolume(youtubeVolume)" -->
         </div>
         <div class="flex flex-row justify-center">
           <Defilement class="mt-1" @deleteEvent="deleteTheNotes($event)"
@@ -324,10 +325,10 @@ export default {
     // YoutubePlayer
   },
   methods:{
-    setYoutubeVolume(youtubeVolume){
-      if(this.thereIsAVideo)
-        this.$refs.youtube.player.setVolume(youtubeVolume);
-    },
+    // setYoutubeVolume(youtubeVolume){
+    //   if(this.thereIsAVideo)
+    //     this.$refs.youtube.player.setVolume(youtubeVolume);
+    // },
     beSurePlayerStopped(){
       const playing = (player.getPlayState() === 'started')
       if (playing) {
