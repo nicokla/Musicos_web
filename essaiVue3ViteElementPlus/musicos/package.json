@@ -13,6 +13,7 @@
     "@tailwindcss/typography": "^0.4.0",
     "algoliasearch": "^4.8.5",
     "axios": "^0.21.1",
+    "dayjs": "^1.10.4",
     "firebase": "^8.2.9",
     "gsap": "^3.6.0",
     "tone": "^14.7.77",
