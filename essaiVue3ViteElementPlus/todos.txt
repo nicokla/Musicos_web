@@ -13,19 +13,6 @@ Diapason, Classica, La lettre du Musicien, autres pays, blues, jazz, classique, 
 --------
 musicos code
 
-- create a song with video (search ytb, display song list)
-GET https://youtube.googleapis.com/youtube/v3/search?type=video&q=soccer&maxResults=10&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
-
-items / id / videoId
-
-https://i.ytimg.com/vi/svOaII_HOOU/mqdefault.jpg
-
-GET https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=svOaII_HOOU&id=uKWNAe3b3EI&key=AIzaSyDkwZzpuw-7C2U-ZGUvBRGSUbdjtn0VrKo
-
-items / snippet / title
-items / snippet / thumbnails / medium / url
-items / contentDetails / duration  (PT10M47S)
-
 - import song
 
 
