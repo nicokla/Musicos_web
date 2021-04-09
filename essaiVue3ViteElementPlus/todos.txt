@@ -18,6 +18,8 @@ musicos code
 0.2) play midi from piano keyboard
 https://github.com/djipco/webmidi  
 https://github.com/ritz078/raaga/blob/master/src/components/MidiSelect/MidiSelect.tsx
+https://github.com/Grkmus/midi-vue
+https://github.com/search?l=Vue&q=webmidi&type=Repositories
 0.3) export midi file
 https://github.com/grimmdude/MidiWriterJS
 
