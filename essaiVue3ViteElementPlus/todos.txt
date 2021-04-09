@@ -13,8 +13,34 @@ Diapason, Classica, La lettre du Musicien, autres pays, blues, jazz, classique, 
 --------
 musicos code
 
-- import song
 
+0.1) RC, RV ou TV pour jouer (all notes, 2 lines)
+0.2) play midi from piano keyboard
+https://github.com/djipco/webmidi  
+https://github.com/ritz078/raaga/blob/master/src/components/MidiSelect/MidiSelect.tsx
+0.3) export midi file
+https://github.com/grimmdude/MidiWriterJS
+
+
+1) volume notes recorded
+2) default zoom 3 sec ?
+3) zoom + vers la droite (1/x?)
+4) import song
+5) change root scale en cours
+- slow down (0.75, 0.5)
+- deezer
+- soundcloud
+- spotify
+- autres instruments
+- default read en bas, default write en haut
+- google login
+- display 7 colonnes
+- +/- selected notes (frequences)
+- +/- selected notes (temps)
+- nb de likes ? algolia ?
+- nb de followers ?
+
+------------------------------------------
 
 - new create song button in home page
 - lecture defaut : a) notes pas jouees (volume notes preenregistré reglable), b) notes pas enregistrées (par defaut), c) present vers le bas (par defaut)
@@ -22,7 +48,6 @@ musicos code
 - or the user does not ... exist (have pwd ???)
 - message : 1) click on the green button to start recording. 2) To play notes, type on your keyboard.
 - separation colonnes visibles / pas visible (visibles mais margin !!)
-- login google
 - unselect all notes to delete
 
 
